@@ -13,7 +13,7 @@ const useCategory = () => {
     })
   );
 
-  return { categories };
+  return categories;
 };
 
 export default useCategory;

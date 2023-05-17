@@ -1,13 +1,10 @@
-import { BiSearch } from 'react-icons/bi';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { SlHandbag } from 'react-icons/sl';
-import { forwardRef, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import {
   ActionIcon,
-  Autocomplete,
   Avatar,
   Flex,
   Group,
@@ -19,70 +16,40 @@ import {
   Tooltip,
   useMantineColorScheme,
 } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
 import { requestSignout } from '../../api/fetch';
 import { userState } from '../../recoil/atoms';
 import { useMediaQuery } from '../../hooks';
-import { useSearchProducts } from '../../hooks/products';
-import { getDecodeSearch } from '../../utils/location';
-import { AUTH_QUERY_KEY, MEDIAQUERY_WIDTH, PATH } from '../../constants';
+import { getDecodeSearch } from '../../utils';
+import { QUERY_KEY, MEDIAQUERY_WIDTH, PATH } from '../../constants';
 import { DarkMode } from '../index';
+import SearchBar from './SearchBar';
 
-const AutoCompleteItem = forwardRef(({ value, id, onMouseDown, ...rest }, ref) => {
-  const navigate = useNavigate();
-
-  const handleMouseDown = e => {
-    onMouseDown(e);
-    navigate(`${PATH.PRODUCTS}/${id}`);
-  };
-
-  return (
-    <Text ref={ref} onMouseDown={handleMouseDown} value={value} {...rest}>
-      {value}
-    </Text>
-  );
-});
-
-const SearchBar = () => {
-  const { searchProducts } = useSearchProducts();
-  const [searchInput, setSearchInput] = useState('');
-  const [debounced] = useDebouncedValue(searchInput, 200);
+const Main = () => {
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
+  const [user, setUser] = useRecoilState(userState);
   const { search: rawSearch, pathname } = useLocation();
+  const { search } = getDecodeSearch(rawSearch);
+  const redirectTo = `${pathname}${search}`;
   const navigate = useNavigate();
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    document.activeElement.blur();
+  const queryClient = useQueryClient();
 
-    navigate(`${PATH.CATEGORY}?search=${searchInput}`);
+  const handleSignOutClick = async () => {
+    await requestSignout();
+    setUser(null);
+    queryClient.removeQueries(QUERY_KEY.AUTH);
+    navigate(PATH.MAIN);
   };
 
-  useEffect(() => {
-    const { search, searchValue } = getDecodeSearch(rawSearch);
-    setSearchInput(pathname.includes('category') && search.includes('search') ? searchValue : '');
-  }, [rawSearch, setSearchInput, pathname]);
-
   return (
-    <form onSubmit={handleSubmit}>
-      <Autocomplete
-        size="xl"
-        icon={<BiSearch size="2rem" />}
-        placeholder="상품 검색"
-        data={searchProducts}
-        radius="xl"
-        itemComponent={AutoCompleteItem}
-        value={searchInput}
-        onChange={setSearchInput}
-        filter={(_, item) =>
-          item.value.toLowerCase().includes(debounced.toLowerCase().trim()) ||
-          item.brand.en.toLowerCase().includes(debounced.toLowerCase().trim()) ||
-          item.brand.kr.toLowerCase().includes(debounced.toLowerCase().trim()) ||
-          item.category.kr.toLowerCase().includes(debounced.toLowerCase().trim()) ||
-          item.category.en.toLowerCase().includes(debounced.toLowerCase().trim())
-        }
-        nothingFound={<Text>검색결과가 없습니다.</Text>}
-      />
-    </form>
+    <Group position="apart">
+      <Logo />
+      {matches ? (
+        <SimpleUtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
+      ) : (
+        <UtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
+      )}
+    </Group>
   );
 };
 
@@ -205,35 +172,6 @@ const UtilArea = ({ user, handleSignOutClick, redirectTo }) => {
         </Menu.Dropdown>
       </Menu>
       <DarkMode />
-    </Group>
-  );
-};
-
-const Main = () => {
-  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
-  const [user, setUser] = useRecoilState(userState);
-  const { search: rawSearch, pathname } = useLocation();
-  const { search } = getDecodeSearch(rawSearch);
-  const redirectTo = `${pathname}${search}`;
-  const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
-
-  const handleSignOutClick = async () => {
-    await requestSignout();
-    setUser(null);
-    queryClient.removeQueries(AUTH_QUERY_KEY);
-    navigate(PATH.MAIN);
-  };
-
-  return (
-    <Group position="apart">
-      <Logo />
-      {matches ? (
-        <SimpleUtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
-      ) : (
-        <UtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
-      )}
     </Group>
   );
 };

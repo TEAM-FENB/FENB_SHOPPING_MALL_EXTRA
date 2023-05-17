@@ -8,7 +8,7 @@ const useSearchProducts = () => {
     })
   );
 
-  return { searchProducts };
+  return searchProducts;
 };
 
 export default useSearchProducts;

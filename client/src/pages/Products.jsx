@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Container, Stack, Group, Image, Title } from '@mantine/core';
+import { Container, Stack, Group, Image, Title, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useLocation } from 'react-router-dom';
 import { favoritesQuery, productsQuery, verifyQuery } from '../api/query';
-import { Info, Description, CartButton, WishListButton } from '../components/Products';
-import { useAddCartMutation } from '../hooks/carts';
-import { useToggleWishItemMutation } from '../hooks/wishList';
+import { Info, CartButton, WishListButton } from '../components/Products';
+import { useAddCartMutation, useToggleWishItemMutation } from '../hooks/mutation';
 
 const MEDIAQUERY_WIDTH = 768;
 
@@ -72,7 +71,9 @@ const Products = () => {
         <Group position="center" align="flex-start" noWrap="nowrap">
           <Stack m="4.8rem 0 0.8rem" p="0 2.4rem 0 4.8rem" maw="60rem">
             <Image src={imgURL} />
-            <Description>{description}</Description>
+            <Text fz="1.6rem" fw="500" lh="3.2rem" mt="1.5rem">
+              {description}
+            </Text>
           </Stack>
           <Stack m="4.8rem 0.8rem 0 0" p="0 4.8rem 0 2.4rem" miw="40rem" fz="1.6rem" spacing={0}>
             <Title>{`[${brand.kr}] ${name}`}</Title>
@@ -122,7 +123,9 @@ const Products = () => {
             isFavorite={isFavorite}
             handleWishListToggle={handleWishListToggle}
           />
-          <Description>{description}</Description>
+          <Text fz="1.6rem" fw="500" lh="3.2rem" mt="1.5rem">
+            {description}
+          </Text>
         </Stack>
       )}
     </Container>

@@ -34,26 +34,24 @@ const services = [
   },
 ];
 
-const Creator = () => {
-  const { colorScheme } = useMantineColorScheme();
-
-  return (
-    <Stack>
-      {creators.map(({ name, role, githubURL, mbti }) => (
-        <Flex key={name} gap="md" justify="flex-start">
-          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{name}</Text>
-          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{role}</Text>
-          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{mbti}</Text>
-          <Tooltip label="깃허브">
-            <Anchor href={githubURL} target="_blank" color="dark">
-              <BsGithub />
-            </Anchor>
-          </Tooltip>
-        </Flex>
-      ))}
-    </Stack>
-  );
-};
+const Footer = () => (
+  <MantineFooter sx={{ borderTop: '1px solid #ced4da' }} fz="1.3rem" m="5rem 0" p="5rem">
+    <Container size="120rem">
+      <Group position="apart" pb="5.6rem" align="center" spacing="5rem">
+        <Menus />
+        <Creator />
+        <ServiceArea />
+      </Group>
+      <Divider size="xs" pb="3rem" />
+      <Group position="apart" pt="2rem">
+        <BusinessTitle />
+        <Text color="dimmed" size="md">
+          © 2023 FENB. All rights reserved.
+        </Text>
+      </Group>
+    </Container>
+  </MantineFooter>
+);
 
 const Menus = () => {
   const { colorScheme } = useMantineColorScheme();
@@ -73,6 +71,27 @@ const Menus = () => {
         </Stack>
       ))}
     </Group>
+  );
+};
+
+const Creator = () => {
+  const { colorScheme } = useMantineColorScheme();
+
+  return (
+    <Stack>
+      {creators.map(({ name, role, githubURL, mbti }) => (
+        <Flex key={name} gap="md" justify="flex-start">
+          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{name}</Text>
+          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{role}</Text>
+          <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{mbti}</Text>
+          <Tooltip label="깃허브">
+            <Anchor href={githubURL} target="_blank" color="dark">
+              <BsGithub />
+            </Anchor>
+          </Tooltip>
+        </Flex>
+      ))}
+    </Stack>
   );
 };
 
@@ -107,24 +126,5 @@ const BusinessTitle = () => {
     </Text>
   );
 };
-
-const Footer = () => (
-  <MantineFooter sx={{ borderTop: '1px solid #ced4da' }} fz="1.3rem" m="5rem 0" p="5rem">
-    <Container size="120rem">
-      <Group position="apart" pb="5.6rem" align="center" spacing="5rem">
-        <Menus />
-        <Creator />
-        <ServiceArea />
-      </Group>
-      <Divider size="xs" pb="3rem" />
-      <Group position="apart" pt="2rem">
-        <BusinessTitle />
-        <Text color="dimmed" size="md">
-          © 2023 FENB. All rights reserved.
-        </Text>
-      </Group>
-    </Container>
-  </MantineFooter>
-);
 
 export default Footer;

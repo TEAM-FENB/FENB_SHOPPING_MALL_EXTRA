@@ -2,7 +2,7 @@ import { useMantineColorScheme, Stack, Group, Button, Modal, Image, Text } from 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDisclosure } from '@mantine/hooks';
 import { PATH } from '../../constants';
-import { SadIcon } from '..';
+import { SadIcon } from '../common';
 
 const CartButton = ({
   currentProduct,
@@ -39,9 +39,9 @@ const CartButton = ({
   return (
     <>
       {isSizeSelected && (
-        <Modal.Root opened={opened} size="50rem" yOffset="0" sx={{ fontSize: '1.6rem' }} onClose={close}>
+        <Modal.Root opened={opened} size="50rem" yOffset="0" fz="1.6rem" onClose={close}>
           <Modal.Overlay />
-          <Modal.Content sx={{ padding: '1.5rem' }}>
+          <Modal.Content p="1.5rem">
             {hasStock ? (
               <>
                 <Modal.Header>
@@ -51,10 +51,10 @@ const CartButton = ({
                   <Modal.CloseButton size="1.6rem" />
                 </Modal.Header>
                 <Modal.Body>
-                  <Stack sx={{ paddingTop: '1rem' }}>
+                  <Stack pt="1rem">
                     <Group position="apart" align="flex-start" noWrap="nowrap">
                       <Image src={imgURL} width="15rem" />
-                      <Stack w="30rem" sx={{ paddingLeft: '1.2rem' }}>
+                      <Stack w="30rem" pl="1.2rem">
                         <Text fw="600">{name}</Text>
                         <Text fz="1.4rem" fw="500" color="dimmed">
                           {brand.kr}

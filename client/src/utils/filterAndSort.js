@@ -1,4 +1,6 @@
-import { PRICES, SIZES, COLORS, GENDER, BRANDS } from '../constants';
+import { FILTER } from '../constants';
+
+const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
 
 const sortProducts = (products, sortOption) => {
   switch (sortOption) {

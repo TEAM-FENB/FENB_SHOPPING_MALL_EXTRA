@@ -5,9 +5,10 @@ import { Container, Flex } from '@mantine/core';
 import { FiltersContainer, Header, ResultProducts } from '../components/Category';
 import { filteredProductsQuery } from '../api/query';
 import { useMediaQuery } from '../hooks';
-import { filteredAndSortedProducts } from '../utils';
-import { getDecodeSearch } from '../utils/location';
-import { BRANDS, COLORS, GENDER, MEDIAQUERY_WIDTH, PRICES, SIZES } from '../constants';
+import { filteredAndSortedProducts, getDecodeSearch } from '../utils';
+import { MEDIAQUERY_WIDTH, FILTER } from '../constants';
+
+const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
 
 const INITIAL_FILTERS = {
   priceFilters: Array.from({ length: PRICES.length }, () => false),

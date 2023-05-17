@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Container, Space, Title, Text, useMantineColorScheme } from '@mantine/core';
 import { FaAngleDoubleRight } from 'react-icons/fa';
-import { SadIcon } from './index';
-import { PATH } from '../constants';
+import { SadIcon } from '.';
+import { PATH } from '../../constants';
 
 const NoProduct = ({ pageName }) => {
   const { colorScheme } = useMantineColorScheme();

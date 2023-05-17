@@ -14,19 +14,22 @@ import {
 } from '@mantine/core';
 import { BiTrash } from 'react-icons/bi';
 import { favoritesQuery } from '../api/query';
-import { useToggleWishItemMutation } from '../hooks/wishList';
-import { PATH } from '../constants';
-import { NoProduct } from '../components';
+import { useToggleWishItemMutation } from '../hooks/mutation';
+import { MEDIAQUERY_WIDTH, PATH } from '../constants';
+import { NoProduct } from '../components/common';
+import { useMediaQuery } from '../hooks';
 
 const WishList = () => {
   const { data: favorites } = useQuery(favoritesQuery());
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
-  const { mutate } = useToggleWishItemMutation();
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
+
+  const { mutate: removeWishItem } = useToggleWishItemMutation();
 
   const handleRemoveWishItemClick = id => {
-    mutate({ id, isFavorite: true });
+    removeWishItem({ id, isFavorite: true });
   };
 
   const handleClickProduct = id => {
@@ -39,19 +42,9 @@ const WishList = () => {
       {!favorites.length ? (
         <NoProduct pageName={'관심상품 목록'} />
       ) : (
-        <Flex p="3.5rem 0 0 1rem" align="center" maw="120rem" m="auto" justify="" gap="xl" wrap="wrap">
+        <Flex p="3.5rem 0 0 1rem" align="center" maw="120rem" m="auto" gap="xl" wrap="wrap">
           {favorites.map(({ id, imgURL, name, brand, price, feature }) => (
-            <Card
-              key={id}
-              padding="lg"
-              maw="35rem"
-              fz="1.6rem"
-              withBorder
-              sx={{
-                '@media (max-width: 768px)': {
-                  width: '20rem',
-                },
-              }}>
+            <Card key={id} padding="lg" maw={matches ? '35rem' : '20rem'} fz="1.6rem" withBorder>
               <Card.Section>
                 <Image src={imgURL} alt="product" sx={{ cursor: 'pointer' }} onClick={() => handleClickProduct(id)} />
               </Card.Section>

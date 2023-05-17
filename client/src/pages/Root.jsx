@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
-import { NavigationBar, Footer, SwitchingPageScrollToTop } from '../components';
-import useTheme from '../hooks/darkmode/useTheme';
-import ScrollTop from '../components/ScrollTop';
+import { Footer, ScrollTop, SwitchingPageScrollToTop } from '../components/common';
+import { NavigationBar } from '../components/NavigationBar';
+import { useTheme } from '../hooks';
 
 const Root = () => {
   const { colorScheme, toggleTheme } = useTheme();
+
   return (
     <>
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleTheme}>

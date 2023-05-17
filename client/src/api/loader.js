@@ -1,5 +1,5 @@
 import { queryClient } from '../components/GlobalProvider';
-import { getDecodeSearch } from '../utils/location';
+import { getDecodeSearch } from '../utils';
 import {
   cartsQuery,
   couponsQuery,

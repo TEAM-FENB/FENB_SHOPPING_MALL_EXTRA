@@ -1,8 +1,21 @@
 import { Container, Select, Flex, useMantineColorScheme } from '@mantine/core';
-import { CATEGORIES } from '../../constants';
+import { useCategory } from '../../hooks/products';
+
+const SORT_OPTIONS = [
+  { value: 'favorite', label: '추천순' },
+  { value: 'new', label: '최신순' },
+  { value: 'high', label: '높은 가격순' },
+  { value: 'low', label: '낮은 가격순' },
+];
 
 const Header = ({ sortOption, searchValue, productCount, handleSelectSortOption }) => {
   const { colorScheme } = useMantineColorScheme();
+  const categories = useCategory();
+
+  const filteredCategories = categories.reduce((acc, cur) => {
+    acc[cur.en] = cur.kr;
+    return acc;
+  }, {});
 
   return (
     <Flex
@@ -11,20 +24,16 @@ const Header = ({ sortOption, searchValue, productCount, handleSelectSortOption 
       pos="sticky"
       top="0"
       bg={colorScheme === 'dark' ? 'dark.7' : 'white'}
-      sx={{ zIndex: 99 }}>
+      sx={{ zIndex: 9999 }}>
       <Container m="0" p="1.5rem 1rem" fz="2.4rem" fw="600">
-        {CATEGORIES[searchValue] ? `${CATEGORIES[searchValue]}` : `${searchValue}`} {`(${productCount})`}
+        {filteredCategories[searchValue] ? `${filteredCategories[searchValue]}` : `${searchValue}`}{' '}
+        {`(${productCount})`}
       </Container>
       <Select
         size="xl"
         maxDropdownHeight={500}
         value={sortOption}
-        data={[
-          { value: 'favorite', label: '추천순' },
-          { value: 'new', label: '최신순' },
-          { value: 'high', label: '높은 가격순' },
-          { value: 'low', label: '낮은 가격순' },
-        ]}
+        data={SORT_OPTIONS}
         styles={theme => ({
           input: {
             fontSize: '1.5rem',

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Flex, Navbar, Tabs, useMantineColorScheme } from '@mantine/core';
-import useCategory from '../../hooks/products/useCategory';
-import { getDecodeSearch } from '../../utils/location';
+import { useCategory } from '../../hooks/products';
+import { getDecodeSearch } from '../../utils';
 import { PATH } from '../../constants';
 
 const Category = () => {
-  const { categories } = useCategory();
+  const categories = useCategory();
   const [activeTab, setActiveTab] = useState('');
   const { search: rawSearch } = useLocation();
   const { searchValue } = getDecodeSearch(rawSearch);

@@ -1,37 +1,40 @@
 import { Drawer, Button, Container } from '@mantine/core';
-import styled from '@emotion/styled';
 import { BiFilter } from 'react-icons/bi';
 import { useDisclosure } from '@mantine/hooks';
 import { Filters } from '.';
 
-const ScrollFiltersArea = styled(Container)`
-  ::-webkit-scrollbar {
-    width: 0.5rem;
-  }
+// const ScrollFiltersArea = styled(Container)`
+//   ::-webkit-scrollbar {
+//     width: 0.5rem;
+//   }
 
-  :hover {
-    ::-webkit-scrollbar-thumb {
-      border-radius: 5rem;
-      background-color: #7b7676;
-    }
-  }
-`;
+//   :hover {
+//     ::-webkit-scrollbar-thumb {
+//       border-radius: 5rem;
+//       background-color: #7b7676;
+//     }
+//   }
+// `;
 
 const FiltersContainer = ({ type, filters, handleResetFilters, handleCheckFilters }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return type === 'larger' ? (
-    <ScrollFiltersArea
+    <Container
       m="0"
+      mr="2rem"
       miw="26rem"
       maw="26rem"
       h="65rem"
       pos="sticky"
       top="6.8rem"
-      sx={{ overflowY: 'auto' }}
-      mr="2rem">
+      sx={{
+        overflowY: 'auto',
+        '::-webkit-scrollbar': { width: '0.5rem' },
+        ':hover': { '::-webkit-scrollbar-thumb': { borderRadius: '5rem', backgroundColor: '#7b7676' } },
+      }}>
       <Filters filters={filters} handleResetFilters={handleResetFilters} handleCheckFilters={handleCheckFilters} />
-    </ScrollFiltersArea>
+    </Container>
   ) : (
     <>
       <Drawer.Root opened={opened} onClose={close}>
