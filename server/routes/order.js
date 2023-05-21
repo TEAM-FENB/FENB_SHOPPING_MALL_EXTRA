@@ -83,8 +83,10 @@ router.get('/history', authCheck, (req, res) => {
   const { email } = req.locals;
   const history = getPurchasesHistory(email);
 
-  console.log('history : ', history);
-  res.send({ ...history[0], products: products.map(product => ({ ...product, color: COLORS[color] })) });
+  res.send({
+    ...history[0],
+    products: history[0].products.map(product => ({ ...product, color: COLORS[product.color] })),
+  });
 });
 
 module.exports = router;
