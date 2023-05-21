@@ -1,9 +1,11 @@
 import { Loader } from '@mantine/core';
+
+import { useObserver } from '../../hooks';
 import { usePageProducts } from '../../hooks/products';
-import useObserver from '../../hooks/useObserver';
 
 const Loading = () => {
   const { fetchNextPage, hasNextPage } = usePageProducts();
+
   const observerRef = useObserver(fetchNextPage);
 
   return (
