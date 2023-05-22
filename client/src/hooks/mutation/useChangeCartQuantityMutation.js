@@ -1,6 +1,6 @@
-import { changeCartQuantity } from '../../api/fetch';
-import { QUERY_KEY } from '../../constants';
-import useGenericMutation from './useGenericMutation';
+import { changeCartQuantity } from 'api/fetch';
+import { useGenericMutation } from 'hooks/mutation';
+import { QUERY_KEY } from 'constants';
 
 const useChangeCartQuantityMutation = () =>
   useGenericMutation({
