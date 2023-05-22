@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { PAYMENT_METHODS } from '../../constants';
+
+import { PAYMENT_METHODS } from 'constants';
 
 const useOrderInfo = (defaultAddress, changeDiscount) => {
   const addressId = useRef(defaultAddress.id);
