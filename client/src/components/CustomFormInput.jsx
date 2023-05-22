@@ -14,10 +14,6 @@ const CustomFormInput = styled(TextInput)`
   .mantine-InputWrapper-description {
     font-size: 1.4rem;
   }
-
-  @media (max-width: 768px) {
-    width: 100vw;
-  }
 `;
 
 export default CustomFormInput;

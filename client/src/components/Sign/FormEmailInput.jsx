@@ -1,8 +1,10 @@
 import { useState } from 'react';
+
 import axios from 'axios';
+
 import CustomFormInput from '../CustomFormInput';
 
-const FormEmailInput = ({ inputType, id, name, placeholder, withAsterisk = false, register, formState }) => {
+const FormEmailInput = ({ type, id, label, placeholder, withAsterisk = false, register, formState }) => {
   const [duplicateEmailError, setDuplicateEmailError] = useState('');
 
   const checkEmailDuplicate = async emailAddress => {
@@ -23,14 +25,14 @@ const FormEmailInput = ({ inputType, id, name, placeholder, withAsterisk = false
 
   return (
     <CustomFormInput
-      type={inputType}
-      label={name}
-      placeholder={placeholder}
-      withAsterisk={withAsterisk}
       autoComplete="off"
+      label={label}
+      placeholder={placeholder}
+      type={type}
+      withAsterisk={withAsterisk}
       {...register(id)}
-      onBlur={e => checkEmailDuplicate(e.target.value)}
       error={formState?.errors[id]?.message || duplicateEmailError}
+      onBlur={e => checkEmailDuplicate(e.target.value)}
     />
   );
 };

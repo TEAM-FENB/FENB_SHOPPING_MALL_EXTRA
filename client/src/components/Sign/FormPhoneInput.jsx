@@ -1,9 +1,9 @@
 import CustomFormInput from '../CustomFormInput';
 
 const FormPhoneInput = ({
-  inputType,
+  type,
   id,
-  name,
+  label,
   placeholder,
   withAsterisk = false,
   setValue,
@@ -21,11 +21,11 @@ const FormPhoneInput = ({
 
   return (
     <CustomFormInput
-      type={inputType}
-      label={name}
-      placeholder={placeholder}
-      withAsterisk={withAsterisk}
       autoComplete="off"
+      label={label}
+      placeholder={placeholder}
+      type={type}
+      withAsterisk={withAsterisk}
       {...register(id)}
       error={formState?.errors[id]?.message}
       onBlur={e => addHypen(e.target.value)}

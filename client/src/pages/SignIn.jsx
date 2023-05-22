@@ -1,53 +1,50 @@
-import axios from 'axios';
-import { useMantineColorScheme, Image, Stack, Center, Title } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSetRecoilState } from 'recoil';
-import { CustomButton, CustomLink, FormInput } from '../components';
-import { signinSchema } from '../schema';
-import { userState } from '../recoil/atoms';
+
+import { Image, Stack, Center, Title, useMantineTheme } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+
+import { CustomButton, CustomLink, FormInput } from 'components';
+import { signIn } from 'api/fetch';
+import { signinSchema } from 'schema';
+import { PATH } from 'constants';
+import { userState } from 'recoil/atoms';
 
 const SignIn = () => {
-  const { colorScheme } = useMantineColorScheme();
-  const setUser = useSetRecoilState(userState);
+  const { colorScheme, colors } = useMantineTheme();
 
   const navigate = useNavigate();
   const { state } = useLocation();
-
+  const setUser = useSetRecoilState(userState);
   const { handleSubmit, register, formState } = useForm({
     resolver: zodResolver(signinSchema),
   });
 
-  const handleSignIn = async data => {
+  const handleSignInSubmit = async ({ email, password }) => {
     try {
-      const response = await axios.post('/api/auth/signin', {
-        email: data.email,
-        password: data.password,
+      const data = await signIn({
+        email,
+        password,
       });
 
-      setUser(response.data);
+      setUser(data);
+      navigate(state);
 
       notifications.show({
         color: 'blue',
         autoClose: 2000,
         title: '알림',
-        message: `${response.data.username}님 환영합니다.`,
+        message: `${data.username}님 환영합니다.`,
         sx: { div: { fontSize: '1.5rem' } },
       });
-
-      if (state) {
-        navigate(state);
-      } else {
-        navigate('/');
-      }
     } catch (error) {
       notifications.show({
         color: 'red',
         autoClose: 2000,
         title: '알림',
-        message: error.response.data.message ? error.response.data.message : error.message,
+        message: '등록되지 않은 사용자입니다.',
         sx: { div: { fontSize: '1.5rem' } },
       });
     }
@@ -56,70 +53,44 @@ const SignIn = () => {
   return (
     <Stack
       align="center"
-      h="75.5rem"
+      mih="46rem"
       sx={{
-        marginLeft: '3rem',
+        fontSize: '1.6rem',
         input: {
           padding: '0',
           fontSize: '1.6rem',
           border: 'none',
-          borderBottomStyle: 'solid',
-          borderBottomWidth: '0.07rem',
-          borderBottomColor: '#ced4da',
+          borderBottom: `1px solid ${colors.gray[6]}`,
         },
         label: {
           fontSize: '1.6rem',
         },
-        div: {
-          padding: '0',
-          fontSize: '1.6rem',
-        },
       }}>
       <Title order={2}>
-        {colorScheme === 'dark' ? (
-          <Image
-            width="40rem"
-            mb="2rem"
-            maw="60rem"
-            mx="auto"
-            src="images/logo/darkmodeLoginPageLogo.svg"
-            alt="darkmodeLoginPageLogoImage"
-          />
-        ) : (
-          <Image
-            width="40rem"
-            mb="2rem"
-            maw="60rem"
-            mx="auto"
-            src="images/logo/loginPageLogo.svg"
-            alt="loginPageLogoImage"
-          />
-        )}
+        <Image
+          alt="login logo"
+          src={`images/logo/${colorScheme === 'dark' ? 'darkLogin' : 'login'}.svg`}
+          width="40rem"
+        />
       </Title>
-      <form noValidate onSubmit={handleSubmit(handleSignIn)}>
+      <form noValidate onSubmit={handleSubmit(handleSignInSubmit)}>
         <FormInput
-          inputType="text"
+          formState={formState}
           id="email"
-          name="이메일 주소"
+          label="이메일 주소"
           placeholder="fenb@fenb.com"
           register={register}
-          formState={formState}
+          type="text"
         />
-        <FormInput inputType="password" id="password" name="비밀번호" register={register} formState={formState} />
-        <CustomButton
-          type="submit"
-          w="40rem"
-          color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
-          sx={{
-            '@media (max-width: 765px)': {
-              width: '100vw',
-            },
-          }}>
+        <FormInput formState={formState} id="password" label="비밀번호" register={register} type="password" />
+        <CustomButton color={colorScheme === 'dark' ? 'gray.6' : 'dark'} type="submit" w="40rem">
           로그인
         </CustomButton>
-        <Center mt="2rem">
+        <Center pt="2rem">
           회원이 아니신가요?
-          <CustomLink to={'/signup'}>회원가입</CustomLink>
+          <CustomLink state={state} to={PATH.SIGNUP}>
+            회원가입
+          </CustomLink>
         </Center>
       </form>
     </Stack>

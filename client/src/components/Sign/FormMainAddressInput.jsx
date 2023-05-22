@@ -1,12 +1,12 @@
 import CustomFormInput from '../CustomFormInput';
 
-const FormMainAddressInput = ({ inputType, id, name, placeholder, withAsterisk = false, register, formState }) => (
+const FormMainAddressInput = ({ type, id, label, placeholder, withAsterisk = false, register, formState }) => (
   <CustomFormInput
-    type={inputType}
-    label={name}
-    placeholder={placeholder}
-    withAsterisk={withAsterisk}
     autoComplete="off"
+    label={label}
+    placeholder={placeholder}
+    type={type}
+    withAsterisk={withAsterisk}
     {...register(id)}
     error={formState?.errors[id]?.message}
     readOnly

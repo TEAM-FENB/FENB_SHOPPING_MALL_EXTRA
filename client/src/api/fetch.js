@@ -25,6 +25,7 @@ export const fetchSlides = async () => {
   return data;
 };
 
+// fetchAddress 라는 게 있으면 좋겠다. fetchUser에서 address를 가져오는 용도로 사용하기 때문
 export const fetchUser = async () => {
   const { data } = await axios.get('api/users/me');
   return data;
@@ -50,12 +51,22 @@ export const fetchFavorites = async () => {
   return data;
 };
 
+// signout?
 export const requestSignout = async () => {
-  await axios.get('api/auth/signout');
+  await axios.get('/api/auth/signout');
 };
 
 export const checkCoupon = async id => {
   const { data } = await axios.get(`/api/order/coupons/${id}`);
+  return data;
+};
+
+export const signIn = async ({ email, password }) => {
+  const { data } = await axios.post('api/auth/signin', {
+    email,
+    password,
+  });
+
   return data;
 };
 
@@ -64,6 +75,7 @@ export const addCoupon = async id => {
   return data;
 };
 
+// order?
 export const postOrder = async paymentInfo => {
   await axios.post('/api/order/pay', { ...paymentInfo });
 };
@@ -81,10 +93,12 @@ export const addCart = async ({ id, selectedSize }) => {
   await axios.post(`/api/carts/me/${id}`, { selectedSize });
 };
 
+// updateCartQuantity?
 export const changeCartQuantity = async ({ id, selectedSize, quantity }) => {
   await axios.patch(`/api/carts/me/${id}`, { selectedSize, quantity });
 };
 
+// updateDefaultAddress?
 export const changeDefaultAddress = async id => {
   await axios.patch(`/api/users/me/address/default/${id}`);
 };

@@ -1,9 +1,11 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useMantineColorScheme, Stack, Title, Center } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useMantineColorScheme, Stack, Title, Center } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+
 import {
   FormInput,
   FormMainAddressInput,
@@ -13,9 +15,11 @@ import {
   CustomButton,
   CustomLink,
 } from '../components';
+import { PATH } from '../constants';
 import { signupSchema } from '../schema';
 
 const SignUp = () => {
+  const { state } = useLocation();
   const { colorScheme } = useMantineColorScheme();
 
   const navigate = useNavigate();
@@ -44,7 +48,7 @@ const SignUp = () => {
         sx: { div: { fontSize: '1.5rem' } },
       });
 
-      navigate('/signin');
+      navigate(PATH.SIGNIN);
     } catch (error) {
       notifications.show({
         color: 'red',
@@ -78,86 +82,86 @@ const SignUp = () => {
           fontSize: '1.6rem',
         },
       }}>
-      <Title order={2} mt="6rem" mb="3rem" fz="3.2rem">
+      <Title fz="3.2rem" mb="3rem" mt="6rem" order={2}>
         회원 가입
       </Title>
       <form noValidate onSubmit={handleSubmit(handleSignUp)}>
         <FormEmailInput
-          inputType="text"
+          formState={formState}
           id="email"
-          name="이메일 주소"
+          label="이메일 주소"
           placeholder="fenb@fenb.com"
           register={register}
-          formState={formState}
+          type="text"
           withAsterisk
         />
         <FormInput
-          inputType="text"
+          formState={formState}
           id="name"
-          name="이름"
+          label="이름"
           placeholder="김펜비"
           register={register}
-          formState={formState}
+          type="text"
           withAsterisk
         />
         <FormPhoneInput
-          inputType="tel"
+          formState={formState}
           id="phone"
-          name="휴대전화번호"
+          label="휴대전화번호"
           placeholder="'-' 없이 입력"
-          trigger={trigger}
+          register={register}
           setValue={setValue}
-          register={register}
-          formState={formState}
+          trigger={trigger}
+          type="tel"
           withAsterisk
         />
         <FormInput
-          inputType="password"
+          formState={formState}
           id="password"
-          name="비밀번호"
+          label="비밀번호"
           placeholder="영문 또는 숫자를 6~12자 입력하세요."
           register={register}
-          formState={formState}
+          type="password"
           withAsterisk
         />
         <FormInput
-          inputType="password"
+          formState={formState}
           id="confirmPassword"
-          name="비밀번호 확인"
+          label="비밀번호 확인"
           placeholder="영문 또는 숫자를 6~12자 입력하세요."
           register={register}
-          formState={formState}
+          type="password"
           withAsterisk
         />
         <FormZoneCodeInput
-          inputType="text"
-          id="postcode"
-          name="우편번호"
-          placeholder="주소찾기 버튼을 클릭주세요."
-          setValue={setValue}
-          register={register}
           formState={formState}
+          id="postcode"
+          label="우편번호"
+          placeholder="주소찾기 버튼을 클릭주세요."
+          register={register}
+          setValue={setValue}
+          type="text"
         />
         <FormMainAddressInput
-          inputType="text"
+          formState={formState}
           id="mainAddress"
-          name="주소"
+          label="주소"
           placeholder="주소를 선택하시면 자동으로 입력됩니다."
           register={register}
-          formState={formState}
+          type="text"
         />
         <FormInput
-          inputType="text"
+          formState={formState}
           id="detailAddress"
-          name="상세주소"
+          label="상세주소"
           placeholder="상세 주소를 입력하세요."
           register={register}
-          formState={formState}
+          type="text"
         />
         <CustomButton
+          color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
           type="submit"
           w="40rem"
-          color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
           sx={{
             '@media (max-width: 765px)': {
               width: '100vw',
@@ -167,7 +171,9 @@ const SignUp = () => {
         </CustomButton>
         <Center mt="2rem">
           회원이신가요?
-          <CustomLink to={'/signin'}>로그인</CustomLink>
+          <CustomLink state={state} to={PATH.SIGNIN}>
+            로그인
+          </CustomLink>
         </Center>
       </form>
     </Stack>

@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Center, Stack } from '@mantine/core';
-import { addAddressSchema } from '../../schema';
+
 import { addAddress } from '../../api/fetch';
 import { INIT_FIELD } from '../../constants';
+import { addAddressSchema } from '../../schema';
+import CustomButton from '../CustomButton';
 import FormInput from '../Sign/FormInput';
+import FormMainAddressInput from '../Sign/FormMainAddressInput';
 import FormPhoneInput from '../Sign/FormPhoneInput';
 import FormZoneCodeInput from '../Sign/FormZoneCodeInput';
-import FormMainAddressInput from '../Sign/FormMainAddressInput';
-import CustomButton from '../CustomButton';
 
 const InputAddress = ({ setFiled, changeSelectedAddress }) => {
   const { handleSubmit, register, formState, trigger, setValue } = useForm({
@@ -32,8 +34,8 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
 
   return (
     <Stack
-      w="100%"
       align="center"
+      w="100%"
       sx={{
         input: {
           fontSize: '1.6rem',
@@ -52,57 +54,57 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
       }}>
       <form noValidate onSubmit={handleSubmit(handleAddAddress)}>
         <FormInput
-          inputType="text"
-          withAsterisk
+          formState={formState}
           id="name"
-          name="이름"
+          label="이름"
           placeholder="김펜비"
           register={register}
-          formState={formState}
+          type="text"
+          withAsterisk
         />
         <FormPhoneInput
-          inputType="tel"
-          withAsterisk
-          id="phone"
-          name="휴대전화번호"
-          placeholder="'-' 없이 입력"
-          trigger={trigger}
-          setValue={setValue}
-          register={register}
           formState={formState}
+          id="phone"
+          label="휴대전화번호"
+          placeholder="'-' 없이 입력"
+          register={register}
+          setValue={setValue}
+          trigger={trigger}
+          type="tel"
+          withAsterisk
         />
         <FormZoneCodeInput
-          inputType="text"
-          withAsterisk
-          id="postcode"
-          name="우편번호"
-          placeholder="주소찾기 버튼을 클릭주세요"
-          setValue={setValue}
-          register={register}
           formState={formState}
+          id="postcode"
+          label="우편번호"
+          placeholder="주소찾기 버튼을 클릭주세요"
+          register={register}
+          setValue={setValue}
+          type="text"
+          withAsterisk
         />
         <FormMainAddressInput
-          inputType="text"
-          withAsterisk
+          formState={formState}
           id="mainAddress"
-          name="주소"
+          label="주소"
           placeholder="주소를 선택하시면 자동으로 입력됩니다."
           register={register}
-          formState={formState}
+          type="text"
+          withAsterisk
         />
         <FormInput
-          inputType="text"
+          formState={formState}
           id="detailAddress"
-          name="상세주소"
+          label="상세주소"
           placeholder="상세 주소를 입력하세요."
           register={register}
-          formState={formState}
+          type="text"
         />
         <Center>
           <CustomButton
-            variant="outline"
-            type="submit"
             color="gray"
+            type="submit"
+            variant="outline"
             sx={{
               width: '20rem',
               ':hover': { backgroundColor: 'transparent', borderColor: '#228be6', color: '#228be6' },
