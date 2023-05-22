@@ -1,21 +1,28 @@
 import { forwardRef, useEffect, useState } from 'react';
-import { BiSearch } from 'react-icons/bi';
+
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Autocomplete, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
-import { useSearchProducts } from '../../hooks/products';
-import { getDecodeSearch } from '../../utils';
-import { PATH } from '../../constants';
+import { BiSearch } from 'react-icons/bi';
+
+import { useSearchProducts } from 'hooks/products';
+import { getDecodeSearch } from 'utils';
+import { PATH } from 'constants';
 
 const SearchBar = () => {
-  const searchProducts = useSearchProducts();
-  const [searchInput, setSearchInput] = useState('');
-  const [debounced] = useDebouncedValue(searchInput, 200);
-  const { search: rawSearch, pathname } = useLocation();
   const navigate = useNavigate();
+  const { search: rawSearch, pathname } = useLocation();
+
+  const [debounced] = useDebouncedValue(searchInput, 200);
+
+  const searchProducts = useSearchProducts();
+
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
+
     document.activeElement.blur();
 
     navigate(`${PATH.CATEGORY}?search=${searchInput}`);
@@ -29,14 +36,14 @@ const SearchBar = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Autocomplete
-        size="xl"
-        icon={<BiSearch size="2rem" />}
-        placeholder="상품 검색"
         data={searchProducts}
-        radius="xl"
+        icon={<BiSearch size="2rem" />}
         itemComponent={AutoCompleteItem}
+        nothingFound={<Text>검색결과가 없습니다.</Text>}
+        placeholder="상품 검색"
+        radius="xl"
+        size="xl"
         value={searchInput}
-        onChange={setSearchInput}
         filter={(_, item) =>
           item.value.toLowerCase().includes(debounced.toLowerCase().trim()) ||
           item.brand.en.toLowerCase().includes(debounced.toLowerCase().trim()) ||
@@ -44,7 +51,7 @@ const SearchBar = () => {
           item.category.kr.toLowerCase().includes(debounced.toLowerCase().trim()) ||
           item.category.en.toLowerCase().includes(debounced.toLowerCase().trim())
         }
-        nothingFound={<Text>검색결과가 없습니다.</Text>}
+        onChange={setSearchInput}
       />
     </form>
   );
@@ -59,7 +66,7 @@ const AutoCompleteItem = forwardRef(({ value, id, onMouseDown, ...rest }, ref) =
   };
 
   return (
-    <Text ref={ref} onMouseDown={handleMouseDown} value={value} {...rest}>
+    <Text ref={ref} value={value} onMouseDown={handleMouseDown} {...rest}>
       {value}
     </Text>
   );

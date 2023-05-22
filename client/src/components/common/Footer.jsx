@@ -10,22 +10,23 @@ import {
   Button,
   Divider,
   Anchor,
+  useMantineTheme,
 } from '@mantine/core';
 import { BsGithub } from 'react-icons/bs';
 
-const creators = [
+const CREATORS = [
   { name: '김경우', role: '프론트엔드 개발', githubURL: 'https://github.com/KimKyungWoo94', mbti: 'ISTP' },
   { name: '김경재', role: '프론트엔드 개발', githubURL: 'https://github.com/GitHub-KJKim', mbti: 'ISFP' },
   { name: '이동규', role: '프론트엔드 개발', githubURL: 'https://github.com/tenenger7125', mbti: 'INFJ' },
   { name: '최수민', role: '프론트엔드 개발', githubURL: 'https://github.com/sumin9918', mbti: 'INTJ' },
 ];
 
-const menus = [
+const MENUS = [
   { title: '이용안내', contents: ['검수기준', '이용정책', '페널티 정책', '커뮤니티 가이드라인'] },
   { title: '고객지원', contents: ['공지사항', '서비스 소개', '쇼룸 안내', '판매자 방문접수'] },
 ];
 
-const services = [
+const SERVICES = [
   {
     title: '고객센터',
     phone: '1588-7813',
@@ -34,33 +35,37 @@ const services = [
   },
 ];
 
-const Footer = () => (
-  <MantineFooter sx={{ borderTop: '1px solid #ced4da' }} fz="1.3rem" m="5rem 0" p="5rem">
-    <Container size="120rem">
-      <Group position="apart" pb="5.6rem" align="center" spacing="5rem">
-        <Menus />
-        <Creator />
-        <ServiceArea />
-      </Group>
-      <Divider size="xs" pb="3rem" />
-      <Group position="apart" pt="2rem">
-        <BusinessTitle />
-        <Text color="dimmed" size="md">
-          © 2023 FENB. All rights reserved.
-        </Text>
-      </Group>
-    </Container>
-  </MantineFooter>
-);
+const Footer = () => {
+  const theme = useMantineTheme();
+
+  return (
+    <MantineFooter fz="1.3rem" m="5rem 0" p="5rem" sx={{ borderTop: `1px solid ${theme.colors.gray[4]}` }}>
+      <Container size="120rem">
+        <Group align="center" pb="5.6rem" position="apart" spacing="5rem">
+          <Menus />
+          <Creator />
+          <ServiceArea />
+        </Group>
+        <Divider pb="3rem" size="xs" />
+        <Group position="apart" pt="2rem">
+          <BusinessTitle />
+          <Text color="dimmed" size="md">
+            © 2023 FENB. All rights reserved.
+          </Text>
+        </Group>
+      </Container>
+    </MantineFooter>
+  );
+};
 
 const Menus = () => {
   const { colorScheme } = useMantineColorScheme();
 
   return (
     <Group>
-      {menus.map(({ title, contents }) => (
-        <Stack key={title} w="16rem" spacing="xs">
-          <Text fz="1.6rem" fw="bold">
+      {MENUS.map(({ title, contents }) => (
+        <Stack key={title} spacing="xs" w="16rem">
+          <Text fw="bold" fz="1.6rem">
             {title}
           </Text>
           {contents.map(content => (
@@ -79,13 +84,13 @@ const Creator = () => {
 
   return (
     <Stack>
-      {creators.map(({ name, role, githubURL, mbti }) => (
+      {CREATORS.map(({ name, role, githubURL, mbti }) => (
         <Flex key={name} gap="md" justify="flex-start">
           <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{name}</Text>
           <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{role}</Text>
           <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{mbti}</Text>
           <Tooltip label="깃허브">
-            <Anchor href={githubURL} target="_blank" color="dark">
+            <Anchor color="dark" href={githubURL} target="_blank">
               <BsGithub />
             </Anchor>
           </Tooltip>
@@ -100,14 +105,14 @@ const ServiceArea = () => {
 
   return (
     <Group w="28rem">
-      {services.map(({ title, phone, limitTime, notification }) => (
+      {SERVICES.map(({ title, phone, limitTime, notification }) => (
         <Stack key={title}>
-          <Text fz="1.6rem" fw="bold">
+          <Text fw="bold" fz="1.6rem">
             {title} {phone}
           </Text>
           <Text c={colorScheme === 'dark' ? 'gray.6' : 'rgba(34,34,34,.5)'}>{limitTime}</Text>
           <p>{notification}</p>
-          <Button w="11rem" color={colorScheme === 'dark' ? 'gray.6' : 'dark'}>
+          <Button color={colorScheme === 'dark' ? 'gray.6' : 'dark'} w="11rem">
             자주 묻는 질문
           </Button>
         </Stack>

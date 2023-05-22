@@ -8,10 +8,10 @@ const DarkMode = () => {
     <Tooltip label="다크모드">
       <ActionIcon
         size="xl"
-        onClick={toggleColorScheme}
-        sx={theme => ({
+        styles={theme => ({
           color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.dark[6],
-        })}>
+        })}
+        onClick={toggleColorScheme}>
         {colorScheme === 'dark' ? <TbSunFilled size="2.8rem" /> : <TbMoonFilled size="2.8rem" />}
       </ActionIcon>
     </Tooltip>

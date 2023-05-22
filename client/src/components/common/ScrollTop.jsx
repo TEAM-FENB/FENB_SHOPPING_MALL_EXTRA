@@ -5,16 +5,20 @@ import { SlArrowUpCircle } from 'react-icons/sl';
 const ScrollTop = ({ positionY }) => {
   const [scroll, scrollTo] = useWindowScroll();
 
+  const handleScrollTopClick = position => () => {
+    scrollTo(position);
+  };
+
   return (
     scroll.y >= positionY && (
       <ActionIcon
-        color="blue.6"
-        size="3rem"
-        pos="fixed"
         bottom="2rem"
+        color="blue.6"
+        pos="fixed"
         right="2rem"
+        size="3rem"
         sx={{ borderRadius: '50%', zIndex: 1 }}>
-        <SlArrowUpCircle onClick={() => scrollTo({ y: 0 })} size="5rem" />
+        <SlArrowUpCircle size="5rem" onClick={handleScrollTopClick({ y: 0 })} />
       </ActionIcon>
     )
   );

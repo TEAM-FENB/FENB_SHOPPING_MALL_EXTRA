@@ -1,14 +1,18 @@
-import { Container, Navbar } from '@mantine/core';
-import Category from './Category';
-import Main from './Main';
+import { Container, Navbar, useMantineTheme } from '@mantine/core';
 
-const NavigationBar = () => (
-  <Navbar height="auto" mb="4rem" position={{ top: 0, left: 0, borderBottom: '1px solid #ced4da' }}>
-    <Container w="100%" size="120rem" m="auto">
-      <Main />
-      <Category />
-    </Container>
-  </Navbar>
-);
+import { Category, Main } from 'components/NavigationBar';
+
+const NavigationBar = () => {
+  const theme = useMantineTheme();
+
+  return (
+    <Navbar height="auto" mb="4rem" position={{ top: 0, left: 0, borderBottom: `1px solid ${theme.colors.gray[4]}` }}>
+      <Container m="auto" size="120rem" w="100%">
+        <Main />
+        <Category />
+      </Container>
+    </Navbar>
+  );
+};
 
 export default NavigationBar;
