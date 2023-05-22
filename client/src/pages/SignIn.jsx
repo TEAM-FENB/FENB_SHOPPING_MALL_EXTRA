@@ -22,21 +22,18 @@ const SignIn = () => {
     resolver: zodResolver(signinSchema),
   });
 
-  const handleSignInSubmit = async ({ email, password }) => {
+  const handleSignInSubmit = async data => {
     try {
-      const data = await signIn({
-        email,
-        password,
-      });
+      const user = await signIn(data);
 
-      setUser(data);
+      setUser(user);
       navigate(state);
 
       notifications.show({
         color: 'blue',
         autoClose: 2000,
         title: '알림',
-        message: `${data.username}님 환영합니다.`,
+        message: `${user.username}님 환영합니다.`,
         sx: { div: { fontSize: '1.5rem' } },
       });
     } catch (error) {
