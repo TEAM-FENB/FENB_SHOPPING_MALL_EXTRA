@@ -14,11 +14,11 @@ const SearchBar = () => {
   const navigate = useNavigate();
   const { search: rawSearch, pathname } = useLocation();
 
-  const [debounced] = useDebouncedValue(searchInput, 200);
-
   const searchProducts = useSearchProducts();
 
   const [searchInput, setSearchInput] = useState('');
+
+  const [debounced] = useDebouncedValue(searchInput, 200);
 
   const handleSubmit = e => {
     e.preventDefault();

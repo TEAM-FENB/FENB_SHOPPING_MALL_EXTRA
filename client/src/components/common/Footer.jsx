@@ -10,7 +10,6 @@ import {
   Button,
   Divider,
   Anchor,
-  useMantineTheme,
 } from '@mantine/core';
 import { BsGithub } from 'react-icons/bs';
 
@@ -35,28 +34,24 @@ const SERVICES = [
   },
 ];
 
-const Footer = () => {
-  const theme = useMantineTheme();
-
-  return (
-    <MantineFooter fz="1.3rem" m="5rem 0" p="5rem" sx={{ borderTop: `1px solid ${theme.colors.gray[4]}` }}>
-      <Container size="120rem">
-        <Group align="center" pb="5.6rem" position="apart" spacing="5rem">
-          <Menus />
-          <Creator />
-          <ServiceArea />
-        </Group>
-        <Divider pb="3rem" size="xs" />
-        <Group position="apart" pt="2rem">
-          <BusinessTitle />
-          <Text color="dimmed" size="md">
-            © 2023 FENB. All rights reserved.
-          </Text>
-        </Group>
-      </Container>
-    </MantineFooter>
-  );
-};
+const Footer = () => (
+  <MantineFooter fz="1.3rem" m="5rem 0" p="5rem" sx={theme => ({ borderTop: `1px solid ${theme.colors.gray[4]}` })}>
+    <Container size="120rem">
+      <Group align="center" pb="5.6rem" position="apart" spacing="5rem">
+        <Menus />
+        <Creator />
+        <ServiceArea />
+      </Group>
+      <Divider pb="3rem" size="xs" />
+      <Group position="apart" pt="2rem">
+        <BusinessTitle />
+        <Text color="dimmed" size="md">
+          © 2023 FENB. All rights reserved.
+        </Text>
+      </Group>
+    </Container>
+  </MantineFooter>
+);
 
 const Menus = () => {
   const { colorScheme } = useMantineColorScheme();

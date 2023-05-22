@@ -1,4 +1,4 @@
-import { Stack, ColorSwatch, Text, SimpleGrid, Button, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { Stack, ColorSwatch, Text, SimpleGrid, Button, useMantineColorScheme } from '@mantine/core';
 
 const Info = ({
   currentProduct: { price, color, brand, stocks, feature },
@@ -7,7 +7,6 @@ const Info = ({
   isSizeSelected,
   setIsSizeSelected,
 }) => {
-  const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 
   const handleSizeClick = selectedSize => () => {
@@ -25,11 +24,10 @@ const Info = ({
         <Text fw="600">사이즈 선택</Text>
         <SimpleGrid
           cols={5}
-          sx={{
-            border: `${!isSizeSelected && '1px solid red'}`,
-            borderColor: theme.colors.red[6],
+          sx={theme => ({
+            border: `${!isSizeSelected && `1px solid ${theme.colors.red[6]}`}`,
             borderRadius: '0.4rem',
-          }}>
+          })}>
           {stocks.map(({ size, stock }) => (
             <Button
               key={size}
@@ -38,7 +36,6 @@ const Info = ({
               fz="1.6rem"
               h="4rem"
               radius="0.4rem"
-              selected={size === currentSelectedSize}
               variant="default"
               styles={theme => ({
                 root: {
@@ -46,7 +43,9 @@ const Info = ({
                     color: colorScheme === 'dark' && theme.colors.gray[6],
                   },
                 },
-                border: `1px solid ${theme.colors.blue[6]}`,
+              })}
+              sx={theme => ({
+                border: `${size === currentSelectedSize && `1px solid ${theme.colors.blue[6]}`}`,
               })}
               onClick={handleSizeClick(size)}>
               {size}

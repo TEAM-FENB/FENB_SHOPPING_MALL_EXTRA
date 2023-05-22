@@ -57,10 +57,9 @@ const Filters = ({
                 fz="1.6rem"
                 h="4rem"
                 radius="md"
-                selected={sizeFilters[i]}
                 variant="default"
-                styles={theme => ({
-                  border: `1px solid ${theme.colors.blue[6]}`,
+                sx={theme => ({
+                  border: `${sizeFilters[i] && `1px solid ${theme.colors.blue[6]}`}`,
                 })}
                 onClick={handleCheckFiltersClick({ size })}>
                 {size}
