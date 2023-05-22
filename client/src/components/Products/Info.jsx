@@ -1,33 +1,45 @@
-import { Stack, ColorSwatch, Text, SimpleGrid, useMantineColorScheme } from '@mantine/core';
-import styled from '@emotion/styled';
-import { SizeButton } from '..';
+import { Stack, ColorSwatch, Text, SimpleGrid, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 
-const SizeButtonContainer = styled(SimpleGrid)`
-  border: ${props => props.selected && '1px solid #F36B26'};
-  border-radius: 0.4rem;
-`;
+import { SizeButton } from 'components';
 
-const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeClick }) => {
+const Info = ({
+  currentProduct: { price, color, brand, stocks, feature },
+  currentSelectedSize,
+  setCurrentSelectedSize,
+  isSizeSelected,
+  setIsSizeSelected,
+}) => {
   const { colorScheme } = useMantineColorScheme();
-  const { price, color, brand, stocks, feature } = currentProduct;
+  const { colors } = useMantineTheme();
+
+  const handleSizeClick = selectedSize => () => {
+    setCurrentSelectedSize(selectedSize);
+    setIsSizeSelected(true);
+  };
 
   return (
     <>
-      <Text size="1.4rem" c={colorScheme === 'dark' ? 'gray.4' : 'gray.8'}>
+      <Text c={colorScheme === 'dark' ? 'gray.4' : 'gray.8'} size="1.4rem">
         {brand.kr} / {feature}
       </Text>
-      <Text fw={500} size="2rem" m="2rem 0">{`${price.toLocaleString()} 원`}</Text>
+      <Text fw={500} m="2rem 0" size="2rem">{`${price.toLocaleString()} 원`}</Text>
       <Stack>
         <Text fw="600">사이즈 선택</Text>
-        <SizeButtonContainer cols={5} selected={isSizeSelected === false}>
+        <SimpleGrid
+          cols={5}
+          sx={{
+            border: `${!isSizeSelected && '1px solid red'}`,
+            borderColor: colors.red[6],
+            borderRadius: '0.4rem',
+          }}>
           {stocks.map(({ size, stock }) => (
             <SizeButton
               key={size}
-              variant="default"
-              radius="0.4rem"
+              disabled={!stock}
               fw="normal"
-              disabled={stock === 0}
+              radius="0.4rem"
               selected={size === currentSelectedSize}
+              variant="default"
               styles={theme => ({
                 root: {
                   '&:disabled': {
@@ -35,19 +47,19 @@ const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeC
                   },
                 },
               })}
-              onClick={() => handleSizeClick(size)}>
+              onClick={handleSizeClick(size)}>
               {size}
             </SizeButton>
           ))}
-        </SizeButtonContainer>
-        {isSizeSelected === false ? (
-          <Text fw="500" color="red">
+        </SimpleGrid>
+        {!isSizeSelected && (
+          <Text color="red.6" fw="500">
             사이즈를 선택해주세요
           </Text>
-        ) : null}
-        <Stack align="center" w="5rem" spacing="xs" m="1.4rem 0">
+        )}
+        <Stack align="center" m="1.4rem 0" spacing="xs" w="5rem">
           <ColorSwatch color={color.color} size="2.5rem" />
-          <Text m="0" fz="1.4rem" fw="500">
+          <Text fw="500" fz="1.4rem" m="0">
             {color.kr}
           </Text>
         </Stack>
