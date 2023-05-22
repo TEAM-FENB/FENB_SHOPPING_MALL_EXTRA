@@ -1,5 +1,6 @@
 import { Container, Select, Flex, useMantineColorScheme } from '@mantine/core';
-import { useCategory } from '../../hooks/products';
+
+import { useCategory } from 'hooks/products';
 
 const SORT_OPTIONS = [
   { value: 'favorite', label: '추천순' },
@@ -8,8 +9,9 @@ const SORT_OPTIONS = [
   { value: 'low', label: '낮은 가격순' },
 ];
 
-const Header = ({ sortOption, searchValue, productCount, handleSelectSortOption }) => {
+const Header = ({ sortOption, searchValue, productCount, handleSelectSortOptionClick }) => {
   const { colorScheme } = useMantineColorScheme();
+
   const categories = useCategory();
 
   const filteredCategories = categories.reduce((acc, cur) => {
@@ -19,21 +21,21 @@ const Header = ({ sortOption, searchValue, productCount, handleSelectSortOption 
 
   return (
     <Flex
-      justify="space-between"
       align="center"
-      pos="sticky"
-      top="0"
       bg={colorScheme === 'dark' ? 'dark.7' : 'white'}
-      sx={{ zIndex: 9999 }}>
-      <Container m="0" p="1.5rem 1rem" fz="2.4rem" fw="600">
-        {filteredCategories[searchValue] ? `${filteredCategories[searchValue]}` : `${searchValue}`}{' '}
-        {`(${productCount})`}
+      justify="space-between"
+      pos="sticky"
+      sx={{ zIndex: 9999 }}
+      top="0">
+      <Container fw="600" fz="2.4rem" m="0" p="1.5rem 1rem">
+        {filteredCategories[searchValue] ? `${filteredCategories[searchValue]}` : `${searchValue}`}
+        {` (${productCount})`}
       </Container>
       <Select
-        size="xl"
-        maxDropdownHeight={500}
-        value={sortOption}
         data={SORT_OPTIONS}
+        maxDropdownHeight={500}
+        size="xl"
+        value={sortOption}
         styles={theme => ({
           input: {
             fontSize: '1.5rem',
@@ -50,7 +52,7 @@ const Header = ({ sortOption, searchValue, productCount, handleSelectSortOption 
             },
           },
         })}
-        onChange={e => handleSelectSortOption(e)}
+        onChange={handleSelectSortOptionClick}
       />
     </Flex>
   );

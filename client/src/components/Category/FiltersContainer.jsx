@@ -1,31 +1,24 @@
 import { Drawer, Button, Container } from '@mantine/core';
-import { BiFilter } from 'react-icons/bi';
 import { useDisclosure } from '@mantine/hooks';
+import { BiFilter } from 'react-icons/bi';
+
+import { useMediaQuery } from 'hooks';
+import { MEDIAQUERY_WIDTH } from 'constants';
+// .이 있는 경우는 경로를 어떻게 가져와야 하지?
 import { Filters } from '.';
 
-// const ScrollFiltersArea = styled(Container)`
-//   ::-webkit-scrollbar {
-//     width: 0.5rem;
-//   }
+const FiltersContainer = ({ filters, handleResetFiltersClick, handleCheckFiltersClick }) => {
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
 
-//   :hover {
-//     ::-webkit-scrollbar-thumb {
-//       border-radius: 5rem;
-//       background-color: #7b7676;
-//     }
-//   }
-// `;
-
-const FiltersContainer = ({ type, filters, handleResetFilters, handleCheckFilters }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
-  return type === 'larger' ? (
+  return matches ? (
     <Container
-      m="0"
-      mr="2rem"
-      miw="26rem"
-      maw="26rem"
       h="65rem"
+      m="0"
+      maw="26rem"
+      miw="26rem"
+      mr="2rem"
       pos="sticky"
       top="6.8rem"
       sx={{
@@ -33,7 +26,11 @@ const FiltersContainer = ({ type, filters, handleResetFilters, handleCheckFilter
         '::-webkit-scrollbar': { width: '0.5rem' },
         ':hover': { '::-webkit-scrollbar-thumb': { borderRadius: '5rem', backgroundColor: '#7b7676' } },
       }}>
-      <Filters filters={filters} handleResetFilters={handleResetFilters} handleCheckFilters={handleCheckFilters} />
+      <Filters
+        filters={filters}
+        handleCheckFiltersClick={handleCheckFiltersClick}
+        handleResetFiltersClick={handleResetFiltersClick}
+      />
     </Container>
   ) : (
     <>
@@ -44,14 +41,14 @@ const FiltersContainer = ({ type, filters, handleResetFilters, handleCheckFilter
           <Drawer.Body>
             <Filters
               filters={filters}
-              handleResetFilters={handleResetFilters}
-              handleCheckFilters={handleCheckFilters}
+              handleCheckFiltersClick={handleCheckFiltersClick}
+              handleResetFiltersClick={handleResetFiltersClick}
             />
           </Drawer.Body>
         </Drawer.Content>
       </Drawer.Root>
 
-      <Button variant="default" mt="1rem" fz="1.6rem" radius="md" h="4rem" onClick={open}>
+      <Button fz="1.6rem" h="4rem" mt="1rem" radius="md" variant="default" onClick={open}>
         필터
         <BiFilter size="2.5rem" />
       </Button>

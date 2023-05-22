@@ -1,4 +1,4 @@
-import { FILTER } from '../constants';
+import { FILTER } from 'constants';
 
 const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
 
@@ -23,6 +23,8 @@ const sortProducts = (products, sortOption) => {
 
 const checkFiltersHasTrue = filters => filters.some(filter => filter === true);
 
+// 매개변수를 디스트럭처링하기 실패!
+// const filteredAndSortedProducts = (products, newFilters : { priceFilters, sizeFilters, colorFilters, genderFilters, brandFilters }, sortOption) => {}
 const filteredAndSortedProducts = (products, newFilters, sortOption) => {
   const { priceFilters, sizeFilters, colorFilters, genderFilters, brandFilters } = newFilters;
 
@@ -30,7 +32,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
     ? [
         ...priceFilters.map((filter, i) =>
           filter
-            ? PRICES.at(i).rangeIdx !== priceFilters.length - 1
+            ? PRICES[i].rangeIdx !== priceFilters.length - 1
               ? products.filter(({ price }) => i * 50000 <= price && price < (i + 1) * 50000)
               : products.filter(({ price }) => i * 50000 <= price)
             : []
@@ -44,9 +46,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
           [
             ...sizeFilters.map((filter, i) =>
               filter
-                ? filteredPrice.filter(({ stocks }) =>
-                    stocks.some(({ size, stock }) => size === SIZES.at(i) && stock > 0)
-                  )
+                ? filteredPrice.filter(({ stocks }) => stocks.some(({ size, stock }) => size === SIZES[i] && stock > 0))
                 : []
             ),
           ].flat()
@@ -57,7 +57,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
   const filteredColor = checkFiltersHasTrue(colorFilters)
     ? [
         ...colorFilters.map((filter, i) =>
-          filter ? filteredSize.filter(({ color }) => color.en === COLORS.at(i).en) : []
+          filter ? filteredSize.filter(({ color }) => color.en === COLORS[i].en) : []
         ),
       ].flat()
     : filteredSize;
@@ -65,7 +65,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
   const filteredGender = checkFiltersHasTrue(genderFilters)
     ? [
         ...genderFilters.map((filter, i) =>
-          filter ? filteredColor.filter(({ gender }) => gender.en === GENDER.at(i).en) : []
+          filter ? filteredColor.filter(({ gender }) => gender.en === GENDER[i].en) : []
         ),
       ].flat()
     : filteredColor;
@@ -73,7 +73,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
   const filteredBrand = checkFiltersHasTrue(brandFilters)
     ? [
         ...brandFilters.map((filter, i) =>
-          filter ? filteredGender.filter(({ brand }) => brand.en === BRANDS.at(i).en) : []
+          filter ? filteredGender.filter(({ brand }) => brand.en === BRANDS[i].en) : []
         ),
       ].flat()
     : filteredGender;

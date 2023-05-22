@@ -1,4 +1,3 @@
-import { QUERY_KEY } from '../constants';
 import {
   requestVerify,
   fetchSlides,
@@ -10,7 +9,8 @@ import {
   fetchUser,
   fetchFavorites,
   fetchCarts,
-} from './fetch';
+} from 'api/fetch';
+import { QUERY_KEY } from 'constants';
 
 const PAGE_SIZE = 12;
 
