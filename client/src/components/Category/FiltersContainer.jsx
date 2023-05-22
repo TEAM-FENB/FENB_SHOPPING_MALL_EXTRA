@@ -2,10 +2,9 @@ import { Drawer, Button, Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { BiFilter } from 'react-icons/bi';
 
+import { Filters } from 'components/Category';
 import { useMediaQuery } from 'hooks';
 import { MEDIAQUERY_WIDTH } from 'constants';
-// .이 있는 경우는 경로를 어떻게 가져와야 하지?
-import { Filters } from '.';
 
 const FiltersContainer = ({ filters, handleResetFiltersClick, handleCheckFiltersClick }) => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
