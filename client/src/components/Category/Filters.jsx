@@ -1,7 +1,6 @@
 import { Stack, Accordion, Checkbox, Button, UnstyledButton, ColorSwatch, SimpleGrid, Text } from '@mantine/core';
 import { FaCheck } from 'react-icons/fa';
 
-import { SizeButton } from 'components';
 import { FILTER } from 'constants';
 
 const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
@@ -52,15 +51,20 @@ const Filters = ({
         <Accordion.Panel>
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
             {SIZES.map((size, i) => (
-              <SizeButton
+              <Button
                 key={size}
                 fw="normal"
+                fz="1.6rem"
+                h="4rem"
                 radius="md"
                 selected={sizeFilters[i]}
                 variant="default"
+                styles={theme => ({
+                  border: `1px solid ${theme.colors.blue[6]}`,
+                })}
                 onClick={handleCheckFiltersClick({ size })}>
                 {size}
-              </SizeButton>
+              </Button>
             ))}
           </SimpleGrid>
         </Accordion.Panel>

@@ -1,6 +1,4 @@
-import { Stack, ColorSwatch, Text, SimpleGrid, useMantineColorScheme, useMantineTheme } from '@mantine/core';
-
-import { SizeButton } from 'components';
+import { Stack, ColorSwatch, Text, SimpleGrid, Button, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 
 const Info = ({
   currentProduct: { price, color, brand, stocks, feature },
@@ -33,10 +31,12 @@ const Info = ({
             borderRadius: '0.4rem',
           }}>
           {stocks.map(({ size, stock }) => (
-            <SizeButton
+            <Button
               key={size}
               disabled={!stock}
               fw="normal"
+              fz="1.6rem"
+              h="4rem"
               radius="0.4rem"
               selected={size === currentSelectedSize}
               variant="default"
@@ -46,10 +46,11 @@ const Info = ({
                     color: colorScheme === 'dark' && theme.colors.gray[6],
                   },
                 },
+                border: `1px solid ${theme.colors.blue[6]}`,
               })}
               onClick={handleSizeClick(size)}>
               {size}
-            </SizeButton>
+            </Button>
           ))}
         </SimpleGrid>
         {!isSizeSelected && (
