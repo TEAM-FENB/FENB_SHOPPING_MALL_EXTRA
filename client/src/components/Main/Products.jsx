@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { Badge, Card, Container, Flex, Group, Image, Text } from '@mantine/core';
 
-import { MEDIAQUERY_WIDTH, PATH } from '../../constants';
-import { useMediaQuery } from '../../hooks';
-import { usePageProducts } from '../../hooks/products';
+import { useMediaQuery } from 'hooks';
+import { usePageProducts } from 'hooks/products';
+import { MEDIAQUERY_WIDTH, PATH } from 'constants';
 
 const Products = () => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { Carousel, Modal, Products, Loading } from '../components/Main';
+import { Carousel, Modal, Products, Loading } from 'components/Main';
 
 const Main = () => {
   const [modalIsOpen, { open, close }] = useDisclosure(false);

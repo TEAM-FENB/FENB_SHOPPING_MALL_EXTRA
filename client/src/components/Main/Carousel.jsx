@@ -8,9 +8,9 @@ import { Carousel as MantineCarousel } from '@mantine/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 
-import { addCoupon } from '../../api/fetch';
-import { slidesQuery, verifyQuery } from '../../api/query';
-import { PATH } from '../../constants';
+import { addCoupon } from 'api/fetch';
+import { slidesQuery, verifyQuery } from 'api/query';
+import { PATH } from 'constants';
 
 const Carousel = ({ modalOpen, setModalTitle }) => {
   const navigate = useNavigate();
