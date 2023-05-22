@@ -1,21 +1,17 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useMantineColorScheme, Stack, Group, Button, Modal, Image, Text } from '@mantine/core';
+import { useMantineColorScheme, Stack, Group, Button, Modal, Image, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import styled from '@emotion/styled';
 import { FaHeart } from 'react-icons/fa';
 
 import { useToggleWishItemMutation } from 'hooks/mutation';
 import { useIsFavorite } from 'hooks/products';
 import { PATH } from 'constants';
 
-const Heart = styled(FaHeart)`
-  color: ${props => (props.selected ? 'red' : 'lightgray')};
-`;
-
 const WishListButton = ({ currentProduct, isSignInRef }) => {
   const { id, imgURL, price, brand, name } = currentProduct;
 
+  const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 
   const navigate = useNavigate();
@@ -86,7 +82,7 @@ const WishListButton = ({ currentProduct, isSignInRef }) => {
       <Button fz="1.8rem" h="6rem" m="0.5rem" radius="3rem" variant="default" onClick={handleWishListModalOpenClick}>
         <Group align="center" spacing="0.5rem">
           <Text mt="0.1rem">관심 상품</Text>
-          <Heart selected={isFavorite} />
+          <FaHeart color={isFavorite ? theme.colors.red[6] : theme.colors.gray[3]} />
         </Group>
       </Button>
     </>
