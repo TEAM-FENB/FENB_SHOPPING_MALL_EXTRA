@@ -9,8 +9,8 @@ const Info = ({
   isSizeSelected,
   setIsSizeSelected,
 }) => {
+  const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const { colors } = useMantineTheme();
 
   const handleSizeClick = selectedSize => () => {
     setCurrentSelectedSize(selectedSize);
@@ -29,7 +29,7 @@ const Info = ({
           cols={5}
           sx={{
             border: `${!isSizeSelected && '1px solid red'}`,
-            borderColor: colors.red[6],
+            borderColor: theme.colors.red[6],
             borderRadius: '0.4rem',
           }}>
           {stocks.map(({ size, stock }) => (
