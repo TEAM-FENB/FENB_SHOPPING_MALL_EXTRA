@@ -62,12 +62,32 @@ export const checkCoupon = async id => {
 };
 
 export const signIn = async ({ email, password }) => {
-  const { data } = await axios.post('api/auth/signin', {
+  const { data } = await axios.post('/api/auth/signin', {
     email,
     password,
   });
 
   return data;
+};
+
+export const checkEmailDuplicate = async email => {
+  const { data } = await axios.post('/api/auth/signup/email', {
+    email,
+  });
+
+  return data;
+};
+
+export const signUp = async ({ email, name, password, phone, mainAddress, detailAddress, postcode }) => {
+  await axios.post('/api/auth/signup', {
+    email,
+    name,
+    phone,
+    password,
+    mainAddress,
+    detailAddress,
+    postcode,
+  });
 };
 
 export const addCoupon = async id => {

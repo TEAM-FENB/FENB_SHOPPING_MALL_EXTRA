@@ -1,92 +1,93 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from 'react';
+
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-import { useMantineColorScheme, Stack, Title, Center } from '@mantine/core';
+import { Stack, Title, Center, useMantineTheme, Button, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import {
-  FormInput,
-  FormMainAddressInput,
-  FormZoneCodeInput,
-  FormEmailInput,
-  FormPhoneInput,
-  CustomButton,
-  CustomLink,
-} from '../components';
-import { PATH } from '../constants';
-import { signupSchema } from '../schema';
+import { FormInput, CustomButton } from 'components';
+import { checkEmailDuplicate, signUp } from 'api/fetch';
+import { signupSchema } from 'schema';
+import { PATH } from 'constants';
 
 const SignUp = () => {
+  const { colors, colorScheme } = useMantineTheme();
+
   const { state } = useLocation();
-  const { colorScheme } = useMantineColorScheme();
-
   const navigate = useNavigate();
-
-  const { handleSubmit, register, formState, trigger, setValue } = useForm({
+  const open = useDaumPostcodePopup();
+  const { handleSubmit, register, formState, setValue } = useForm({
     resolver: zodResolver(signupSchema),
   });
 
-  const handleSignUp = async data => {
-    try {
-      const response = await axios.post('/api/auth/signup', {
-        email: data.email,
-        name: data.name,
-        phone: data.phone,
-        password: data.password,
-        mainAddress: data.mainAddress,
-        detailAddress: data.detailAddress,
-        postcode: data.postcode,
-      });
+  const [error, setError] = useState('');
 
+  const handleEmailDuplicateBlur = async e => {
+    try {
+      const data = await checkEmailDuplicate(e.target.value);
+
+      setError(data.isDuplicate ? '이미 사용중인 이메일 입니다.' : '');
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  const handlePhoneNumberChange = e => {
+    const formatted = e.target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/(\d{0,3})(\d{0,4})(\d{0,4})/, '$1-$2-$3')
+      .replace(/-{1,2}$/g, '');
+
+    setValue('phone', formatted);
+  };
+
+  const handleAddressClick = () => {
+    open({
+      onComplete: ({ userSelectedType, roadAddress, jibunAddress, zonecode, bname, buildingName }) => {
+        const address = userSelectedType === 'R' ? `${roadAddress} (${bname}, ${buildingName})` : jibunAddress;
+
+        setValue('mainAddress', address);
+        setValue('postcode', zonecode);
+      },
+      left: window.screen.width / 2 - 250,
+      top: window.screen.height / 2 - 300,
+    });
+  };
+
+  const handleSignUpSubmit = async data => {
+    try {
+      await signUp(data);
+
+      navigate(PATH.SIGNIN);
       notifications.show({
         color: 'blue',
         autoClose: 2000,
         title: '알림',
-        message: response.data.message,
+        message: '회원가입이 완료되었습니다.',
         sx: { div: { fontSize: '1.5rem' } },
       });
-
-      navigate(PATH.SIGNIN);
     } catch (error) {
       notifications.show({
         color: 'red',
         autoClose: 2000,
         title: '알림',
-        message: error.response.data.message ? error.response.data.message : error.message,
+        message: '필수 정보가 전달되지 않았습니다.',
         sx: { div: { fontSize: '1.5rem' } },
       });
     }
   };
 
   return (
-    <Stack
-      align="center"
-      h="100rem"
-      sx={{
-        marginLeft: '3rem',
-        input: {
-          padding: '0',
-          fontSize: '1.6rem',
-          border: 'none',
-          borderBottomStyle: 'solid',
-          borderBottomWidth: '0.07rem',
-          borderBottomColor: '#ced4da',
-        },
-        label: {
-          fontSize: '1.6rem',
-        },
-        div: {
-          padding: '0',
-          fontSize: '1.6rem',
-        },
-      }}>
+    <Stack align="center" mih="90rem">
       <Title fz="3.2rem" mb="3rem" mt="6rem" order={2}>
         회원 가입
       </Title>
-      <form noValidate onSubmit={handleSubmit(handleSignUp)}>
-        <FormEmailInput
+      <form noValidate onSubmit={handleSubmit(handleSignUpSubmit)}>
+        <FormInput
+          error={error}
           formState={formState}
           id="email"
           label="이메일 주소"
@@ -94,6 +95,7 @@ const SignUp = () => {
           register={register}
           type="text"
           withAsterisk
+          onBlur={handleEmailDuplicateBlur}
         />
         <FormInput
           formState={formState}
@@ -104,16 +106,16 @@ const SignUp = () => {
           type="text"
           withAsterisk
         />
-        <FormPhoneInput
+        <FormInput
           formState={formState}
           id="phone"
           label="휴대전화번호"
           placeholder="'-' 없이 입력"
           register={register}
           setValue={setValue}
-          trigger={trigger}
           type="tel"
           withAsterisk
+          onChange={handlePhoneNumberChange}
         />
         <FormInput
           formState={formState}
@@ -133,7 +135,7 @@ const SignUp = () => {
           type="password"
           withAsterisk
         />
-        <FormZoneCodeInput
+        <FormInput
           formState={formState}
           id="postcode"
           label="우편번호"
@@ -141,14 +143,33 @@ const SignUp = () => {
           register={register}
           setValue={setValue}
           type="text"
+          rightSection={
+            <Button
+              color={colorScheme === 'dark' ? 'gray.6' : 'gray'}
+              h="3rem"
+              m="-0.5rem 6rem 0 0"
+              p="0.7rem 1.4rem"
+              size="1.4rem"
+              variant="outline"
+              w="12rem"
+              sx={{
+                borderRadius: '3rem',
+                ':hover': { border: `1px solid ${colors.blue[6]}`, color: colors.blue[6] },
+              }}
+              onClick={handleAddressClick}>
+              주소찾기
+            </Button>
+          }
+          readOnly
         />
-        <FormMainAddressInput
+        <FormInput
           formState={formState}
           id="mainAddress"
           label="주소"
           placeholder="주소를 선택하시면 자동으로 입력됩니다."
           register={register}
           type="text"
+          readOnly
         />
         <FormInput
           formState={formState}
@@ -158,22 +179,24 @@ const SignUp = () => {
           register={register}
           type="text"
         />
-        <CustomButton
-          color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
-          type="submit"
-          w="40rem"
-          sx={{
-            '@media (max-width: 765px)': {
-              width: '100vw',
-            },
-          }}>
+        <CustomButton color={colorScheme === 'dark' ? 'gray.6' : 'dark'} type="submit" w="40rem">
           가입하기
         </CustomButton>
-        <Center mt="2rem">
+        <Center fz="1.6rem" mt="2rem">
           회원이신가요?
-          <CustomLink state={state} to={PATH.SIGNIN}>
+          <Text
+            component={Link}
+            fw="bold"
+            ml="1rem"
+            state={state}
+            to={PATH.SIGNIN}
+            sx={{
+              ':hover': {
+                color: colors.blue[6],
+              },
+            }}>
             로그인
-          </CustomLink>
+          </Text>
         </Center>
       </form>
     </Stack>

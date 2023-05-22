@@ -8,9 +8,6 @@ import { INIT_FIELD } from '../../constants';
 import { addAddressSchema } from '../../schema';
 import CustomButton from '../CustomButton';
 import FormInput from '../Sign/FormInput';
-import FormMainAddressInput from '../Sign/FormMainAddressInput';
-import FormPhoneInput from '../Sign/FormPhoneInput';
-import FormZoneCodeInput from '../Sign/FormZoneCodeInput';
 
 const InputAddress = ({ setFiled, changeSelectedAddress }) => {
   const { handleSubmit, register, formState, trigger, setValue } = useForm({
@@ -62,7 +59,7 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
           type="text"
           withAsterisk
         />
-        <FormPhoneInput
+        <FormInput
           formState={formState}
           id="phone"
           label="휴대전화번호"
@@ -73,7 +70,7 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
           type="tel"
           withAsterisk
         />
-        <FormZoneCodeInput
+        <FormInput
           formState={formState}
           id="postcode"
           label="우편번호"
@@ -83,7 +80,7 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
           type="text"
           withAsterisk
         />
-        <FormMainAddressInput
+        <FormInput
           formState={formState}
           id="mainAddress"
           label="주소"

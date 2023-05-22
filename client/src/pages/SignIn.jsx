@@ -1,19 +1,19 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Image, Stack, Center, Title, useMantineTheme } from '@mantine/core';
+import { Image, Stack, Center, Title, useMantineTheme, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import { CustomButton, CustomLink, FormInput } from 'components';
+import { CustomButton, FormInput } from 'components';
 import { signIn } from 'api/fetch';
 import { signinSchema } from 'schema';
 import { PATH } from 'constants';
 import { userState } from 'recoil/atoms';
 
 const SignIn = () => {
-  const { colorScheme, colors } = useMantineTheme();
+  const { colors, colorScheme } = useMantineTheme();
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -48,21 +48,7 @@ const SignIn = () => {
   };
 
   return (
-    <Stack
-      align="center"
-      mih="46rem"
-      sx={{
-        fontSize: '1.6rem',
-        input: {
-          padding: '0',
-          fontSize: '1.6rem',
-          border: 'none',
-          borderBottom: `1px solid ${colors.gray[6]}`,
-        },
-        label: {
-          fontSize: '1.6rem',
-        },
-      }}>
+    <Stack align="center" mih="46rem">
       <Title order={2}>
         <Image
           alt="login logo"
@@ -79,15 +65,32 @@ const SignIn = () => {
           register={register}
           type="text"
         />
-        <FormInput formState={formState} id="password" label="비밀번호" register={register} type="password" />
+        <FormInput
+          formState={formState}
+          id="password"
+          label="비밀번호"
+          placeholder="******"
+          register={register}
+          type="password"
+        />
         <CustomButton color={colorScheme === 'dark' ? 'gray.6' : 'dark'} type="submit" w="40rem">
           로그인
         </CustomButton>
-        <Center pt="2rem">
+        <Center fz="1.6rem" pt="2rem">
           회원이 아니신가요?
-          <CustomLink state={state} to={PATH.SIGNUP}>
+          <Text
+            component={Link}
+            fw="bold"
+            ml="1rem"
+            state={state}
+            to={PATH.SIGNUP}
+            sx={{
+              ':hover': {
+                color: colors.blue[6],
+              },
+            }}>
             회원가입
-          </CustomLink>
+          </Text>
         </Center>
       </form>
     </Stack>
