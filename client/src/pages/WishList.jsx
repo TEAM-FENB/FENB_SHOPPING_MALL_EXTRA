@@ -64,7 +64,7 @@ const WishList = () => {
               </Text>
 
               <Group my="md" position="apart">
-                <Text fw="500">{`${price.toLocaleString()} 원`}</Text>
+                <Text fw="500">{`${price.toLocaleString('ko-KR')} 원`}</Text>
                 <UnstyledButton sx={{ cursor: 'pointer' }} onClick={handleRemoveWishItemClick(id)}>
                   <BiTrash color={theme.colors.gray[6]} size="2.5rem" />
                 </UnstyledButton>

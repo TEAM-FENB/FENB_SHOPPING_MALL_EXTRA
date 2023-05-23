@@ -16,7 +16,7 @@ const NoProduct = ({ pageName }) => {
       <Title>{pageName}에 상품이 없습니다</Title>
       <Space h="xl" />
       <Link to={PATH.MAIN}>
-        <Text style={{ verticalAlign: 'bottom' }}>
+        <Text sx={{ verticalAlign: 'bottom' }}>
           <FaAngleDoubleRight
             style={{ verticalAlign: 'middle', transform: 'transLate3d(0, -1px, 0)', marginRight: '4px' }}
           />
