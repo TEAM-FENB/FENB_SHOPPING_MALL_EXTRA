@@ -1,3 +1,4 @@
+export { default as Address } from './Address';
 export { default as Payment } from './Payment';
 export { default as AddressInfo } from './AddressInfo';
 export { default as EditAddress } from './EditAddress';

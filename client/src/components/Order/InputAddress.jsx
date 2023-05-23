@@ -3,15 +3,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Center, Container, useMantineTheme } from '@mantine/core';
 
-import { CustomButton, FormInput, FormAddressInput } from 'components';
+import { CustomButton } from 'components';
+import { FormInput, FormAddressInput } from 'components/Sign';
 import { addAddress } from 'api/fetch';
-import { addAddressSchema } from 'schema';
+import { addressSchema } from 'schema';
 import { INIT_FIELD } from 'constants';
 
 const InputAddress = ({ setFiled, changeSelectedAddress }) => {
   const { colors } = useMantineTheme();
   const { handleSubmit, register, formState, trigger, setValue } = useForm({
-    resolver: zodResolver(addAddressSchema),
+    resolver: zodResolver(addressSchema),
   });
 
   const handleAddAddress = async data => {

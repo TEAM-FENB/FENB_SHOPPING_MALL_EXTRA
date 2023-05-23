@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { Stack, Group, Image, Title, Text, ActionIcon, NumberInput, useMantineTheme } from '@mantine/core';
 import { BiTrash } from 'react-icons/bi';
 
-import { useChangeCartQuantityMutation, useRemoveCartMutation, useQuantityOfStocks } from 'hooks/carts';
+import { useQuantityOfStocks } from 'hooks/carts';
+import { useChangeCartQuantityMutation, useRemoveCartMutation } from 'hooks/mutation';
 import { PATH } from 'constants';
 
 const CartItem = ({ cart: { id, category, color, name, price, imgURL, selectedSize, quantity } }) => {

@@ -7,7 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Stack, Title, Center, useMantineTheme, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import { FormInput, CustomButton, FormAddressInput } from 'components';
+import { CustomButton } from 'components';
+import { FormInput, FormAddressInput } from 'components/Sign';
 import { checkEmailDuplicate, signUp } from 'api/fetch';
 import { signupSchema } from 'schema';
 import { PATH } from 'constants';

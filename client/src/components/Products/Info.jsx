@@ -1,16 +1,18 @@
-import { Stack, ColorSwatch, Text, SimpleGrid, useMantineColorScheme } from '@mantine/core';
-import styled from '@emotion/styled';
+import { Stack, ColorSwatch, Text, SimpleGrid, Button, useMantineColorScheme } from '@mantine/core';
 
-import { SizeButton } from '..';
-
-const SizeButtonContainer = styled(SimpleGrid)`
-  border: ${props => props.selected && '1px solid #F36B26'};
-  border-radius: 0.4rem;
-`;
-
-const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeClick }) => {
+const Info = ({
+  currentProduct: { price, color, brand, stocks, feature },
+  currentSelectedSize,
+  setCurrentSelectedSize,
+  isSizeSelected,
+  setIsSizeSelected,
+}) => {
   const { colorScheme } = useMantineColorScheme();
-  const { price, color, brand, stocks, feature } = currentProduct;
+
+  const handleSizeClick = selectedSize => () => {
+    setCurrentSelectedSize(selectedSize);
+    setIsSizeSelected(true);
+  };
 
   return (
     <>
@@ -20,14 +22,20 @@ const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeC
       <Text fw={500} m="2rem 0" size="2rem">{`${price.toLocaleString('ko-KR')} 원`}</Text>
       <Stack>
         <Text fw="600">사이즈 선택</Text>
-        <SizeButtonContainer cols={5} selected={isSizeSelected === false}>
+        <SimpleGrid
+          cols={5}
+          sx={theme => ({
+            border: `${!isSizeSelected && `1px solid ${theme.colors.red[6]}`}`,
+            borderRadius: '0.4rem',
+          })}>
           {stocks.map(({ size, stock }) => (
-            <SizeButton
+            <Button
               key={size}
-              disabled={stock === 0}
+              disabled={!stock}
               fw="normal"
+              fz="1.6rem"
+              h="4rem"
               radius="0.4rem"
-              selected={size === currentSelectedSize}
               variant="default"
               styles={theme => ({
                 root: {
@@ -36,16 +44,19 @@ const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeC
                   },
                 },
               })}
-              onClick={() => handleSizeClick(size)}>
+              sx={theme => ({
+                border: `${size === currentSelectedSize && `1px solid ${theme.colors.blue[6]}`}`,
+              })}
+              onClick={handleSizeClick(size)}>
               {size}
-            </SizeButton>
+            </Button>
           ))}
-        </SizeButtonContainer>
-        {isSizeSelected === false ? (
-          <Text color="red" fw="500">
+        </SimpleGrid>
+        {!isSizeSelected && (
+          <Text color="red.6" fw="500">
             사이즈를 선택해주세요
           </Text>
-        ) : null}
+        )}
         <Stack align="center" m="1.4rem 0" spacing="xs" w="5rem">
           <ColorSwatch color={color.color} size="2.5rem" />
           <Text fw="500" fz="1.4rem" m="0">

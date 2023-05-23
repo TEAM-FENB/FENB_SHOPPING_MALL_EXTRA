@@ -6,14 +6,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Stack, useMantineColorScheme } from '@mantine/core';
 
 import { CustomButton } from 'components';
+import { Address, Coupons, PaymentMethod } from 'components/Order';
 import { order } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
 import { useGetAddresses } from 'hooks/address';
 import { useOrderInfo } from 'hooks/order';
-import { CARTS_QUERY_KEY, INIT_FIELD, MEDIAQUERY_WIDTH, PATH } from 'constants';
-import Address from './Address';
-import Coupons from './Coupons';
-import PaymentMethod from './PaymentMethod';
+import { INIT_FIELD, MEDIAQUERY_WIDTH, PATH, QUERY_KEY } from 'constants';
 
 const Payment = ({ changeDiscount }) => {
   const addresses = useGetAddresses();
@@ -42,7 +40,7 @@ const Payment = ({ changeDiscount }) => {
   };
 
   const handleOrderClick = async () => {
-    queryClient.removeQueries(CARTS_QUERY_KEY);
+    queryClient.removeQueries(QUERY_KEY.CARTS);
 
     await order(getOrderInfo());
 

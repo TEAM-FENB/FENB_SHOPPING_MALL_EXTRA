@@ -10,17 +10,7 @@ import {
   fetchFavorites,
   fetchCarts,
 } from 'api/fetch';
-import {
-  PRODUCTS_QUERY_KEY,
-  PAGE_PRODUCTS_QUERY_KEY,
-  WISHLIST_QUERY_KEY,
-  AUTH_QUERY_KEY,
-  SLIDES_QUERY_KEY,
-  COUPONS_QUERY_KEY,
-  HISTORY_QUERY_KEY,
-  ADDRESS_QUERY_KEY,
-  CARTS_QUERY_KEY,
-} from 'constants';
+import { QUERY_KEY } from 'constants';
 
 const defaultOptions = {
   retry: 0,
@@ -30,69 +20,69 @@ const defaultOptions = {
 const PAGE_SIZE = 12;
 
 export const productsQuery = options => ({
-  queryKey: PRODUCTS_QUERY_KEY,
+  queryKey: QUERY_KEY.PRODUCTS,
   queryFn: fetchProducts,
   ...defaultOptions,
   ...options,
 });
 
 export const pageProductsQuery = search => ({
-  queryKey: [...PAGE_PRODUCTS_QUERY_KEY, search].filter(str => str),
+  queryKey: [...QUERY_KEY.PAGE_PRODUCTS, search].filter(str => str),
   queryFn: ({ pageParam = 1 }) => fetchPageProducts(pageParam, PAGE_SIZE),
   getNextPageParam: (lastPage, allPages) => (lastPage.products.length === PAGE_SIZE ? allPages.length + 1 : undefined),
   ...defaultOptions,
 });
 
 export const filteredProductsQuery = (search, searchValue) => ({
-  queryKey: [...PAGE_PRODUCTS_QUERY_KEY, searchValue],
+  queryKey: [...QUERY_KEY.PAGE_PRODUCTS, searchValue],
   queryFn: fetchFilteredProducts(search),
   ...defaultOptions,
 });
 
 export const slidesQuery = options => ({
-  queryKey: SLIDES_QUERY_KEY,
+  queryKey: QUERY_KEY.SLIDES,
   queryFn: fetchSlides,
   ...defaultOptions,
   ...options,
 });
 
 export const verifyQuery = options => ({
-  queryKey: AUTH_QUERY_KEY,
+  queryKey: QUERY_KEY.AUTH,
   queryFn: requestVerify,
   ...defaultOptions,
   ...options,
 });
 
 export const favoritesQuery = options => ({
-  queryKey: WISHLIST_QUERY_KEY,
+  queryKey: QUERY_KEY.WISHLIST,
   queryFn: fetchFavorites,
   ...defaultOptions,
   ...options,
 });
 
 export const cartsQuery = options => ({
-  queryKey: CARTS_QUERY_KEY,
+  queryKey: QUERY_KEY.CARTS,
   queryFn: fetchCarts,
   ...defaultOptions,
   ...options,
 });
 
 export const userQuery = options => ({
-  queryKey: ADDRESS_QUERY_KEY,
+  queryKey: QUERY_KEY.ADDRESS,
   queryFn: fetchUser,
   ...defaultOptions,
   ...options,
 });
 
 export const couponsQuery = options => ({
-  queryKey: COUPONS_QUERY_KEY,
+  queryKey: QUERY_KEY.COUPONS,
   queryFn: fetchCoupons,
   ...defaultOptions,
   ...options,
 });
 
 export const historyQuery = ({ queryKey, ...options } = {}) => ({
-  queryKey: [...HISTORY_QUERY_KEY, queryKey],
+  queryKey: [...QUERY_KEY.HISTORY, queryKey],
   queryFn: fetchHistory,
   ...defaultOptions,
   ...options,

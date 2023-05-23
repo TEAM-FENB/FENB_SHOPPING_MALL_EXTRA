@@ -15,32 +15,34 @@ import {
 } from '@mantine/core';
 import { BiTrash } from 'react-icons/bi';
 
-import { favoritesQuery } from '../api/query';
-import { NoProduct } from '../components';
-import { PATH } from '../constants';
-import { useToggleWishItemMutation } from '../hooks/wishList';
+import { NoProduct } from 'components/common';
+import { favoritesQuery } from 'api/query';
+import { useMediaQuery } from 'hooks';
+import { useToggleWishItemMutation } from 'hooks/mutation';
+import { MEDIAQUERY_WIDTH, PATH } from 'constants';
 
 const WishList = () => {
-  const { data: favorites } = useQuery(favoritesQuery());
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
   const theme = useMantineTheme();
+
   const navigate = useNavigate();
 
-  const { mutate } = useToggleWishItemMutation();
+  const { data: favorites } = useQuery(favoritesQuery());
 
-  const handleRemoveWishItemClick = id => {
-    mutate({ id, isFavorite: true });
+  const { mutate: removeWishItem } = useToggleWishItemMutation();
+
+  const handleRemoveWishItemClick = id => () => {
+    removeWishItem({ id, isFavorite: true });
   };
 
-  const handleClickProduct = id => {
+  const handleProductClick = id => () => {
     navigate(`${PATH.PRODUCTS}/${id}`);
   };
 
   return (
     <Container size="120rem">
       <Title>관심상품 목록</Title>
-      {!favorites.length ? (
-        <NoProduct pageName={'관심상품 목록'} />
-      ) : (
+      {favorites.length ? (
         <Grid p="3.5rem">
           {favorites.map(({ id, imgURL, name, brand, price, feature }) => (
             <Grid.Col
@@ -52,19 +54,13 @@ const WishList = () => {
                   maxWidth: '50%',
                 },
               }}>
-              <Card fz="1.6rem" padding="lg" withBorder>
+              <Card fz="1.6rem" maw={matches ? '35rem' : '20rem'} padding="lg" withBorder>
                 <Card.Section>
-                  <Image
-                    alt="product"
-                    src={imgURL}
-                    sx={{ cursor: 'pointer' }}
-                    truncate
-                    onClick={() => handleClickProduct(id)}
-                  />
+                  <Image alt={name} src={imgURL} sx={{ cursor: 'pointer' }} truncate onClick={handleProductClick(id)} />
                 </Card.Section>
 
                 <Group mb="xs" mt="md" position="apart" noWrap>
-                  <Text sx={{ cursor: 'pointer' }} weight={500} truncate onClick={() => handleClickProduct(id)}>
+                  <Text sx={{ cursor: 'pointer' }} weight={500} truncate onClick={handleProductClick(id)}>
                     {name}
                   </Text>
                   <Badge color="skyblue" h="2rem" sx={{ flexShrink: 0 }} variant="light">
@@ -77,18 +73,17 @@ const WishList = () => {
                 </Text>
 
                 <Group my="md" position="apart">
-                  <Text fw="500">{`${price.toLocaleString()} 원`}</Text>
-                  <UnstyledButton sx={{ cursor: 'pointer' }} onClick={() => handleRemoveWishItemClick(id)}>
-                    <BiTrash
-                      color={theme.colorScheme === 'dark' ? theme.colors.gray[6] : 'rgb(117,117,117)'}
-                      size="2.5rem"
-                    />
+                  <Text fw="500">{`${price.toLocaleString('ko-KR')} 원`}</Text>
+                  <UnstyledButton sx={{ cursor: 'pointer' }} onClick={handleRemoveWishItemClick(id)}>
+                    <BiTrash color={theme.colors.gray[6]} size="2.5rem" />
                   </UnstyledButton>
                 </Group>
               </Card>
             </Grid.Col>
           ))}
         </Grid>
+      ) : (
+        <NoProduct pageName={'관심상품 목록'} />
       )}
     </Container>
   );

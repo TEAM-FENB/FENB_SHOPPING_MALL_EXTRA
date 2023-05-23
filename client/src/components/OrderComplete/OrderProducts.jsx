@@ -1,9 +1,8 @@
 import { Stack, Title, Group, Image, Text, useMantineColorScheme } from '@mantine/core';
 
-import { COLORS, MEDIAQUERY_WIDTH } from '../../constants';
-import { useMediaQuery } from '../../hooks';
+import { useMediaQuery } from 'hooks';
+import { MEDIAQUERY_WIDTH } from 'constants';
 
-// 90% 66.6666% ...?
 const OrderProducts = ({ products }) => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
   const { colorScheme } = useMantineColorScheme();
@@ -35,7 +34,7 @@ const OrderProducts = ({ products }) => {
                   {name}
                 </Title>
                 <Text pl="0.2rem">사이즈 : {selectedSize}</Text>
-                <Text pl="0.2rem">색상 : {COLORS[color].kr}</Text>
+                <Text pl="0.2rem">색상 : {color.kr}</Text>
                 <Text pl="0.2rem">
                   수량 / 가격 : {quantity} / {price.toLocaleString('ko-KR')} 원
                 </Text>

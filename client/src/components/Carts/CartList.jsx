@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Stack, Title, useMantineTheme, Group, Text } from '@mantine/core';
 
-import { NoProduct } from 'components';
+import { NoProduct } from 'components/common';
 import { cartsQuery } from 'api/query';
 import { useMediaQuery } from 'hooks';
 import { useTotalCartItems, useTotalPrice } from 'hooks/carts';
@@ -28,7 +28,6 @@ const CartList = () => {
           spacing={0}
           sx={{ borderBottom: `1px solid ${colorScheme === 'dark' ? colors.gray[8] : colors.gray[3]}` }}>
           <Title py="0.8rem">장바구니</Title>
-          {/* 왜 PC 환경에는 없고, 모바일 환경에만 있지? 그리고 중복되는 내용이지 않을까 */}
           <Group c={colorScheme === 'dark' ? 'gray.5' : 'gray.7'} spacing="0.8rem">
             <Text>{totalCartItems} 개의 제품</Text>
             <Text>l</Text>

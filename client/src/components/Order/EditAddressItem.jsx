@@ -2,7 +2,7 @@ import { Button, Stack, Text, Group, Container, CloseButton, useMantineColorSche
 import { FaHome } from 'react-icons/fa';
 
 import { INIT_FIELD } from '../../constants';
-import { useChangeDefaultAddressMutation, useRemoveAddressMutation } from '../../hooks/address';
+import { useChangeDefaultAddressMutation, useRemoveAddressMutation } from '../../hooks/mutation';
 
 const EditAddressItem = ({ address, setFiled, selectedAddress, changeSelectedAddress }) => {
   const { id, recipient, mainAddress, detailAddress, postcode, recipientPhone, isDefault } = address;

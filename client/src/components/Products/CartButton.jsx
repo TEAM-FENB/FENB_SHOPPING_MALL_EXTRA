@@ -1,49 +1,62 @@
+import { useEffect, useState } from 'react';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useMantineColorScheme, Stack, Group, Button, Modal, Image, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { SadIcon } from '..';
-import { PATH } from '../../constants';
+import { SadIcon } from 'components/common';
+import { useAddCartMutation } from 'hooks/mutation';
+import { PATH } from 'constants';
 
-const CartButton = ({
-  currentProduct,
-  isSizeSelected,
-  isSignInUserRef,
-  hasStock,
-  handleCartClick,
-  handleIsSizeSelected,
-}) => {
+const CartButton = ({ currentProduct, currentSelectedSize, isSignInRef, isSizeSelected, setIsSizeSelected }) => {
+  const { id, imgURL, name, brand, price } = currentProduct;
+
   const { colorScheme } = useMantineColorScheme();
-  const [opened, { open, close }] = useDisclosure(false);
-  const { imgURL, name, brand, price } = currentProduct;
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const handleCartModalOpen = () => {
-    if (isSizeSelected) {
-      if (!isSignInUserRef.current) {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const { mutateAsync: addCart } = useAddCartMutation();
+
+  const [hasStock, setHasStock] = useState(true);
+
+  const handleCartModalOpenClick = async () => {
+    if (currentSelectedSize !== -1) {
+      if (!isSignInRef.current) {
         navigate(PATH.SIGNIN, { state: pathname });
       } else {
         open();
 
-        handleCartClick();
+        try {
+          await addCart({ id, selectedSize: currentSelectedSize, currentProduct });
+        } catch (e) {
+          // 무슨 의미인지 이해를 못하겠음
+          // setHasStock(selectedSize !== currentSelectedSize);
+          setHasStock(false);
+        }
       }
+    } else {
+      setIsSizeSelected(false);
     }
-
-    handleIsSizeSelected();
   };
 
   const handleModalButtonClick = () => {
     navigate(PATH.CART);
   };
 
+  useEffect(() => {
+    setHasStock(true);
+  }, []);
+
   return (
     <>
       {isSizeSelected && (
-        <Modal.Root opened={opened} size="50rem" sx={{ fontSize: '1.6rem' }} yOffset="0" onClose={close}>
+        <Modal.Root fz="1.6rem" opened={opened} size="50rem" yOffset="0" onClose={close}>
           <Modal.Overlay />
-          <Modal.Content sx={{ padding: '1.5rem' }}>
+          <Modal.Content p="1.5rem">
             {hasStock ? (
               <>
                 <Modal.Header>
@@ -53,10 +66,10 @@ const CartButton = ({
                   <Modal.CloseButton size="1.6rem" />
                 </Modal.Header>
                 <Modal.Body>
-                  <Stack sx={{ paddingTop: '1rem' }}>
+                  <Stack pt="1rem">
                     <Group align="flex-start" noWrap="nowrap" position="apart">
                       <Image src={imgURL} width="15rem" />
-                      <Stack sx={{ paddingLeft: '1.2rem' }} w="30rem">
+                      <Stack pl="1.2rem" w="30rem">
                         <Text fw="600">{name}</Text>
                         <Text color="dimmed" fw="500" fz="1.4rem">
                           {brand.kr}
@@ -107,7 +120,7 @@ const CartButton = ({
         h="6rem"
         m="0.5rem"
         radius="3rem"
-        onClick={handleCartModalOpen}>
+        onClick={handleCartModalOpenClick}>
         장바구니
       </Button>
     </>
