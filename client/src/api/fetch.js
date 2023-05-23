@@ -20,7 +20,7 @@ export const fetchSlides = async () => {
   return data;
 };
 
-export const requestSignout = async () => {
+export const signOut = async () => {
   await axios.get('api/auth/signout');
 };
 

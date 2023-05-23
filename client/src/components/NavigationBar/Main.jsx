@@ -21,7 +21,7 @@ import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { SlHandbag } from 'react-icons/sl';
 
 import { SearchBar, DarkMode } from 'components/NavigationBar';
-import { requestSignout } from 'api/fetch';
+import { signOut } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
 import { getDecodeSearch } from 'utils';
 import { QUERY_KEY, MEDIAQUERY_WIDTH, PATH } from 'constants';
@@ -38,7 +38,7 @@ const Main = () => {
   const [user, setUser] = useRecoilState(userState);
 
   const handleSignOutClick = async () => {
-    await requestSignout();
+    await signOut();
 
     setUser(null);
     queryClient.removeQueries(QUERY_KEY.AUTH);
@@ -81,7 +81,7 @@ const SimpleUtilArea = ({ user, handleSignOutClick, redirectTo }) => {
   return (
     <Stack>
       <Navbar.Section pt="xs">
-        <Flex align="center" color="#222222" fz="1.3rem" gap="lg" justify="flex-end">
+        <Flex align="center" color="gray.9" fz="1.3rem" gap="lg" justify="flex-end">
           {user ? (
             <>
               <Text sx={{ cursor: 'pointer' }} onClick={handleSignOutClick}>
@@ -138,14 +138,6 @@ const UtilArea = ({ user, handleSignOutClick, redirectTo }) => {
     navigate(PATH.CART);
   };
 
-  const handleMoveToSignUpClick = () => {
-    navigate(PATH.SIGNUP, { state: redirectTo });
-  };
-
-  const handleMoveToSignInClick = () => {
-    navigate(PATH.SIGNIN, { state: redirectTo });
-  };
-
   return (
     <Group>
       <SearchBar />
@@ -182,10 +174,10 @@ const UtilArea = ({ user, handleSignOutClick, redirectTo }) => {
             </Menu.Item>
           ) : (
             <>
-              <Menu.Item key="signup" fw="bold" fz="1.6rem" onClick={handleMoveToSignUpClick}>
+              <Menu.Item key="signup" component={Link} fw="bold" fz="1.6rem" state={redirectTo} to={PATH.SIGNUP}>
                 회원가입
               </Menu.Item>
-              <Menu.Item key="signin" fw="bold" fz="1.6rem" onClick={handleMoveToSignInClick}>
+              <Menu.Item key="signin" component={Link} fw="bold" fz="1.6rem" state={redirectTo} to={PATH.SIGNIN}>
                 로그인
               </Menu.Item>
             </>
