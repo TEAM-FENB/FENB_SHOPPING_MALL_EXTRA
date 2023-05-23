@@ -1,15 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Center, Stack } from '@mantine/core';
+import { Center, Container, useMantineTheme } from '@mantine/core';
 
-import { addAddress } from '../../api/fetch';
-import { INIT_FIELD } from '../../constants';
-import { addAddressSchema } from '../../schema';
-import CustomButton from '../CustomButton';
-import FormInput from '../Sign/FormInput';
+import { CustomButton, FormInput, FormAddressInput } from 'components';
+import { addAddress } from 'api/fetch';
+import { addAddressSchema } from 'schema';
+import { INIT_FIELD } from 'constants';
 
 const InputAddress = ({ setFiled, changeSelectedAddress }) => {
+  const { colors } = useMantineTheme();
   const { handleSubmit, register, formState, trigger, setValue } = useForm({
     resolver: zodResolver(addAddressSchema),
   });
@@ -23,32 +23,14 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
       postcode: data.postcode,
     };
 
-    const res = await addAddress(newAddress);
+    const { id } = await addAddress(newAddress);
 
-    changeSelectedAddress({ ...newAddress, id: res.data.id });
+    changeSelectedAddress({ ...newAddress, id });
     setFiled({ ...INIT_FIELD, info: true });
   };
 
   return (
-    <Stack
-      align="center"
-      w="100%"
-      sx={{
-        input: {
-          fontSize: '1.6rem',
-          border: 'none',
-          borderBottomStyle: 'solid',
-          borderBottomWidth: '0.07rem',
-          borderBottomColor: '#ced4da',
-        },
-        label: {
-          fontSize: '1.6rem',
-        },
-        div: {
-          padding: '0',
-          fontSize: '1.6rem',
-        },
-      }}>
+    <Container miw="45rem">
       <form noValidate onSubmit={handleSubmit(handleAddAddress)}>
         <FormInput
           formState={formState}
@@ -70,14 +52,15 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
           type="tel"
           withAsterisk
         />
-        <FormInput
+        <FormAddressInput
           formState={formState}
           id="postcode"
           label="우편번호"
-          placeholder="주소찾기 버튼을 클릭주세요"
+          placeholder="주소찾기 버튼을 클릭주세요."
           register={register}
           setValue={setValue}
           type="text"
+          readOnly
           withAsterisk
         />
         <FormInput
@@ -104,13 +87,13 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
             variant="outline"
             sx={{
               width: '20rem',
-              ':hover': { backgroundColor: 'transparent', borderColor: '#228be6', color: '#228be6' },
+              ':hover': { backgroundColor: 'transparent', borderColor: colors.blue[6], color: colors.blue[6] },
             }}>
             배송지 추가
           </CustomButton>
         </Center>
       </form>
-    </Stack>
+    </Container>
   );
 };
 

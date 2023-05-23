@@ -96,7 +96,7 @@ export const addCoupon = async id => {
 };
 
 // order?
-export const postOrder = async paymentInfo => {
+export const order = async paymentInfo => {
   await axios.post('/api/order/pay', { ...paymentInfo });
 };
 
@@ -105,8 +105,8 @@ export const toggleFavorite = async ({ id }) => {
 };
 
 export const addAddress = async newAddress => {
-  const res = await axios.post('/api/users/me/address', { ...newAddress });
-  return res;
+  const { data } = await axios.post('/api/users/me/address', { ...newAddress });
+  return data;
 };
 
 export const addCart = async ({ id, selectedSize }) => {

@@ -3,12 +3,11 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-import { Stack, Title, Center, useMantineTheme, Button, Text } from '@mantine/core';
+import { Stack, Title, Center, useMantineTheme, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import { FormInput, CustomButton } from 'components';
+import { FormInput, CustomButton, FormAddressInput } from 'components';
 import { checkEmailDuplicate, signUp } from 'api/fetch';
 import { signupSchema } from 'schema';
 import { PATH } from 'constants';
@@ -18,7 +17,6 @@ const SignUp = () => {
 
   const { state } = useLocation();
   const navigate = useNavigate();
-  const open = useDaumPostcodePopup();
   const { handleSubmit, register, formState, setValue } = useForm({
     resolver: zodResolver(signupSchema),
   });
@@ -42,19 +40,6 @@ const SignUp = () => {
       .replace(/-{1,2}$/g, '');
 
     setValue('phone', formatted);
-  };
-
-  const handleAddressClick = () => {
-    open({
-      onComplete: ({ userSelectedType, roadAddress, jibunAddress, zonecode, bname, buildingName }) => {
-        const address = userSelectedType === 'R' ? `${roadAddress} (${bname}, ${buildingName})` : jibunAddress;
-
-        setValue('mainAddress', address);
-        setValue('postcode', zonecode);
-      },
-      left: window.screen.width / 2 - 250,
-      top: window.screen.height / 2 - 300,
-    });
   };
 
   const handleSignUpSubmit = async data => {
@@ -135,7 +120,7 @@ const SignUp = () => {
           type="password"
           withAsterisk
         />
-        <FormInput
+        <FormAddressInput
           formState={formState}
           id="postcode"
           label="우편번호"
@@ -143,23 +128,6 @@ const SignUp = () => {
           register={register}
           setValue={setValue}
           type="text"
-          rightSection={
-            <Button
-              color={colorScheme === 'dark' ? 'gray.6' : 'gray'}
-              h="3rem"
-              m="-0.5rem 6rem 0 0"
-              p="0.7rem 1.4rem"
-              size="1.4rem"
-              variant="outline"
-              w="12rem"
-              sx={{
-                borderRadius: '3rem',
-                ':hover': { border: `1px solid ${colors.blue[6]}`, color: colors.blue[6] },
-              }}
-              onClick={handleAddressClick}>
-              주소찾기
-            </Button>
-          }
           readOnly
         />
         <FormInput

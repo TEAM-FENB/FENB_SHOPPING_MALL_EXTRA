@@ -41,7 +41,7 @@ const OrderHistory = () => {
           borderTop: `1px solid ${colorScheme === 'dark' ? colors.gray[8] : colors.gray[3]}`,
         }}>
         <Text>총 결제 금액</Text>
-        <Text>{totalPrice.toLocaleString()} 원</Text>
+        <Text>{totalPrice.toLocaleString('ko-KR')} 원</Text>
       </Group>
       <CustomButton
         color={colorScheme === 'dark' ? 'gray.6' : 'dark'}

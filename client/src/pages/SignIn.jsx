@@ -27,7 +27,7 @@ const SignIn = () => {
       const user = await signIn(data);
 
       setUser(user);
-      navigate(state);
+      navigate(state ?? PATH.MAIN);
 
       notifications.show({
         color: 'blue',
