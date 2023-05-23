@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ import { Container, Flex } from '@mantine/core';
 import { FiltersContainer, Header, ResultProducts } from 'components/Category';
 import { filteredProductsQuery } from 'api/query';
 import { useMediaQuery } from 'hooks';
-import { filteredAndSortedProducts, getDecodeSearch } from 'utils';
+import { filteredProducts, getDecodeSearch, sortProducts } from 'utils';
 import { MEDIAQUERY_WIDTH, FILTER } from 'constants';
 
 const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
@@ -33,10 +33,7 @@ const Category = () => {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [sortOption, setSortOption] = useState(INITIAL_SORT);
 
-  const newProducts = useMemo(
-    () => filteredAndSortedProducts(products, filters, sortOption),
-    [products, filters, sortOption]
-  );
+  const newProducts = sortProducts(filteredProducts(products, filters), sortOption);
 
   const handleResetFiltersClick = () => {
     setFilters(INITIAL_FILTERS);

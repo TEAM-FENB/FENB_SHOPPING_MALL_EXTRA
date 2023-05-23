@@ -2,30 +2,9 @@ import { FILTER } from 'constants';
 
 const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
 
-const sortProducts = (products, sortOption) => {
-  switch (sortOption) {
-    case 'favorite':
-      return products.sort((a, b) => a.favorites - b.favorites);
-
-    case 'new':
-      return products.sort((a, b) => new Date(b.dateOfManufacture).getTime() - new Date(a.dateOfManufacture).getTime());
-
-    case 'high':
-      return products.sort((a, b) => b.price - a.price);
-
-    case 'low':
-      return products.sort((a, b) => a.price - b.price);
-
-    default:
-      return products;
-  }
-};
-
 const checkFiltersHasTrue = filters => filters.some(filter => filter === true);
 
-// 매개변수를 디스트럭처링하기 실패!
-// const filteredAndSortedProducts = (products, newFilters : { priceFilters, sizeFilters, colorFilters, genderFilters, brandFilters }, sortOption) => {}
-const filteredAndSortedProducts = (products, newFilters, sortOption) => {
+const filteredProducts = (products, newFilters) => {
   const { priceFilters, sizeFilters, colorFilters, genderFilters, brandFilters } = newFilters;
 
   const filteredPrice = checkFiltersHasTrue(priceFilters)
@@ -78,9 +57,7 @@ const filteredAndSortedProducts = (products, newFilters, sortOption) => {
       ].flat()
     : filteredGender;
 
-  const filteredAndSortedProducts = sortProducts(filteredBrand, sortOption);
-
-  return filteredAndSortedProducts;
+  return filteredBrand;
 };
 
-export default filteredAndSortedProducts;
+export default filteredProducts;
