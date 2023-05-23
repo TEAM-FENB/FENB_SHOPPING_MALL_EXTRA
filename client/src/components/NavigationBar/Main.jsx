@@ -1,10 +1,9 @@
-import { BiSearch } from 'react-icons/bi';
-import { BsFillSuitHeartFill } from 'react-icons/bs';
-import { SlHandbag } from 'react-icons/sl';
 import { forwardRef, useEffect, useState } from 'react';
+
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
+
 import {
   ActionIcon,
   Autocomplete,
@@ -20,12 +19,16 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
+import { BiSearch } from 'react-icons/bi';
+import { BsFillSuitHeartFill } from 'react-icons/bs';
+import { SlHandbag } from 'react-icons/sl';
+
 import { requestSignout } from '../../api/fetch';
-import { userState } from '../../recoil/atoms';
+import { AUTH_QUERY_KEY, MEDIAQUERY_WIDTH, PATH } from '../../constants';
 import { useMediaQuery } from '../../hooks';
 import { useSearchProducts } from '../../hooks/products';
+import { userState } from '../../recoil/atoms';
 import { getDecodeSearch } from '../../utils/location';
-import { AUTH_QUERY_KEY, MEDIAQUERY_WIDTH, PATH } from '../../constants';
 import { DarkMode } from '../index';
 
 const AutoCompleteItem = forwardRef(({ value, id, onMouseDown, ...rest }, ref) => {
@@ -33,11 +36,12 @@ const AutoCompleteItem = forwardRef(({ value, id, onMouseDown, ...rest }, ref) =
 
   const handleMouseDown = e => {
     onMouseDown(e);
+    // Link component? navigate function call?
     navigate(`${PATH.PRODUCTS}/${id}`);
   };
 
   return (
-    <Text ref={ref} onMouseDown={handleMouseDown} value={value} {...rest}>
+    <Text ref={ref} value={value} onMouseDown={handleMouseDown} {...rest}>
       {value}
     </Text>
   );
@@ -65,14 +69,14 @@ const SearchBar = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Autocomplete
-        size="xl"
-        icon={<BiSearch size="2rem" />}
-        placeholder="상품 검색"
         data={searchProducts}
-        radius="xl"
+        icon={<BiSearch size="2rem" />}
         itemComponent={AutoCompleteItem}
+        nothingFound={<Text>검색결과가 없습니다.</Text>}
+        placeholder="상품 검색"
+        radius="xl"
+        size="xl"
         value={searchInput}
-        onChange={setSearchInput}
         filter={(_, item) =>
           item.value.toLowerCase().includes(debounced.toLowerCase().trim()) ||
           item.brand.en.toLowerCase().includes(debounced.toLowerCase().trim()) ||
@@ -80,7 +84,7 @@ const SearchBar = () => {
           item.category.kr.toLowerCase().includes(debounced.toLowerCase().trim()) ||
           item.category.en.toLowerCase().includes(debounced.toLowerCase().trim())
         }
-        nothingFound={<Text>검색결과가 없습니다.</Text>}
+        onChange={setSearchInput}
       />
     </form>
   );
@@ -92,10 +96,10 @@ const Logo = () => {
   return (
     <Link to={PATH.MAIN}>
       <Image
-        width="10rem"
+        alt="486"
         pl="1rem"
         src={`images/logo/${colorScheme === 'dark' ? 'darkMain' : 'main'}.svg`}
-        alt="486"
+        width="10rem"
       />
     </Link>
   );
@@ -104,20 +108,20 @@ const Logo = () => {
 const SimpleUtilArea = ({ user, handleSignOutClick, redirectTo }) => (
   <Stack>
     <Navbar.Section pt="xs">
-      <Flex gap="lg" align="center" justify="flex-end" fz="1.3rem" color="#222222">
+      <Flex align="center" color="#222222" fz="1.3rem" gap="lg" justify="flex-end">
         {user ? (
           <>
-            <Text onClick={handleSignOutClick} sx={{ cursor: 'pointer' }}>
+            <Text sx={{ cursor: 'pointer' }} onClick={handleSignOutClick}>
               로그아웃
             </Text>
             <Text>{user.username}님 환영합니다.</Text>
           </>
         ) : (
           <>
-            <Link key="signup" to={PATH.SIGNUP} state={redirectTo}>
+            <Link key="signup" state={redirectTo} to={PATH.SIGNUP}>
               회원가입
             </Link>
-            <Link key="signin" to={PATH.SIGNIN} state={redirectTo}>
+            <Link key="signin" state={redirectTo} to={PATH.SIGNIN}>
               로그인
             </Link>
           </>
@@ -126,16 +130,16 @@ const SimpleUtilArea = ({ user, handleSignOutClick, redirectTo }) => (
       </Flex>
     </Navbar.Section>
     <Navbar.Section>
-      <Flex justify="flex-end" align="center" gap="xl">
+      <Flex align="center" gap="xl" justify="flex-end">
         <SearchBar />
-        <Link to={PATH.WISHLIST} state={redirectTo}>
+        <Link state={redirectTo} to={PATH.WISHLIST}>
           <Tooltip label="관심상품">
             <ActionIcon size="xl">
-              <BsFillSuitHeartFill size="2.8rem" color="tomato" />
+              <BsFillSuitHeartFill color="tomato" size="2.8rem" />
             </ActionIcon>
           </Tooltip>
         </Link>
-        <Link to={PATH.CART} state={redirectTo}>
+        <Link state={redirectTo} to={PATH.CART}>
           <Tooltip label="장바구니">
             <ActionIcon size="xl">
               <SlHandbag size="2.8rem" />
@@ -153,50 +157,50 @@ const UtilArea = ({ user, handleSignOutClick, redirectTo }) => {
   return (
     <Group>
       <SearchBar />
-      <Menu shadow="md" width="20rem" transitionProps={{ transition: 'rotate-right', duration: 150 }}>
+      <Menu shadow="md" transitionProps={{ transition: 'rotate-right', duration: 150 }} width="20rem">
         <Menu.Target>
           <Avatar radius="xl" size="5rem" sx={{ cursor: 'pointer' }} />
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label fz="1.6rem" fw="bold">
+          <Menu.Label fw="bold" fz="1.6rem">
             {user ? `${user.username}님 환영합니다.` : '로그인이 필요합니다.'}
           </Menu.Label>
           <Menu.Divider />
           <Menu.Item
-            fz="1.6rem"
-            fw="bold"
             disabled={!user}
-            icon={<BsFillSuitHeartFill size="2rem" color="tomato" />}
+            fw="bold"
+            fz="1.6rem"
+            icon={<BsFillSuitHeartFill color="tomato" size="2rem" />}
             onClick={() => navigate(PATH.WISHLIST)}>
             관심상품
           </Menu.Item>
           <Menu.Item
-            fz="1.6rem"
-            fw="bold"
             disabled={!user}
+            fw="bold"
+            fz="1.6rem"
             icon={<SlHandbag size="2rem" />}
             onClick={() => navigate(PATH.CART)}>
             장바구니
           </Menu.Item>
           <Menu.Divider />
           {user ? (
-            <Menu.Item fz="1.6rem" fw="bold" color="red" onClick={handleSignOutClick}>
+            <Menu.Item color="red" fw="bold" fz="1.6rem" onClick={handleSignOutClick}>
               로그아웃
             </Menu.Item>
           ) : (
             <>
               <Menu.Item
                 key="signup"
-                fz="1.6rem"
                 fw="bold"
+                fz="1.6rem"
                 onClick={() => navigate(PATH.SIGNUP, { state: redirectTo })}>
                 회원가입
               </Menu.Item>
               <Menu.Item
                 key="signin"
-                fz="1.6rem"
                 fw="bold"
+                fz="1.6rem"
                 onClick={() => navigate(PATH.SIGNIN, { state: redirectTo })}>
                 로그인
               </Menu.Item>
@@ -212,9 +216,9 @@ const UtilArea = ({ user, handleSignOutClick, redirectTo }) => {
 const Main = () => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
   const [user, setUser] = useRecoilState(userState);
-  const { search: rawSearch, pathname } = useLocation();
+  const { search: rawSearch, pathname, state } = useLocation();
   const { search } = getDecodeSearch(rawSearch);
-  const redirectTo = `${pathname}${search}`;
+  const redirectTo = pathname === PATH.SIGNIN || pathname === PATH.SIGNUP ? state : `${pathname}${search}`;
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -229,10 +233,11 @@ const Main = () => {
   return (
     <Group position="apart">
       <Logo />
+      {/* 모바일 UI먼저? PC UI 먼저? */}
       {matches ? (
-        <SimpleUtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
+        <SimpleUtilArea handleSignOutClick={handleSignOutClick} redirectTo={redirectTo} user={user} />
       ) : (
-        <UtilArea user={user} redirectTo={redirectTo} handleSignOutClick={handleSignOutClick} />
+        <UtilArea handleSignOutClick={handleSignOutClick} redirectTo={redirectTo} user={user} />
       )}
     </Group>
   );

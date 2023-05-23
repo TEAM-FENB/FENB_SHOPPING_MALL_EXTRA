@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
+
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+
 import { Container, Flex } from '@mantine/core';
-import { FiltersContainer, Header, ResultProducts } from '../components/Category';
+
 import { filteredProductsQuery } from '../api/query';
+import { FiltersContainer, Header, ResultProducts } from '../components/Category';
+import { BRANDS, COLORS, GENDER, MEDIAQUERY_WIDTH, PRICES, SIZES } from '../constants';
 import { useMediaQuery } from '../hooks';
 import { filteredAndSortedProducts } from '../utils';
 import { getDecodeSearch } from '../utils/location';
-import { BRANDS, COLORS, GENDER, MEDIAQUERY_WIDTH, PRICES, SIZES } from '../constants';
 
 const INITIAL_FILTERS = {
   priceFilters: Array.from({ length: PRICES.length }, () => false),
@@ -32,7 +35,7 @@ const Category = () => {
   useEffect(() => {
     setSortOption(JSON.parse(sessionStorage.getItem('sortOption')) ?? sortOption);
     setFilters(JSON.parse(sessionStorage.getItem('filters')) ?? filters);
-  }, []);
+  }, [filters, sortOption]);
 
   const newProducts = useMemo(
     () => filteredAndSortedProducts(products, filters, sortOption),
@@ -68,20 +71,20 @@ const Category = () => {
   };
 
   return (
-    <Container top="0" left="0" size="150rem">
+    <Container left="0" size="150rem" top="0">
       <Header
-        sortOption={sortOption}
-        searchValue={searchValue}
-        productCount={newProducts.length}
         handleSelectSortOption={handleSelectSortOption}
+        productCount={newProducts.length}
+        searchValue={searchValue}
+        sortOption={sortOption}
       />
 
       <Flex direction={matches ? 'row' : 'column'}>
         <FiltersContainer
-          type={matches ? 'larger' : 'smaller'}
           filters={filters}
-          handleResetFilters={handleResetFilters}
           handleCheckFilters={handleCheckFilters}
+          handleResetFilters={handleResetFilters}
+          type={matches ? 'larger' : 'smaller'}
         />
         <ResultProducts cols={matches ? 3 : 2} products={newProducts} />
       </Flex>

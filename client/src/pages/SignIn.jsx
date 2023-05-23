@@ -26,9 +26,6 @@ const SignIn = () => {
     try {
       const user = await signIn(data);
 
-      setUser(user);
-      navigate(state ?? PATH.MAIN);
-
       notifications.show({
         color: 'blue',
         autoClose: 2000,
@@ -36,6 +33,9 @@ const SignIn = () => {
         message: `${user.username}님 환영합니다.`,
         sx: { div: { fontSize: '1.5rem' } },
       });
+
+      setUser(user);
+      navigate(state ?? PATH.MAIN);
     } catch (error) {
       notifications.show({
         color: 'red',

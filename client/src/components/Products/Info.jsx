@@ -1,5 +1,6 @@
 import { Stack, ColorSwatch, Text, SimpleGrid, useMantineColorScheme } from '@mantine/core';
 import styled from '@emotion/styled';
+
 import { SizeButton } from '..';
 
 const SizeButtonContainer = styled(SimpleGrid)`
@@ -13,21 +14,21 @@ const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeC
 
   return (
     <>
-      <Text size="1.4rem" c={colorScheme === 'dark' ? 'gray.4' : 'gray.8'}>
+      <Text c={colorScheme === 'dark' ? 'gray.4' : 'gray.8'} size="1.4rem">
         {brand.kr} / {feature}
       </Text>
-      <Text fw={500} size="2rem" m="2rem 0">{`${price.toLocaleString()} 원`}</Text>
+      <Text fw={500} m="2rem 0" size="2rem">{`${price.toLocaleString('ko-KR')} 원`}</Text>
       <Stack>
         <Text fw="600">사이즈 선택</Text>
         <SizeButtonContainer cols={5} selected={isSizeSelected === false}>
           {stocks.map(({ size, stock }) => (
             <SizeButton
               key={size}
-              variant="default"
-              radius="0.4rem"
-              fw="normal"
               disabled={stock === 0}
+              fw="normal"
+              radius="0.4rem"
               selected={size === currentSelectedSize}
+              variant="default"
               styles={theme => ({
                 root: {
                   '&:disabled': {
@@ -41,13 +42,13 @@ const Info = ({ currentProduct, isSizeSelected, currentSelectedSize, handleSizeC
           ))}
         </SizeButtonContainer>
         {isSizeSelected === false ? (
-          <Text fw="500" color="red">
+          <Text color="red" fw="500">
             사이즈를 선택해주세요
           </Text>
         ) : null}
-        <Stack align="center" w="5rem" spacing="xs" m="1.4rem 0">
+        <Stack align="center" m="1.4rem 0" spacing="xs" w="5rem">
           <ColorSwatch color={color.color} size="2.5rem" />
-          <Text m="0" fz="1.4rem" fw="500">
+          <Text fw="500" fz="1.4rem" m="0">
             {color.kr}
           </Text>
         </Stack>

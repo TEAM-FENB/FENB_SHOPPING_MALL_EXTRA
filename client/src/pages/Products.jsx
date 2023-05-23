@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+
+import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+
 import { Container, Stack, Group, Image, Title } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { useLocation } from 'react-router-dom';
+
 import { favoritesQuery, productsQuery, verifyQuery } from '../api/query';
 import { Info, Description, CartButton, WishListButton } from '../components/Products';
 import { useAddCartMutation } from '../hooks/carts';
@@ -67,60 +70,60 @@ const Products = () => {
   };
 
   return (
-    <Container size="120rem" p="0 0 5rem 0">
+    <Container p="0 0 5rem 0" size="120rem">
       {matches ? (
-        <Group position="center" align="flex-start" noWrap="nowrap">
-          <Stack m="4.8rem 0 0.8rem" p="0 2.4rem 0 4.8rem" maw="60rem">
+        <Group align="flex-start" noWrap="nowrap" position="center">
+          <Stack m="4.8rem 0 0.8rem" maw="60rem" p="0 2.4rem 0 4.8rem">
             <Image src={imgURL} />
             <Description>{description}</Description>
           </Stack>
-          <Stack m="4.8rem 0.8rem 0 0" p="0 4.8rem 0 2.4rem" miw="40rem" fz="1.6rem" spacing={0}>
+          <Stack fz="1.6rem" m="4.8rem 0.8rem 0 0" miw="40rem" p="0 4.8rem 0 2.4rem" spacing={0}>
             <Title>{`[${brand.kr}] ${name}`}</Title>
             <Info
               currentProduct={currentProduct}
-              isSizeSelected={isSizeSelected}
               currentSelectedSize={currentSelectedSize}
               handleSizeClick={handleSizeClick}
+              isSizeSelected={isSizeSelected}
             />
             <CartButton
               currentProduct={currentProduct}
-              isSizeSelected={isSizeSelected}
-              isSignInUserRef={isSignInUserRef}
-              hasStock={hasStock}
               handleCartClick={() => handleCartClick(currentSelectedSize)}
               handleIsSizeSelected={handleIsSizeSelected}
+              hasStock={hasStock}
+              isSignInUserRef={isSignInUserRef}
+              isSizeSelected={isSizeSelected}
             />
             <WishListButton
               currentProduct={currentProduct}
-              isSignInUserRef={isSignInUserRef}
-              isFavorite={isFavorite}
               handleWishListToggle={handleWishListToggle}
+              isFavorite={isFavorite}
+              isSignInUserRef={isSignInUserRef}
             />
           </Stack>
         </Group>
       ) : (
-        <Stack m="4.8rem 0.8rem 0 0" p="0 5rem" miw="45rem" fz="1.6rem" spacing={0}>
+        <Stack fz="1.6rem" m="4.8rem 0.8rem 0 0" miw="45rem" p="0 5rem" spacing={0}>
           <Title>{`[${brand.kr}] ${name}`}</Title>
           <Image src={imgURL} />
           <Info
             currentProduct={currentProduct}
-            isSizeSelected={isSizeSelected}
             currentSelectedSize={currentSelectedSize}
             handleSizeClick={handleSizeClick}
+            isSizeSelected={isSizeSelected}
           />
           <CartButton
             currentProduct={currentProduct}
-            isSizeSelected={isSizeSelected}
-            isSignInUserRef={isSignInUserRef}
-            hasStock={hasStock}
             handleCartClick={() => handleCartClick(currentSelectedSize)}
             handleIsSizeSelected={handleIsSizeSelected}
+            hasStock={hasStock}
+            isSignInUserRef={isSignInUserRef}
+            isSizeSelected={isSizeSelected}
           />
           <WishListButton
             currentProduct={currentProduct}
-            isSignInUserRef={isSignInUserRef}
-            isFavorite={isFavorite}
             handleWishListToggle={handleWishListToggle}
+            isFavorite={isFavorite}
+            isSignInUserRef={isSignInUserRef}
           />
           <Description>{description}</Description>
         </Stack>

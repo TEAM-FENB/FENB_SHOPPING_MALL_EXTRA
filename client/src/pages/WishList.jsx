@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+
 import {
   Title,
   Container,
@@ -9,14 +10,15 @@ import {
   Text,
   Badge,
   UnstyledButton,
-  Flex,
+  Grid,
   useMantineTheme,
 } from '@mantine/core';
 import { BiTrash } from 'react-icons/bi';
+
 import { favoritesQuery } from '../api/query';
-import { useToggleWishItemMutation } from '../hooks/wishList';
-import { PATH } from '../constants';
 import { NoProduct } from '../components';
+import { PATH } from '../constants';
+import { useToggleWishItemMutation } from '../hooks/wishList';
 
 const WishList = () => {
   const { data: favorites } = useQuery(favoritesQuery());
@@ -35,52 +37,58 @@ const WishList = () => {
 
   return (
     <Container size="120rem">
-      <Title p="0.8rem 0 0 0.8rem">관심상품 목록</Title>
+      <Title>관심상품 목록</Title>
       {!favorites.length ? (
         <NoProduct pageName={'관심상품 목록'} />
       ) : (
-        <Flex p="3.5rem 0 0 1rem" align="center" maw="120rem" m="auto" justify="" gap="xl" wrap="wrap">
+        <Grid p="3.5rem">
           {favorites.map(({ id, imgURL, name, brand, price, feature }) => (
-            <Card
+            <Grid.Col
               key={id}
-              padding="lg"
-              maw="35rem"
-              fz="1.6rem"
-              withBorder
+              span={4}
               sx={{
                 '@media (max-width: 768px)': {
-                  width: '20rem',
+                  flexBasis: '50%',
+                  maxWidth: '50%',
                 },
               }}>
-              <Card.Section>
-                <Image src={imgURL} alt="product" sx={{ cursor: 'pointer' }} onClick={() => handleClickProduct(id)} />
-              </Card.Section>
-
-              <Group position="apart" mt="md" mb="xs">
-                <Text weight={500} sx={{ cursor: 'pointer' }} onClick={() => handleClickProduct(id)}>
-                  {name}
-                </Text>
-                <Badge color="skyblue" h="2rem" variant="light">
-                  무료배송
-                </Badge>
-              </Group>
-
-              <Text align="left" size="1.4rem" color="dimmed">
-                {brand.kr} / {feature}
-              </Text>
-
-              <Group position="apart" my="md">
-                <Text fw="500">{`${price.toLocaleString()} 원`}</Text>
-                <UnstyledButton sx={{ cursor: 'pointer' }} onClick={() => handleRemoveWishItemClick(id)}>
-                  <BiTrash
-                    size="2.5rem"
-                    color={theme.colorScheme === 'dark' ? theme.colors.gray[6] : 'rgb(117,117,117)'}
+              <Card fz="1.6rem" padding="lg" withBorder>
+                <Card.Section>
+                  <Image
+                    alt="product"
+                    src={imgURL}
+                    sx={{ cursor: 'pointer' }}
+                    truncate
+                    onClick={() => handleClickProduct(id)}
                   />
-                </UnstyledButton>
-              </Group>
-            </Card>
+                </Card.Section>
+
+                <Group mb="xs" mt="md" position="apart" noWrap>
+                  <Text sx={{ cursor: 'pointer' }} weight={500} truncate onClick={() => handleClickProduct(id)}>
+                    {name}
+                  </Text>
+                  <Badge color="skyblue" h="2rem" sx={{ flexShrink: 0 }} variant="light">
+                    무료배송
+                  </Badge>
+                </Group>
+
+                <Text align="left" color="dimmed" size="1.4rem">
+                  {brand.kr} / {feature}
+                </Text>
+
+                <Group my="md" position="apart">
+                  <Text fw="500">{`${price.toLocaleString()} 원`}</Text>
+                  <UnstyledButton sx={{ cursor: 'pointer' }} onClick={() => handleRemoveWishItemClick(id)}>
+                    <BiTrash
+                      color={theme.colorScheme === 'dark' ? theme.colors.gray[6] : 'rgb(117,117,117)'}
+                      size="2.5rem"
+                    />
+                  </UnstyledButton>
+                </Group>
+              </Card>
+            </Grid.Col>
           ))}
-        </Flex>
+        </Grid>
       )}
     </Container>
   );

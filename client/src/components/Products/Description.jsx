@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 
 const Description = ({ children }) => (
-  <Text fz="1.6rem" fw="500" lh="3.2rem" mt="1.5rem">
+  <Text fw="500" fz="1.6rem" lh="3.2rem" mt="1.5rem">
     {children}
   </Text>
 );
