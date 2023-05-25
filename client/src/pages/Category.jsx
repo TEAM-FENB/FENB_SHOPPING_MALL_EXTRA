@@ -53,11 +53,11 @@ const Category = () => {
     ({ rangeIdx, size, color, gender, brand }) =>
     () => {
       const newFilters = {
-        priceFilters: filters.priceFilters.map((filter, i) => (rangeIdx === PRICES.at(i).rangeIdx ? !filter : filter)),
-        sizeFilters: filters.sizeFilters.map((filter, i) => (size === SIZES.at(i) ? !filter : filter)),
-        colorFilters: filters.colorFilters.map((filter, i) => (color === COLORS.at(i).en ? !filter : filter)),
-        genderFilters: filters.genderFilters.map((filter, i) => (gender === GENDER.at(i).en ? !filter : filter)),
-        brandFilters: filters.brandFilters.map((filter, i) => (brand === BRANDS.at(i).en ? !filter : filter)),
+        priceFilters: filters.priceFilters.map((filter, i) => (rangeIdx === PRICES[i].rangeIdx ? !filter : filter)),
+        sizeFilters: filters.sizeFilters.map((filter, i) => (size === SIZES[i] ? !filter : filter)),
+        colorFilters: filters.colorFilters.map((filter, i) => (color === COLORS[i].en ? !filter : filter)),
+        genderFilters: filters.genderFilters.map((filter, i) => (gender === GENDER[i].en ? !filter : filter)),
+        brandFilters: filters.brandFilters.map((filter, i) => (brand === BRANDS[i].en ? !filter : filter)),
       };
 
       setFilters({ ...filters, ...newFilters });
