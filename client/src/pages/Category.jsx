@@ -8,8 +8,8 @@ import { Container, Flex } from '@mantine/core';
 import { FiltersContainer, Header, ResultProducts } from 'components/Category';
 import { filteredProductsQuery } from 'api/query';
 import { useMediaQuery } from 'hooks';
-import { filteredProducts, getDecodeSearch, sortProducts } from 'utils';
-import { MEDIAQUERY_WIDTH, FILTER } from 'constants';
+import { filteredProducts, getDecodeSearch, sortProducts, setSessionStorage, getSessionStorage } from 'utils';
+import { MEDIAQUERY_WIDTH, FILTER, SESSION_KEY } from 'constants';
 
 const { PRICES, SIZES, COLORS, GENDER, BRANDS } = FILTER;
 
@@ -39,14 +39,14 @@ const Category = () => {
     setFilters(INITIAL_FILTERS);
     setSortOption(INITIAL_SORT);
 
-    sessionStorage.setItem('filters', JSON.stringify(INITIAL_FILTERS));
-    sessionStorage.setItem('sortOption', JSON.stringify(INITIAL_SORT));
+    setSessionStorage(SESSION_KEY.FILTERS, INITIAL_FILTERS);
+    setSessionStorage(SESSION_KEY.SORT_OPTION, INITIAL_SORT);
   };
 
   const handleSelectSortOptionClick = selectedSortOption => {
     setSortOption(selectedSortOption);
 
-    sessionStorage.setItem('sortOption', JSON.stringify(selectedSortOption));
+    setSessionStorage(SESSION_KEY.SORT_OPTION, selectedSortOption);
   };
 
   const handleCheckFiltersClick =
@@ -62,12 +62,12 @@ const Category = () => {
 
       setFilters({ ...filters, ...newFilters });
 
-      sessionStorage.setItem('filters', JSON.stringify({ ...filters, ...newFilters }));
+      setSessionStorage(SESSION_KEY.FILTERS, { ...filters, ...newFilters });
     };
 
   useEffect(() => {
-    setSortOption(JSON.parse(sessionStorage.getItem('sortOption')) ?? sortOption);
-    setFilters(JSON.parse(sessionStorage.getItem('filters')) ?? filters);
+    setSortOption(getSessionStorage(SESSION_KEY.SORT_OPTION) ?? sortOption);
+    setFilters(getSessionStorage(SESSION_KEY.FILTERS) ?? filters);
   }, [filters, sortOption]);
 
   return (
