@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -33,7 +33,10 @@ const Category = () => {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [sortOption, setSortOption] = useState(INITIAL_SORT);
 
-  const newProducts = sortProducts(filteredProducts(products, filters), sortOption);
+  const newProducts = useMemo(
+    () => sortProducts(filteredProducts(products, filters), sortOption),
+    [products, filters, sortOption]
+  );
 
   const handleResetFiltersClick = () => {
     setFilters(INITIAL_FILTERS);
