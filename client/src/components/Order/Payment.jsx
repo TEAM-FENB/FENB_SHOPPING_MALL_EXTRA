@@ -11,7 +11,13 @@ import { order } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
 import { useGetAddresses } from 'hooks/address';
 import { useOrderInfo } from 'hooks/order';
-import { INIT_FIELD, MEDIAQUERY_WIDTH, PATH, QUERY_KEY } from 'constants';
+import { MEDIAQUERY_WIDTH, PATH, QUERY_KEY } from 'constants';
+
+const INIT_FIELD = {
+  info: false,
+  edit: false,
+  input: false,
+};
 
 const Payment = ({ changeDiscount }) => {
   const addresses = useGetAddresses();
@@ -30,7 +36,7 @@ const Payment = ({ changeDiscount }) => {
     changeDiscount
   );
 
-  const [field, setFiled] = useState({ ...INIT_FIELD, info: isValidAddress, input: !isValidAddress });
+  const [field, setField] = useState({ ...INIT_FIELD, info: isValidAddress, input: !isValidAddress });
   const selectedAddress = useRef(defaultAddress);
 
   const changeSelectedAddress = newAddress => {
@@ -38,6 +44,8 @@ const Payment = ({ changeDiscount }) => {
 
     changeAddressId(newAddress.id);
   };
+
+  const handleFieldClick = newField => setField({ ...INIT_FIELD, ...newField });
 
   const handleOrderClick = async () => {
     queryClient.removeQueries(QUERY_KEY.CARTS);
@@ -52,8 +60,8 @@ const Payment = ({ changeDiscount }) => {
       <Address
         changeSelectedAddress={changeSelectedAddress}
         field={field}
+        handleFieldClick={handleFieldClick}
         selectedAddress={selectedAddress}
-        setFiled={setFiled}
       />
       <Coupons changeCouponId={changeCouponId} />
       <PaymentMethod changePaymentMethod={changePaymentMethod} />

@@ -7,9 +7,8 @@ import { CustomButton } from 'components';
 import { FormInput, FormAddressInput } from 'components/Sign';
 import { addAddress } from 'api/fetch';
 import { addressSchema } from 'schema';
-import { INIT_FIELD } from 'constants';
 
-const InputAddress = ({ setFiled, changeSelectedAddress }) => {
+const InputAddress = ({ handleFieldClick, changeSelectedAddress }) => {
   const { colors } = useMantineTheme();
   const { handleSubmit, register, formState, trigger, setValue } = useForm({
     resolver: zodResolver(addressSchema),
@@ -27,7 +26,7 @@ const InputAddress = ({ setFiled, changeSelectedAddress }) => {
     const { id } = await addAddress(newAddress);
 
     changeSelectedAddress({ ...newAddress, id });
-    setFiled({ ...INIT_FIELD, info: true });
+    handleFieldClick({ info: true });
   };
 
   return (

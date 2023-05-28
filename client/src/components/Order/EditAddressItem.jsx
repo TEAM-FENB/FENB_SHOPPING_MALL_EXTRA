@@ -1,10 +1,9 @@
 import { Button, Stack, Text, Group, Container, CloseButton, useMantineColorScheme } from '@mantine/core';
 import { FaHome } from 'react-icons/fa';
 
-import { INIT_FIELD } from '../../constants';
 import { useChangeDefaultAddressMutation, useRemoveAddressMutation } from '../../hooks/mutation';
 
-const EditAddressItem = ({ address, setFiled, selectedAddress, changeSelectedAddress }) => {
+const EditAddressItem = ({ address, handleFieldClick, selectedAddress, changeSelectedAddress }) => {
   const { id, recipient, mainAddress, detailAddress, postcode, recipientPhone, isDefault } = address;
 
   const { colorScheme } = useMantineColorScheme();
@@ -13,6 +12,11 @@ const EditAddressItem = ({ address, setFiled, selectedAddress, changeSelectedAdd
   const { mutate: changeDefaultAddress } = useChangeDefaultAddressMutation();
 
   const isSelected = selectedAddress.current.id === id;
+
+  const handleSelectAddressClick = () => {
+    changeSelectedAddress(address);
+    handleFieldClick({ info: true });
+  };
 
   return (
     <Container
@@ -27,10 +31,7 @@ const EditAddressItem = ({ address, setFiled, selectedAddress, changeSelectedAdd
         cursor: 'pointer',
         ':hover': { borderColor: '#228be6' },
       }}
-      onClick={() => {
-        changeSelectedAddress(address);
-        setFiled({ ...INIT_FIELD, info: true });
-      }}>
+      onClick={handleSelectAddressClick}>
       <Group align="flex-start" position="apart" sx={{ flexWrap: 'nowrap' }}>
         <Stack spacing={0}>
           <Group align="center" justify="center" spacing="0.4rem">

@@ -3,10 +3,13 @@ import { Stack, Group } from '@mantine/core';
 import { CustomButton } from 'components';
 import { EditAddressItem } from 'components/Order';
 import { useGetAddresses } from 'hooks/address';
-import { INIT_FIELD } from 'constants';
 
-const EditAddress = ({ setFiled, selectedAddress, changeSelectedAddress }) => {
+const EditAddress = ({ handleFieldClick, selectedAddress, changeSelectedAddress }) => {
   const addresses = useGetAddresses();
+
+  const handleAddAddressClick = () => {
+    handleFieldClick({ input: true });
+  };
 
   return (
     <Stack px="2rem" w="100%">
@@ -15,8 +18,8 @@ const EditAddress = ({ setFiled, selectedAddress, changeSelectedAddress }) => {
           key={address.id}
           address={address}
           changeSelectedAddress={changeSelectedAddress}
+          handleFieldClick={handleFieldClick}
           selectedAddress={selectedAddress}
-          setFiled={setFiled}
         />
       ))}
       <Group position="right">
@@ -27,7 +30,7 @@ const EditAddress = ({ setFiled, selectedAddress, changeSelectedAddress }) => {
             width: '20rem',
             ':hover': { backgroundColor: 'transparent', borderColor: '#228be6', color: '#228be6' },
           }}
-          onClick={() => setFiled({ ...INIT_FIELD, input: true })}>
+          onClick={handleAddAddressClick}>
           새 배송지 추가
         </CustomButton>
       </Group>
