@@ -4,7 +4,7 @@ import { RiEmotionSadLine } from 'react-icons/ri';
 const SadIcon = ({ children }) => (
   <Container>
     <Stack align="center">
-      <svg height="0m" width="0">
+      <svg height={0} width={0}>
         <linearGradient id="sadIcon" x1="20%" x2="80%" y1="20%" y2="80%">
           <stop offset="0%" stopColor="#cc208e" />
           <stop offset="100%" stopColor="#6713d2" />
