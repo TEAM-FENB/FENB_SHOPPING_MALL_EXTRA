@@ -8,7 +8,7 @@ import { Stack, Title, Center, useMantineTheme, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
 import { CustomButton } from 'components';
-import { FormInput, FormAddressInput } from 'components/Sign';
+import { FormInput, FormAddressInput, FormPhoneInput } from 'components/Sign';
 import { checkEmailDuplicate, signUp } from 'api/fetch';
 import { signupSchema } from 'schema';
 import { PATH } from 'constants';
@@ -32,15 +32,6 @@ const SignUp = () => {
     } catch (error) {
       throw new Error(error);
     }
-  };
-
-  const handlePhoneNumberChange = e => {
-    const formatted = e.target.value
-      .replace(/[^0-9]/g, '')
-      .replace(/(\d{0,3})(\d{0,4})(\d{0,4})/, '$1-$2-$3')
-      .replace(/-{1,2}$/g, '');
-
-    setValue('phone', formatted);
   };
 
   const handleSignUpSubmit = async data => {
@@ -92,7 +83,7 @@ const SignUp = () => {
           type="text"
           withAsterisk
         />
-        <FormInput
+        <FormPhoneInput
           formState={formState}
           id="phone"
           label="휴대전화번호"
@@ -101,7 +92,6 @@ const SignUp = () => {
           setValue={setValue}
           type="tel"
           withAsterisk
-          onChange={handlePhoneNumberChange}
         />
         <FormInput
           formState={formState}
