@@ -5,7 +5,6 @@ import { Button, Center, CloseButton, Container, Group, Stack, Text, Title, useM
 import { BsCheck2 } from 'react-icons/bs';
 import { FaHome } from 'react-icons/fa';
 
-import { CustomButton } from 'components';
 import { FormAddressInput, FormInput, FormPhoneInput } from 'components/Sign';
 import { useAddresses } from 'hooks/address';
 import { useAddAddressMutation, useChangeDefaultAddressMutation, useRemoveAddressMutation } from 'hooks/mutation';
@@ -135,16 +134,23 @@ const Address = ({ form: { addressId }, updateForm, mode, handleEditModeClick, h
             </Container>
           ))}
           <Group position="right">
-            <CustomButton
+            <Button
               color="gray"
+              fz="1.6rem"
+              h="6rem"
+              hw="bold"
+              mt="2rem"
+              p="1.8rem 2.4rem"
               variant="outline"
+              w="20rem"
               sx={{
+                borderRadius: '30px',
                 width: '20rem',
                 ':hover': { backgroundColor: 'transparent', borderColor: colors.blue[6], color: colors.blue[6] },
               }}
               onClick={handleAddModeClick}>
               새 배송지 추가
-            </CustomButton>
+            </Button>
           </Group>
         </Stack>
       )}
@@ -201,10 +207,16 @@ const Address = ({ form: { addressId }, updateForm, mode, handleEditModeClick, h
               type="text"
             />
             <Center>
-              <CustomButton
+              <Button
                 color="gray"
+                fz="1.6rem"
+                h="6rem"
+                hw="bold"
+                mt="2rem"
+                p="1.8rem 2.4rem"
                 type="submit"
                 variant="outline"
+                w="20rem"
                 sx={{
                   width: '20rem',
                   ':hover': {
@@ -212,9 +224,10 @@ const Address = ({ form: { addressId }, updateForm, mode, handleEditModeClick, h
                     borderColor: colors.blue[6],
                     color: colors.blue[6],
                   },
+                  borderRadius: '30px',
                 }}>
                 배송지 추가
-              </CustomButton>
+              </Button>
             </Center>
           </form>
         </Container>

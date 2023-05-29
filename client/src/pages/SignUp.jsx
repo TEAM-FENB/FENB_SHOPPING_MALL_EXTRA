@@ -4,10 +4,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Stack, Title, Center, useMantineTheme, Text } from '@mantine/core';
+import { Stack, Title, Center, useMantineTheme, Text, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import { CustomButton } from 'components';
 import { FormInput, FormAddressInput, FormPhoneInput } from 'components/Sign';
 import { checkEmailDuplicate, signUp } from 'api/fetch';
 import { signupSchema } from 'schema';
@@ -138,9 +137,20 @@ const SignUp = () => {
           register={register}
           type="text"
         />
-        <CustomButton color={colorScheme === 'dark' ? 'gray.6' : 'dark'} type="submit" w="40rem">
+        <Button
+          color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
+          fz="1.6rem"
+          h="6rem"
+          hw="bold"
+          mt="2rem"
+          p="1.8rem 2.4rem"
+          type="submit"
+          w="40rem"
+          sx={{
+            borderRadius: '30px',
+          }}>
           가입하기
-        </CustomButton>
+        </Button>
         <Center fz="1.6rem" mt="2rem">
           회원이신가요?
           <Text

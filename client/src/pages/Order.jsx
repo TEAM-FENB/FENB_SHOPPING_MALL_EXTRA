@@ -2,9 +2,8 @@ import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { Container, Title, Group, Stack, Text, useMantineTheme, Flex } from '@mantine/core';
+import { Container, Title, Group, Stack, Text, useMantineTheme, Flex, Button, Center } from '@mantine/core';
 
-import { CustomButton } from 'components';
 import { CartHistory, Address, Coupon, PaymentMethod } from 'components/Order';
 import { applyCoupon } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
@@ -78,14 +77,23 @@ const Order = () => {
           />
           <Coupon handleCouponIdUpdate={handleCouponIdUpdate} />
           <PaymentMethod form={form} updateForm={updateForm} />
-          <CustomButton
-            color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
-            disabled={!form.addressId || mode.edit || mode.add}
-            m="0 auto"
-            w="30rem"
-            onClick={handleOrderClick}>
-            주문결제
-          </CustomButton>
+          <Center>
+            <Button
+              color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
+              disabled={!form.addressId || mode.edit || mode.add}
+              fz="1.6rem"
+              h="6rem"
+              hw="bold"
+              mt="0 auto"
+              p="1.8rem 2.4rem"
+              w="30rem"
+              sx={{
+                borderRadius: '30px',
+              }}
+              onClick={handleOrderClick}>
+              주문결제
+            </Button>
+          </Center>
         </Stack>
         <CartHistory discount={discount} />
       </Flex>
