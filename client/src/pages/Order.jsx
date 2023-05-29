@@ -6,7 +6,7 @@ import { Container, Title, Group, Stack, Text, useMantineTheme, Flex } from '@ma
 
 import { CustomButton } from 'components';
 import { CartHistory, Address, Coupon, PaymentMethod } from 'components/Order';
-import { checkCoupon } from 'api/fetch';
+import { applyCoupon } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
 import { useAddresses } from 'hooks/address';
 import { useTotalCartItems, useTotalPrice } from 'hooks/carts';
@@ -41,9 +41,9 @@ const Order = () => {
   const handleAddModeClick = () => setMode({ ...mode, add: !mode.add, edit: !mode.edit });
 
   const handleCouponIdUpdate = async couponId => {
-    const data = await checkCoupon(couponId);
+    const newDiscount = await applyCoupon(couponId);
 
-    setDiscount({ ...discount, ...data });
+    setDiscount({ ...discount, ...newDiscount });
     updateForm({ couponId });
   };
 

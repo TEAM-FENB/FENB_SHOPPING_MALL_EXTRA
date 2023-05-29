@@ -49,7 +49,7 @@ export const fetchCoupons = async () => {
   return data;
 };
 
-export const checkCoupon = async id => {
+export const applyCoupon = async id => {
   const { data } = await axios.get(`/api/order/coupons/${id}`);
   return data;
 };
