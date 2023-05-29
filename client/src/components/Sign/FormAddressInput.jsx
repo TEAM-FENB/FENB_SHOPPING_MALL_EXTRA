@@ -13,8 +13,8 @@ const FormAddressInput = ({ setValue, ...rest }) => {
       onComplete: ({ userSelectedType, roadAddress, jibunAddress, zonecode, bname, buildingName }) => {
         const address = userSelectedType === 'R' ? `${roadAddress} (${bname}, ${buildingName})` : jibunAddress;
 
-        setValue('mainAddress', address);
-        setValue('postcode', zonecode);
+        setValue('mainAddress', address, { shouldValidate: true });
+        setValue('postcode', zonecode, { shouldValidate: true });
       },
       left: window.screen.width / 2 - 250,
       top: window.screen.height / 2 - 300,
