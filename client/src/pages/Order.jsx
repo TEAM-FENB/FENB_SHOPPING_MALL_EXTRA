@@ -1,19 +1,58 @@
+import { useState } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+
 import { Container, Title, Group, Stack, Text, useMantineTheme, Flex } from '@mantine/core';
 
-import { Payment, CartHistory } from 'components/Order';
+import { CustomButton } from 'components';
+import { CartHistory, Address, Coupon, PaymentMethod } from 'components/Order';
+import { checkCoupon, order } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
+import { useAddresses } from 'hooks/address';
 import { useTotalCartItems, useTotalPrice } from 'hooks/carts';
-import { useCoupon } from 'hooks/order';
-import { MEDIAQUERY_WIDTH } from 'constants';
+import { MEDIAQUERY_WIDTH, PAYMENT_METHODS, QUERY_KEY, PATH } from 'constants';
 
 const Order = () => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
   const { colorScheme } = useMantineTheme();
 
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const addresses = useAddresses();
   const totalCartItems = useTotalCartItems();
   const totalPrice = useTotalPrice();
+  const [discount, setDiscount] = useState({ discountAmount: 0, discountedTotalPrice: totalPrice });
+  const [form, setForm] = useState({
+    addressId: addresses[0]?.id ?? null,
+    couponId: null,
+    paymentMethod: PAYMENT_METHODS[0].value,
+  });
+  const [mode, setMode] = useState({
+    edit: false,
+    add: !form.addressId,
+  });
 
-  const { discount, changeDiscount } = useCoupon(totalPrice);
+  const updateForm = property => setForm({ ...form, ...property });
+
+  const handleEditModeClick = () => setMode({ ...mode, edit: !mode.edit });
+
+  const handleAddModeClick = () => setMode({ ...mode, add: !mode.add, edit: !mode.edit });
+
+  const handleCouponIdUpdate = async couponId => {
+    const data = await checkCoupon(couponId);
+
+    setDiscount({ ...discount, ...data });
+    updateForm({ couponId });
+  };
+
+  const handleOrderClick = () => {
+    order(form);
+
+    queryClient.removeQueries(QUERY_KEY.CARTS);
+    navigate(PATH.ORDER_COMPLETE, { replace: true });
+  };
 
   return (
     <Container fz="1.6rem" size="1200px">
@@ -31,7 +70,25 @@ const Order = () => {
       </Stack>
 
       <Flex direction={matches ? 'row' : 'column-reverse'} mih="5rem" spacing={0}>
-        <Payment changeDiscount={changeDiscount} />
+        <Stack mx="auto" pr={matches && '5rem'} spacing="5rem" w="100%">
+          <Address
+            form={form}
+            handleAddModeClick={handleAddModeClick}
+            handleEditModeClick={handleEditModeClick}
+            mode={mode}
+            updateForm={updateForm}
+          />
+          <Coupon handleCouponIdUpdate={handleCouponIdUpdate} />
+          <PaymentMethod form={form} updateForm={updateForm} />
+          <CustomButton
+            color={colorScheme === 'dark' ? 'gray.6' : 'dark'}
+            disabled={!form.addressId || mode.edit || mode.add}
+            m="0 auto"
+            w="30rem"
+            onClick={handleOrderClick}>
+            주문결제
+          </CustomButton>
+        </Stack>
         <CartHistory discount={discount} />
       </Flex>
     </Container>
