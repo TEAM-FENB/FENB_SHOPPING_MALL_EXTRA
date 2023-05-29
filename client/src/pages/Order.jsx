@@ -1,24 +1,23 @@
 import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { Container, Title, Group, Stack, Text, useMantineTheme, Flex } from '@mantine/core';
 
 import { CustomButton } from 'components';
 import { CartHistory, Address, Coupon, PaymentMethod } from 'components/Order';
-import { checkCoupon, order } from 'api/fetch';
+import { checkCoupon } from 'api/fetch';
 import { useMediaQuery } from 'hooks';
 import { useAddresses } from 'hooks/address';
 import { useTotalCartItems, useTotalPrice } from 'hooks/carts';
-import { MEDIAQUERY_WIDTH, PAYMENT_METHODS, QUERY_KEY, PATH } from 'constants';
+import { useOrderMutation } from 'hooks/mutation';
+import { MEDIAQUERY_WIDTH, PAYMENT_METHODS, PATH } from 'constants';
 
 const Order = () => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
   const { colorScheme } = useMantineTheme();
 
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const addresses = useAddresses();
   const totalCartItems = useTotalCartItems();
@@ -33,6 +32,7 @@ const Order = () => {
     edit: false,
     add: !form.addressId,
   });
+  const { mutate: order } = useOrderMutation();
 
   const updateForm = property => setForm({ ...form, ...property });
 
@@ -49,8 +49,6 @@ const Order = () => {
 
   const handleOrderClick = () => {
     order(form);
-
-    queryClient.removeQueries(QUERY_KEY.CARTS);
     navigate(PATH.ORDER_COMPLETE, { replace: true });
   };
 

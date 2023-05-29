@@ -44,6 +44,7 @@ router.get('/coupons/:id', authCheck, (req, res) => {
 // 결제하기 버튼 클릭시 사용해주세요
 router.post('/pay', authCheck, cartStockCheck, expireCoupon, (req, res) => {
   const { email } = req.locals;
+  console.log(req.body);
   const { addressId, paymentMethod, couponId = null } = req.body;
 
   const { products } = getUserCart(email);
