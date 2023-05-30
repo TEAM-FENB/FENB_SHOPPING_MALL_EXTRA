@@ -21,6 +21,8 @@ const Order = () => {
   const addresses = useAddresses();
   const totalCartItems = useTotalCartItems();
   const totalPrice = useTotalPrice();
+  const { mutateAsync: order } = useOrderMutation();
+
   const [discount, setDiscount] = useState({ discountAmount: 0, discountedTotalPrice: totalPrice });
   const [form, setForm] = useState({
     addressId: addresses[0]?.id ?? null,
@@ -31,7 +33,6 @@ const Order = () => {
     edit: false,
     add: !form.addressId,
   });
-  const { mutate: order } = useOrderMutation();
 
   const updateForm = property => setForm({ ...form, ...property });
 
@@ -46,8 +47,8 @@ const Order = () => {
     updateForm({ couponId });
   };
 
-  const handleOrderClick = () => {
-    order(form);
+  const handleOrderClick = async () => {
+    await order(form);
     navigate(PATH.ORDER_COMPLETE, { replace: true });
   };
 

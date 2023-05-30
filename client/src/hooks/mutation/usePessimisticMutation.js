@@ -6,7 +6,9 @@ const usePessimisticMutation = ({ queryKey, mutationFn, onSuccess }) => {
   return useMutation({
     queryKey,
     mutationFn,
-    onSuccess: (res, params) => queryClient.setQueryData(queryKey, onSuccess(res, params)),
+    onSuccess(res, params) {
+      return queryClient.setQueryData(queryKey, onSuccess(res, params));
+    },
   });
 };
 

@@ -81,8 +81,8 @@ export const couponsQuery = options => ({
   ...options,
 });
 
-export const historyQuery = ({ queryKey, ...options } = {}) => ({
-  queryKey: [...QUERY_KEY.HISTORY, queryKey],
+export const historyQuery = (options = {}) => ({
+  queryKey: QUERY_KEY.HISTORY,
   queryFn: fetchHistory,
   ...defaultOptions,
   ...options,

@@ -16,7 +16,7 @@ const Address = ({ form: { addressId }, updateForm, mode, handleEditModeClick, h
   const addresses = useAddresses();
 
   const isNotMode = !(mode.add || mode.edit);
-  const { handleSubmit, register, formState, trigger, setValue } = useForm({
+  const { handleSubmit, register, formState, trigger, setValue, reset } = useForm({
     resolver: zodResolver(addressSchema),
   });
 
@@ -43,6 +43,7 @@ const Address = ({ form: { addressId }, updateForm, mode, handleEditModeClick, h
   const handleAddAddressSubmit = data => {
     addAddress(data);
     handleAddModeClick();
+    reset();
   };
 
   return (
