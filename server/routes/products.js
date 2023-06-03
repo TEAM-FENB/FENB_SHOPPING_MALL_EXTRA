@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { BRANDS, CATEGORIES, GENDER, COLORS } = require('../constants/products');
 const { getAllProducts, getPageProducts } = require('../controllers/products');
 const { getStock } = require('../controllers/stocks');
+const Products = require('../models/product');
 
 router.get('/', (req, res) => {
   const { search: searchQuery = null, category: categoryQuery = null } = req.query;
