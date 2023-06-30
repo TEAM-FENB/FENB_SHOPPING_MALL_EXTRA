@@ -1,17 +1,20 @@
-const Product = require('../models/product');
+const { Product } = require('../models/shop');
 const { BRANDS, COLORS, GENDER, CATEGORIES } = require('../constants/products');
 
-const createProduct = async productInfo => {
+const createProduct = async (...productInfo) => {
+  // OK!
+  const formatted = productInfo.map(product => ({
+    ...product,
+    brand: BRANDS[product.brand],
+    category: CATEGORIES[product.category],
+    color: COLORS[product.color],
+    gender: GENDER[product.gender],
+    favorites: product.favorites || 0,
+    dateOfManufacture: new Date(product.dateOfManufacture),
+  }));
+
   try {
-    const res = await Product.create({
-      ...productInfo,
-      brand: BRANDS[productInfo.brand],
-      category: CATEGORIES[productInfo.category],
-      color: COLORS[productInfo.color],
-      gender: GENDER[productInfo.gender],
-      favorites: productInfo.favorites || 0,
-      dateOfManufacture: new Date(productInfo.dateOfManufacture),
-    });
+    const res = await Product.create(formatted);
     return res;
   } catch (err) {
     console.error('상품 생성에 실패했습니다.', err);
@@ -19,6 +22,7 @@ const createProduct = async productInfo => {
 };
 
 const getProducts = async () => {
+  // OK!
   try {
     const products = await Product.find();
     return products;
@@ -28,14 +32,18 @@ const getProducts = async () => {
 };
 
 const getPageProducts = async (page, pageSize) => {
+  // OK!
   try {
-    const products = await Product.find();
+    const count = await Product.count({});
+    const products = await Product.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
 
     return {
+      products,
       currentPage: page,
-      totalPages: Math.ceil(products.length / (pageSize ?? 5)),
-      products: products.slice((page - 1) * pageSize, page * pageSize),
-      totalProducts: products.length,
+      totalProducts: count,
+      totalPages: Math.ceil(count / pageSize),
     };
   } catch (err) {
     console.error('페이지별 상품 목록들을 가져오는데 실패했습니다.', err);
@@ -52,13 +60,16 @@ const getProductById = async _id => {
 };
 
 const getProductsByQuery = async (searchQuery, categoryQuery) => {
+  // OK!
   const query = searchQuery
     ? {
-        name: { $regex: searchQuery },
-        'brand.kr': { $regex: searchQuery },
-        'brand.en': { $regex: searchQuery },
-        'category.en': { $regex: searchQuery },
-        'category.kr': { $regex: searchQuery },
+        $or: [
+          { name: { $regex: searchQuery } },
+          { 'brand.kr': { $regex: searchQuery } },
+          { 'brand.en': { $regex: searchQuery } },
+          { 'category.en': { $regex: searchQuery } },
+          { 'category.kr': { $regex: searchQuery } },
+        ],
       }
     : categoryQuery
     ? { 'category.en': { $regex: categoryQuery } }
@@ -73,6 +84,7 @@ const getProductsByQuery = async (searchQuery, categoryQuery) => {
 };
 
 const updateProductFavorite = async (_id, isFavorite) => {
+  // user 작업 필수
   try {
     const updatedProduct = await Product.updateOne(
       { _id },
