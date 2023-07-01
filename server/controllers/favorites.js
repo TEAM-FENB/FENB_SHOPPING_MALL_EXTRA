@@ -1,45 +1,44 @@
-const defaultFavorite = {
-  email: '',
-  products: [],
+const { User } = require('../models/shop');
+
+const createUserFavorite = async (email, product) => {
+  // OK!
+  try {
+    const createdUserFavorite = await User.findOneAndUpdate(
+      { email },
+      { $push: { favorites: product } },
+      { new: true }
+    );
+
+    return createdUserFavorite;
+  } catch (err) {
+    console.error('관심상품을 추가하는데 실패했습니다.', err);
+  }
 };
 
-let favorites = [
-  {
-    email: 'test@test.com',
-    products: [],
-  },
-];
-
-const createUser = email => {
-  favorites = [...favorites, { ...defaultFavorite, email }];
+const getUserFavorites = async email => {
+  // OK!
+  try {
+    const user = await User.findOne({ email });
+    console.log(user.favorites);
+    return user.favorites;
+  } catch (err) {
+    console.error('관심상품을 가져오는데 실패했습니다.', err);
+  }
 };
 
-const addFavorite = (email, product) => {
-  favorites = favorites.map(favorite =>
-    favorite.email === email ? { ...favorite, products: [product, ...favorite.products] } : favorite
-  );
-};
+const deleteUserFavorite = async (email, _id) => {
+  // OK!
+  try {
+    const user = await User.findOneAndUpdate({ email }, { $pull: { favorites: { _id } } });
 
-const getFavorites = email => favorites.find(favorite => favorite.email === email);
-
-const getFavorite = (email, productId) =>
-  favorites.find(favorite => favorite.email === email).products.find(product => product.id === productId);
-
-const removeFavoriteProduct = (email, productId) => {
-  favorites = favorites.map(favorite =>
-    favorite.email === email
-      ? {
-          ...favorite,
-          products: favorite.products.filter(product => product.id !== productId),
-        }
-      : favorite
-  );
+    return user.favorites;
+  } catch (err) {
+    console.error('관심상품을 가져오는데 실패했습니다.', err);
+  }
 };
 
 module.exports = {
-  createUser,
-  addFavorite,
-  getFavorites,
-  getFavorite,
-  removeFavoriteProduct,
+  createUserFavorite,
+  getUserFavorites,
+  deleteUserFavorite,
 };

@@ -15,7 +15,7 @@ const createUser = async ({ email, name, phone, password, ...address }) => {
     : [];
 
   try {
-    const user = await User.create({ email, password, name, phone, address: newAddress });
+    const user = await User.create({ email, password, name, phone, address: newAddress, favorites: [] });
     // 🧠 {new: true} 옵션을 추가하면 2번 create 된다.
     return user;
   } catch (err) {
@@ -28,9 +28,7 @@ const createUserAddress = async ({ email, ...address }) => {
   // OK!
   try {
     // 유저의 주소를 처음 추가하는 거면 isDefault가 true, 그렇지 않으면 false로 세팅한다.
-    await User.findOneAndUpdate({ email }, { $set: { 'address.$[].isDefault': false } }, { new: true });
-    const user = await User.findOne({ email });
-
+    const user = await User.findOneAndUpdate({ email }, { $set: { 'address.$[].isDefault': false } }, { new: true });
     const newAddress = {
       ...address,
       isDefault: user.address.length === 0,

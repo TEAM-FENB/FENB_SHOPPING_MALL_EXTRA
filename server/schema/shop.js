@@ -11,9 +11,11 @@ const ProductSchema = new mongoose.Schema({
   color: { color: String, en: String, kr: String },
   gender: { en: String, kr: String },
   favorites: Number,
-  stocks: [{ size: Number, stock: Number }],
   dateOfManufacture: String,
+  stocks: [{ size: Number, stock: Number }],
 });
+
+const favoriteSchema = ProductSchema.omit(['stocks']);
 
 const UserSchema = new mongoose.Schema(
   {
@@ -31,6 +33,7 @@ const UserSchema = new mongoose.Schema(
         isDefault: Boolean,
       },
     ],
+    favorites: [favoriteSchema],
   },
   { timestamps: true }
 );
