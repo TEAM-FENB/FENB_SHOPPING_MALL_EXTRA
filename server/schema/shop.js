@@ -11,6 +11,7 @@ const ProductSchema = new mongoose.Schema({
   color: { color: String, en: String, kr: String },
   gender: { en: String, kr: String },
   favorites: Number,
+  stocks: [{ size: Number, stock: Number }],
   dateOfManufacture: String,
 });
 
