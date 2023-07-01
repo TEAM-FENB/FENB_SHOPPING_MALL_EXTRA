@@ -34,7 +34,7 @@ const getProducts = async () => {
 const getPageProducts = async (page, pageSize) => {
   // OK!
   try {
-    const count = await Product.count({});
+    const count = await Product.estimatedDocumentCount();
     const products = await Product.find()
       .skip((page - 1) * pageSize)
       .limit(pageSize);
@@ -84,7 +84,7 @@ const getProductsByQuery = async (searchQuery, categoryQuery) => {
 };
 
 const updateProductFavorite = async (_id, isFavorite) => {
-  // user 작업 필수
+  // user 작업 필수, favorite 작업 필수
   try {
     const updatedProduct = await Product.updateOne(
       { _id },
