@@ -1,5 +1,15 @@
 const { Product } = require('../models/shop');
 
+const createProductStocks = async (_id, stocks) => {
+  // OK!
+  try {
+    const updatedProduct = await Product.findOneAndUpdate({ _id }, { $set: { stocks } }, { new: true });
+    return updatedProduct;
+  } catch (err) {
+    console.error('상품의 재고를 추가하는데 실패했습니다.', err);
+  }
+};
+
 const getProductStocks = async _id => {
   // OK!
   try {
@@ -37,4 +47,4 @@ const updateStock = async (_id, size, quantity) => {
   }
 };
 
-module.exports = { getProductStocks, getProductStockBySize, updateStock };
+module.exports = { createProductStocks, getProductStocks, getProductStockBySize, updateStock };
