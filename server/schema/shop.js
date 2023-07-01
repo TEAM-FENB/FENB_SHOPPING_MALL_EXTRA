@@ -20,6 +20,12 @@ const CartsSchema = ProductSchema.omit(['stocks']).add({
   productId: String,
   stocks: [{ size: Number, select: Number }],
 });
+const HistoriesSchema = new mongoose.Schema(
+  {
+    purchased: [CartsSchema],
+  },
+  { timestamps: true }
+);
 
 const UserSchema = new mongoose.Schema(
   {
@@ -39,6 +45,7 @@ const UserSchema = new mongoose.Schema(
     ],
     favorites: [FavoritesSchema],
     carts: [CartsSchema],
+    histories: [HistoriesSchema],
   },
   { timestamps: true }
 );

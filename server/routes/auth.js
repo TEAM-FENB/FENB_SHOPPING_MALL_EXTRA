@@ -5,7 +5,7 @@ const users = require('../controllers/users');
 const carts = require('../controllers/carts');
 const favorites = require('../controllers/favorites');
 const coupons = require('../controllers/coupons');
-const history = require('../controllers/history');
+const history = require('../controllers/histories');
 const { authCheck } = require('../middleware/auth');
 
 router.get('/signout', (req, res) => {
@@ -59,7 +59,6 @@ router.post('/signup', (req, res) => {
     mainAddress,
     detailAddress,
     postcode,
-    createAt: new Date(),
   });
   carts.createUser(email);
   coupons.createUser(email);

@@ -7,7 +7,7 @@ const { getCoupons, addCoupon } = require('../controllers/coupons');
 const { getUser } = require('../controllers/users');
 const COUPONS = require('../constants/coupons');
 const { getDateAfter } = require('../utils/date');
-const { getCouponHistory, addCouponHistory } = require('../controllers/history');
+const { getCouponHistory, addCouponHistory } = require('../controllers/histories');
 
 router.get('/', authCheck, expireCoupon, (req, res) => {
   const { email } = req.locals;
