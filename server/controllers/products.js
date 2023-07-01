@@ -1,20 +1,18 @@
 const { Product } = require('../models/shop');
 const { BRANDS, COLORS, GENDER, CATEGORIES } = require('../constants/products');
 
-const createProduct = async (...productInfo) => {
+const createProduct = async productInfo => {
   // OK!
-  const formatted = productInfo.map(product => ({
-    ...product,
-    brand: BRANDS[product.brand],
-    category: CATEGORIES[product.category],
-    color: COLORS[product.color],
-    gender: GENDER[product.gender],
-    favorites: product.favorites || 0,
-    dateOfManufacture: new Date(product.dateOfManufacture),
-  }));
-
   try {
-    const res = await Product.create(formatted);
+    const res = await Product.create({
+      ...productInfo,
+      brand: BRANDS[productInfo.brand],
+      category: CATEGORIES[productInfo.category],
+      color: COLORS[productInfo.color],
+      gender: GENDER[productInfo.gender],
+      favorites: productInfo.favorites || 0,
+      dateOfManufacture: new Date(productInfo.dateOfManufacture),
+    });
     return res;
   } catch (err) {
     console.error('상품 생성에 실패했습니다.', err);
@@ -83,14 +81,11 @@ const getProductsByQuery = async (searchQuery, categoryQuery) => {
   }
 };
 
-const updateProductFavorite = async (_id, isFavorite) => {
+const updateProductFavorite = async (_id, delta) => {
   // user 작업 필수, favorite 작업 필수
   try {
-    const updatedProduct = await Product.updateOne(
-      { _id },
-      { $inc: { favorites: isFavorite ? -1 : 1 } },
-      { new: true }
-    );
+    const updatedProduct = await Product.findOneAndUpdate({ _id }, { $inc: { favorites: delta } }, { new: true });
+
     return updatedProduct;
   } catch (err) {
     console.error('query로 상품 목록을 가져오는데 실패했습니다.', err);
