@@ -55,7 +55,7 @@ const CouponSchema = new mongoose.Schema({
   discountRate: Number,
   discountPrice: Number,
   minimumPrice: Number,
-  endTime: String,
+  endTime: Number,
   limit: Number,
   couponId: mongoose.Types.ObjectId,
 });
