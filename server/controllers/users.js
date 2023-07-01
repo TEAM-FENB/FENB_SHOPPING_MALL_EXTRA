@@ -15,7 +15,7 @@ const createUser = async ({ email, name, phone, password, ...address }) => {
     : [];
 
   try {
-    const user = await User.create({ email, password, name, phone, address: newAddress, favorites: [] });
+    const user = await User.create({ email, password, name, phone, address: newAddress, favorites: [], carts: [] });
     // 🧠 {new: true} 옵션을 추가하면 2번 create 된다.
     return user;
   } catch (err) {
