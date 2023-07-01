@@ -15,9 +15,9 @@ const ProductSchema = new mongoose.Schema({
   stocks: [{ size: Number, stock: Number }],
 });
 
-const FavoritesSchema = ProductSchema.omit(['stocks']).add({ productId: String });
+const FavoritesSchema = ProductSchema.omit(['stocks']).add({ productId: mongoose.Types.ObjectId });
 const CartsSchema = ProductSchema.omit(['stocks']).add({
-  productId: String,
+  productId: mongoose.Types.ObjectId,
   stocks: [{ size: Number, select: Number }],
 });
 const HistoriesSchema = new mongoose.Schema(
@@ -46,8 +46,18 @@ const UserSchema = new mongoose.Schema(
     favorites: [FavoritesSchema],
     carts: [CartsSchema],
     histories: [HistoriesSchema],
+    coupons: [],
   },
   { timestamps: true }
 );
 
-module.exports = { ProductSchema, UserSchema };
+const CouponSchema = new mongoose.Schema({
+  discountRate: Number,
+  discountPrice: Number,
+  minimumPrice: Number,
+  endTime: String,
+  limit: Number,
+  couponId: mongoose.Types.ObjectId,
+});
+
+module.exports = { ProductSchema, UserSchema, CouponSchema };

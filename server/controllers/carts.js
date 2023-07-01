@@ -1,13 +1,13 @@
-const { User } = require('../models/shop');
+const { User, Product } = require('../models/shop');
 
-const createUserCart = async (email, product) => {
+const createUserCart = async (email, _id, size, quantity) => {
   // OK!
   try {
-    const createdUserCart = await User.findOneAndUpdate(
-      { email },
-      { $push: { carts: { ...product, productId: product._id } } },
-      { new: true }
-    );
+    const product = await Product.findOne({ _id });
+    product._doc.productId = _id;
+    product._doc.stocks = _id;
+
+    const createdUserCart = await User.findOneAndUpdate({ email }, { $push: { carts: product } }, { new: true });
 
     return createdUserCart;
   } catch (err) {
