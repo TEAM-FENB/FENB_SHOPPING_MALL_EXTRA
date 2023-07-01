@@ -14,4 +14,24 @@ const ProductSchema = new mongoose.Schema({
   dateOfManufacture: String,
 });
 
-module.exports = { ProductSchema };
+const UserSchema = new mongoose.Schema(
+  {
+    email: String,
+    password: String,
+    name: String,
+    phone: String,
+    address: [
+      {
+        recipient: String,
+        recipientPhone: String,
+        mainAddress: String,
+        detailAddress: String,
+        postcode: String,
+        isDefault: Boolean,
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+module.exports = { ProductSchema, UserSchema };

@@ -1,32 +1,25 @@
 const router = require('express').Router();
 
-const {
-  getUser,
-  getAddresses,
-  addAddress,
-  updateDefaultAddress,
-  updateAddress,
-  removeAddress,
-  moveForwardDefaultAddress,
-} = require('../controllers/users');
+const { getUser, getUserAddress } = require('../controllers/users');
 const { authCheck } = require('../middleware/auth');
 const { checkAddress } = require('../middleware/address');
 
-router.get('/me', authCheck, (req, res) => {
+// /me 뺐으니, 클라이언트에도 변경해야함
+
+router.get('/', authCheck, (req, res) => {
   const { email } = req.locals;
+  const { name, phone, address } = getUser(email);
 
-  const { email: myEmail, name, phone, addresses } = getUser(email);
-
-  res.send({ email: myEmail, name, phone, addresses });
+  res.send({ email, name, phone, address });
 });
 
-router.get('/me/addresses', authCheck, (req, res) => {
+router.get('/address', authCheck, (req, res) => {
   const { email } = req.locals;
 
-  res.send(getAddresses(email));
+  res.send(getUserAddress(email));
 });
 
-router.post('/me/address', authCheck, (req, res) => {
+router.post('/address', authCheck, (req, res) => {
   const { email } = req.locals;
   const { recipient, recipientPhone, mainAddress, detailAddress, postcode, isDefault = null } = req.body;
 
@@ -46,7 +39,7 @@ router.post('/me/address', authCheck, (req, res) => {
   res.send({ id });
 });
 
-router.patch('/me/address/default/:id', authCheck, checkAddress, (req, res) => {
+router.patch('/address/default/:id', authCheck, checkAddress, (req, res) => {
   const { email } = req.locals;
   const id = req.params.id;
 
@@ -55,7 +48,7 @@ router.patch('/me/address/default/:id', authCheck, checkAddress, (req, res) => {
   res.send({ message: '기본 배송지가 변경되었습니다.' });
 });
 
-router.patch('/me/address/:id', authCheck, checkAddress, (req, res) => {
+router.patch('/address/:id', authCheck, checkAddress, (req, res) => {
   const { email } = req.locals;
   const id = req.params.id;
   const newAddress = req.body;
@@ -64,7 +57,7 @@ router.patch('/me/address/:id', authCheck, checkAddress, (req, res) => {
   res.send({ message: '배송지가 수정되었습니다.' });
 });
 
-router.delete('/me/address/:id', authCheck, checkAddress, (req, res) => {
+router.delete('/address/:id', authCheck, checkAddress, (req, res) => {
   const { email } = req.locals;
   const id = req.params.id;
 
