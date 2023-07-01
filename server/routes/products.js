@@ -13,7 +13,7 @@ router.get('/pages/:page', async (req, res) => {
   const page = +req.params.page;
   const pageSize = +(req.query.pageSize ?? 5);
   const pageProducts = await getPageProducts(page, pageSize);
-  console.log(page, pageSize);
+
   res.send(pageProducts);
 });
 

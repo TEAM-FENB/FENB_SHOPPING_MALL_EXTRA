@@ -15,7 +15,6 @@ const createUserCoupon = async (email, _id) => {
   // OK!
   try {
     const coupon = await Coupon.findOne({ _id });
-    coupon._doc.couponId = _id;
 
     const user = await User.findOneAndUpdate({ email }, { $push: { coupons: coupon } }, { new: true });
 

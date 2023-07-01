@@ -5,7 +5,6 @@ const { authCheck } = require('../middleware/auth');
 const { expireCoupon } = require('../middleware/coupon');
 const { getCoupons, addCoupon } = require('../controllers/coupons');
 const { getUser } = require('../controllers/users');
-const COUPONS = require('../constants/coupons');
 const { getDateAfter } = require('../utils/date');
 const { getCouponHistory, addCouponHistory } = require('../controllers/histories');
 

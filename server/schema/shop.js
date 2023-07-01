@@ -18,7 +18,8 @@ const ProductSchema = new mongoose.Schema({
 const FavoritesSchema = ProductSchema.omit(['stocks']).add({ productId: mongoose.Types.ObjectId });
 const CartsSchema = ProductSchema.omit(['stocks']).add({
   productId: mongoose.Types.ObjectId,
-  stocks: [{ size: Number, select: Number }],
+  size: Number,
+  quantity: Number,
 });
 const HistoriesSchema = new mongoose.Schema(
   {

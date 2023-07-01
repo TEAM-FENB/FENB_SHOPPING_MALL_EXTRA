@@ -1,11 +1,9 @@
 const { User, Product } = require('../models/shop');
 
-const createUserFavorite = async (email, _id, size, quantity) => {
+const createUserFavorite = async (email, _id) => {
   //
   try {
     const product = await Product.findOne({ _id });
-    product._doc.productId = _id;
-    product._doc.stocks.push({ size, select: quantity });
 
     const createdUserFavorite = await User.findOneAndUpdate(
       { email },

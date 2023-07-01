@@ -1,12 +1,11 @@
 const { User, Product } = require('../models/shop');
 
 const createUserCart = async (email, _id, size, quantity) => {
-  // OK!
+  //
   try {
-    const product = await Product.findOne({ _id });
-    product._doc.productId = _id;
-    product._doc.stocks = _id;
-
+    const product = await Product.findOneAndUpdate({ _id });
+    product._doc.size = size;
+    product._doc.quantity = quantity;
     const createdUserCart = await User.findOneAndUpdate({ email }, { $push: { carts: product } }, { new: true });
 
     return createdUserCart;
