@@ -5,7 +5,7 @@ const createUserFavorite = async (email, product) => {
   try {
     const createdUserFavorite = await User.findOneAndUpdate(
       { email },
-      { $push: { favorites: product } },
+      { $push: { favorites: { ...product, productId: product._id } } },
       { new: true }
     );
 
