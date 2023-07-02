@@ -61,4 +61,11 @@ const CouponSchema = new mongoose.Schema({
   couponId: mongoose.Types.ObjectId,
 });
 
-module.exports = { ProductSchema, UserSchema, CouponSchema };
+const SlideSchema = new mongoose.Schema({
+  couponId: mongoose.Types.ObjectId,
+  title: String,
+  imgURL: String,
+  sideBackgroundColor: String,
+});
+
+module.exports = { ProductSchema, UserSchema, CouponSchema, SlideSchema };
