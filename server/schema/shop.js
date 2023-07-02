@@ -1,8 +1,17 @@
 const mongoose = require('mongoose');
 
+const AddressSchema = new mongoose.Schema({
+  recipient: String,
+  recipientPhone: String,
+  mainAddress: String,
+  detailAddress: String,
+  postcode: String,
+  isDefault: Boolean,
+});
+
 const ProductSchema = new mongoose.Schema({
   name: String,
-  price: String,
+  price: Number,
   imgURL: String,
   description: String,
   feature: String,
@@ -12,42 +21,25 @@ const ProductSchema = new mongoose.Schema({
   gender: { en: String, kr: String },
   favorites: Number,
   dateOfManufacture: String,
-  stocks: [{ size: Number, stock: Number }],
+  stocks: [{ size: Number, quantity: Number }],
 });
 
-const FavoritesSchema = ProductSchema.omit(['stocks']).add({ productId: mongoose.Types.ObjectId });
-const CartsSchema = ProductSchema.omit(['stocks']).add({
+const FavoritesSchema = ProductSchema.omit(['stocks', 'favorites']).add({
+  productId: mongoose.Types.ObjectId,
+});
+const CartsSchema = ProductSchema.omit(['stocks', 'favorites']).add({
   productId: mongoose.Types.ObjectId,
   size: Number,
   quantity: Number,
 });
 const HistoriesSchema = new mongoose.Schema(
   {
+    address: AddressSchema,
     purchased: [CartsSchema],
-  },
-  { timestamps: true }
-);
-
-const UserSchema = new mongoose.Schema(
-  {
-    email: String,
-    password: String,
-    name: String,
-    phone: String,
-    address: [
-      {
-        recipient: String,
-        recipientPhone: String,
-        mainAddress: String,
-        detailAddress: String,
-        postcode: String,
-        isDefault: Boolean,
-      },
-    ],
-    favorites: [FavoritesSchema],
-    carts: [CartsSchema],
-    histories: [HistoriesSchema],
-    coupons: [],
+    totalPrice: String,
+    discountAmount: String,
+    discountedTotalPrice: String,
+    paymentMethod: String,
   },
   { timestamps: true }
 );
@@ -58,8 +50,9 @@ const CouponSchema = new mongoose.Schema({
   minimumPrice: Number,
   endTime: Number,
   limit: Number,
-  couponId: mongoose.Types.ObjectId,
 });
+
+const UserCouponSchema = CouponSchema.add({ couponId: mongoose.Types.ObjectId });
 
 const SlideSchema = new mongoose.Schema({
   couponId: mongoose.Types.ObjectId,
@@ -67,5 +60,20 @@ const SlideSchema = new mongoose.Schema({
   imgURL: String,
   sideBackgroundColor: String,
 });
+
+const UserSchema = new mongoose.Schema(
+  {
+    email: String,
+    password: String,
+    name: String,
+    phone: String,
+    address: [AddressSchema],
+    favorites: [FavoritesSchema],
+    carts: [CartsSchema],
+    histories: [HistoriesSchema],
+    coupons: [UserCouponSchema],
+  },
+  { timestamps: true }
+);
 
 module.exports = { ProductSchema, UserSchema, CouponSchema, SlideSchema };

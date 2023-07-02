@@ -2,8 +2,8 @@ const router = require('express').Router();
 
 const { getSlides } = require('../controllers/slides');
 
-router.get('/', (req, res) => {
-  const slides = getSlides();
+router.get('/', async (req, res) => {
+  const slides = await getSlides();
 
   res.send(slides);
 });

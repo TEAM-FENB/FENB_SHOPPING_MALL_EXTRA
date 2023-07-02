@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { User, Coupon } = require('../models/shop');
 
 const createCoupon = async coupon => {
@@ -14,7 +15,9 @@ const createCoupon = async coupon => {
 const createUserCoupon = async (email, _id) => {
   // OK!
   try {
-    const coupon = await Coupon.findOne({ _id });
+    const coupon = await Coupon.findOne({ _id }).lean();
+    coupon.couponId = coupon._id;
+    delete coupon._id;
 
     const user = await User.findOneAndUpdate({ email }, { $push: { coupons: coupon } }, { new: true });
 
@@ -57,12 +60,11 @@ const getCoupon = async _id => {
   }
 };
 
-const getUserCoupon = async (email, _id) => {
-  // OK!
+const getUserCoupon = async (email, userCouponId) => {
   try {
-    const res = await User.findOne({ email, 'coupons.couponId': _id }, { 'coupons.$': 1 });
+    const res = await User.findOne({ email, 'coupons._id': userCouponId }, { 'coupons.$': 1 });
 
-    return res.coupons[0];
+    return res?.coupons[0];
   } catch (err) {
     console.error('가진 쿠폰을 가져오는데 실패했습니다.', err);
   }
@@ -84,10 +86,9 @@ const deleteExpiredUserCoupon = async email => {
   try {
     const userCoupon = await User.findOneAndUpdate(
       { email },
-      { $pull: { coupons: { endTime: { $lt: new Date().getTime() } } } }
+      { $pull: { coupons: { endTime: { $lt: new Date().getTime() } } } },
+      { new: true }
     );
-
-    console.log(new Date().getTime());
 
     return userCoupon;
   } catch (err) {

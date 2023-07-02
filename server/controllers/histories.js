@@ -2,7 +2,11 @@ const { User } = require('../models/shop');
 
 const createUserHistory = async (email, history) => {
   try {
-    const createdUserHistory = await User.findOneAndUpdate({ email }, { $push: { histories: history } }, { new: true });
+    const createdUserHistory = await User.findOneAndUpdate(
+      { email },
+      { $push: { histories: { $each: [history], $position: 0 } } },
+      { new: true }
+    );
 
     return createdUserHistory;
   } catch (err) {
@@ -15,7 +19,6 @@ const getUserHistories = async email => {
   try {
     const user = await User.findOne({ email });
 
-    console.log(user.histories);
     return user.histories;
   } catch (err) {
     console.error('장바구니에 담긴 상품을 가져오는데 실패했습니다.', err);

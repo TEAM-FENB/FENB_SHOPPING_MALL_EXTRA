@@ -1,4 +1,5 @@
 const { Slide } = require('../models/shop');
+const { getCoupon } = require('./coupons');
 
 const createSlides = async slide => {
   // OK!

@@ -38,7 +38,8 @@ const createUserAddress = async ({ email, ...address }) => {
       { $push: { address: newAddress } },
       { new: true }
     );
-    return createdUserAddress;
+
+    return createdUserAddress.address.at(-1);
   } catch (err) {
     console.error('유저 주소를 추가하는데 실패했습니다.', err);
   }
@@ -58,11 +59,25 @@ const getUserAddress = async email => {
   // OK! ❗ getUser와 중복된다.
   try {
     const user = await User.findOne({ email });
+
     return user.address;
   } catch (err) {
     console.error('유저 주소를 가져오는데 실패했습니다.', err);
   }
 };
+
+const getUserAddressOne = async (email, _id) => {
+  // OK! ❗ getUser와 중복된다.
+  try {
+    const res = await User.findOne({ email, 'address._id': _id }, { 'address.$': 1 });
+
+    return res?.address[0];
+  } catch (err) {
+    console.error('유저 주소를 가져오는데 실패했습니다.', err);
+  }
+};
+
+// ❗ 이름, 비밀번호, 휴대전화번호 변경하는거 추가 필요
 
 // 배송지 수정
 const updateUserAddress = async (email, _id, address) => {
@@ -88,12 +103,13 @@ const updateUserDefaultAddress = async (email, _id) => {
   // OK!
   try {
     await User.findOneAndUpdate({ email }, { $set: { 'address.$[].isDefault': false } });
-    const updatedDefaultAddress = await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { email, 'address._id': _id },
       { $set: { 'address.$[address].isDefault': true } },
       { new: true, arrayFilters: [{ 'address._id': _id }] }
     );
-    return updatedDefaultAddress;
+
+    return user;
   } catch (err) {
     console.error('유저 기본 배송지를 변경하는데 실패했습니다.', err);
   }
@@ -103,11 +119,8 @@ const updateUserDefaultAddress = async (email, _id) => {
 const deleteUserAddress = async (email, _id) => {
   // OK!
   try {
-    const deletedUserAddress = await User.findOneAndUpdate(
-      { email },
-      { $pull: { address: { _id, isDefault: { $ne: true } } } }
-    );
-    return deletedUserAddress;
+    const user = await User.findOneAndUpdate({ email }, { $pull: { address: { _id } } });
+    return user.address;
   } catch (err) {
     console.error('유저 배송지를 삭제하는데 실패했습니다.', err);
   }
@@ -144,14 +157,31 @@ const confirmUser = async (email, password) => {
   }
 };
 
+//❗ 아이디 중복 확인 추가하기
+const hasUserEmail = async email => {
+  try {
+    const count = await User.countDocuments({ email });
+
+    return count === 1;
+  } catch (err) {
+    console.error('유저 정보가 없습니다.', err);
+  }
+};
+
+//❗ 비밀번호 확인하는거 추가하기
+
+//❗ 계정 삭제 추가하기
+
 module.exports = {
   createUser,
   createUserAddress,
   getUser,
   getUserAddress,
+  getUserAddressOne,
   updateUserAddress,
   updateUserDefaultAddress,
   deleteUserAddress,
   confirmUser,
   sortUserDefaultAddress,
+  hasUserEmail,
 };
