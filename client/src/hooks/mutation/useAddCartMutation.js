@@ -7,7 +7,7 @@ const useAddCartMutation = () =>
     queryKey: QUERY_KEY.CARTS,
     mutationFn: addCart,
     onSuccess(cart) {
-      return carts => [...carts, cart];
+      return carts => [...(carts ?? []), cart];
     },
   });
 
