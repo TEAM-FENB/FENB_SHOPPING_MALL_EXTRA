@@ -50,13 +50,13 @@ router.get('/coupons/:id', authCheck, cartStockCheck, expireCoupon, async (req, 
 router.post('/pay', authCheck, cartStockCheck, expireCoupon, async (req, res) => {
   //OK!
   const { email, carts } = req.locals;
-  const { addressId, paymentMethod, userCouponId = null } = req.body;
+  const { addressId, paymentMethod, couponId: userCouponId = null } = req.body;
   const totalPrice = carts.reduce((acc, cart) => acc + cart.price * cart.quantity, 0);
 
-  let [discountAmount, discountedTotalPrice] = [0, 0];
+  let [discountAmount, discountedTotalPrice] = [0, totalPrice];
 
   if (userCouponId) {
-    const coupon = userCouponId && (await getUserCoupon(email, userCouponId));
+    const coupon = await getUserCoupon(email, userCouponId);
 
     if (totalPrice < coupon.minimumPrice)
       return res.status(403).send({ message: `쿠폰을 사용하기 위한 최소 주문 금액을 충족하지 않습니다.` });
@@ -65,6 +65,8 @@ router.post('/pay', authCheck, cartStockCheck, expireCoupon, async (req, res) =>
       ? totalPrice - coupon.discountPrice
       : totalPrice * (1 - coupon.discountRate / 100);
     discountAmount = totalPrice - discountedTotalPrice;
+
+    deleteUserCoupon(email, userCouponId);
   }
   const address = await getUserAddressOne(email, addressId);
 
@@ -76,7 +78,6 @@ router.post('/pay', authCheck, cartStockCheck, expireCoupon, async (req, res) =>
     discountedTotalPrice,
     paymentMethod,
   });
-  deleteUserCoupon(email, userCouponId);
 
   // 상품 사이즈 별 수량 변경하기
   carts.forEach(({ productId, size, quantity }) => updateStock(productId, size, -quantity));
@@ -91,7 +92,7 @@ router.get('/history', authCheck, async (req, res) => {
   const { email } = req.locals;
   const histories = await getUserHistories(email);
 
-  res.send(histories);
+  res.send(histories.at(0));
 });
 
 module.exports = router;

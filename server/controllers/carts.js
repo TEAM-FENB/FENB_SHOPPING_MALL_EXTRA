@@ -63,7 +63,7 @@ const countSelectedUserCarts = async (email, productId, size) => {
         },
       },
     ]);
-    return user[0].totalQuantity ?? 0;
+    return user[0]?.totalQuantity ?? 0;
   } catch (err) {
     console.error('장바구니에 담긴 특정 상품을 가져오는데 실패했습니다.', err);
   }

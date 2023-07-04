@@ -24,23 +24,23 @@ const CartButton = ({ currentProduct, currentSelectedSize, isSignInRef, isSizeSe
   const [hasStock, setHasStock] = useState(true);
 
   const handleCartModalOpenClick = async () => {
-    if (currentSelectedSize !== -1) {
-      if (!isSignInRef.current) {
-        navigate(PATH.SIGNIN, { state: pathname });
-      } else {
-        try {
-          await addCart({ id, size: currentSelectedSize });
-          setHasStock(true);
-        } catch (e) {
-          // 무슨 의미인지 이해를 못하겠음
-          // setHasStock(selectedSize !== currentSelectedSize);
-          setHasStock(false);
-        } finally {
-          open();
-        }
-      }
-    } else {
+    if (!isSignInRef.current) {
+      navigate(PATH.SIGNIN, { state: pathname });
+      return;
+    }
+
+    if (currentSelectedSize === -1) {
       setIsSizeSelected(false);
+      return;
+    }
+
+    try {
+      await addCart({ id, size: currentSelectedSize });
+      setHasStock(true);
+    } catch (e) {
+      setHasStock(false);
+    } finally {
+      open();
     }
   };
 

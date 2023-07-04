@@ -22,6 +22,8 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
   const handleIncreaseCartQuantityClick = () => handlers.current.increment();
   const handleDecreaseCartQuantityClick = () => handlers.current.decrement();
 
+  // ❗ 수량 변경했을 때, 재고보다 더 담을 경우, 더 담을 수 없다고 UI 적으로 표현하기 toast?
+
   return (
     <Stack
       c="gray.6"
