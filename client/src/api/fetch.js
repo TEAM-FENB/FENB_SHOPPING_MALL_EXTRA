@@ -40,7 +40,7 @@ export const fetchCarts = async () => {
 };
 
 export const fetchAddresses = async () => {
-  const { data } = await axios.get('api/users/me/addresses');
+  const { data } = await axios.get('api/users/me/address');
   return data;
 };
 
@@ -111,6 +111,7 @@ export const addAddress = async ({ name, phone, mainAddress, detailAddress, post
     detailAddress,
     postcode,
   });
+
   return data;
 };
 

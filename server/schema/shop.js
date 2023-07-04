@@ -45,6 +45,7 @@ const HistoriesSchema = new mongoose.Schema(
 );
 
 const CouponSchema = new mongoose.Schema({
+  title: String,
   discountRate: Number,
   discountPrice: Number,
   minimumPrice: Number,

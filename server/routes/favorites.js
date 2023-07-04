@@ -25,7 +25,6 @@ router.post('/me', authCheck, async (req, res) => {
   const user = await createUserFavorite(email, productId);
   await updateProductFavorite(productId, 1);
 
-  console.log(user.favorites.at(-1));
   res.send(user.favorites.at(-1));
 });
 
