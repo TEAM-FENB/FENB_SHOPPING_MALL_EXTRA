@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { useAddCartMutation } from 'hooks/mutation';
 import { PATH } from 'constants';
 
 const CartButton = ({ currentProduct, currentSelectedSize, isSignInRef, isSizeSelected, setIsSizeSelected }) => {
-  const { id, imgURL, name, brand, price } = currentProduct;
+  const { _id: id, imgURL, name, brand, price } = currentProduct;
 
   const { colorScheme } = useMantineColorScheme();
 
@@ -28,14 +28,15 @@ const CartButton = ({ currentProduct, currentSelectedSize, isSignInRef, isSizeSe
       if (!isSignInRef.current) {
         navigate(PATH.SIGNIN, { state: pathname });
       } else {
-        open();
-
         try {
-          await addCart({ id, selectedSize: currentSelectedSize, currentProduct });
+          await addCart({ id, size: currentSelectedSize });
+          setHasStock(true);
         } catch (e) {
           // 무슨 의미인지 이해를 못하겠음
           // setHasStock(selectedSize !== currentSelectedSize);
           setHasStock(false);
+        } finally {
+          open();
         }
       }
     } else {
@@ -46,10 +47,6 @@ const CartButton = ({ currentProduct, currentSelectedSize, isSignInRef, isSizeSe
   const handleModalButtonClick = () => {
     navigate(PATH.CART);
   };
-
-  useEffect(() => {
-    setHasStock(true);
-  }, []);
 
   return (
     <>

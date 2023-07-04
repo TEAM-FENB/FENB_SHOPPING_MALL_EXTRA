@@ -8,7 +8,7 @@ const useIsFavorite = id => {
   const { data: favorites } = useQuery(favoritesQuery());
   const { data: verify } = useQuery(verifyQuery());
 
-  const [isFavorite, setIsFavorite] = useState(verify ? favorites.some(product => product.id === id) : false);
+  const [isFavorite, setIsFavorite] = useState(verify ? favorites.some(favorite => favorite.productId === id) : false);
 
   return { isFavorite, setIsFavorite };
 };
