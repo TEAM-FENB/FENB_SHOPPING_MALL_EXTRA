@@ -1,8 +1,16 @@
 {
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/api",
-      "destination": "http://ec2-3-36-56-62.ap-northeast-2.compute.amazonaws.com:8000/"
+      "source": "/api/*",
+      "destination": "http://ec2-3-36-56-62.ap-northeast-2.compute.amazonaws.com:8000/*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "http://ec2-3-36-56-62.ap-northeast-2.compute.amazonaws.com:8000/:path*"
+    },
+    {
+      "source": "/api/:path*/",
+      "destination": "http://ec2-3-36-56-62.ap-northeast-2.compute.amazonaws.com:8000/:path*/"
     }
   ]
 }
