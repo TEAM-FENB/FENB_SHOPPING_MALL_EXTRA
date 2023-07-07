@@ -1,12 +1,12 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import jsconfigPaths from 'vite-jsconfig-paths';
 
 const PORT = 8000;
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), jsconfigPaths(), splitVendorChunkPlugin()],
+  plugins: [react(), jsconfigPaths()],
   server: {
     proxy: {
       '/api': {
@@ -15,5 +15,8 @@ export default defineConfig({
         secure: false,
       },
     },
+  },
+  build: {
+    chunkSizeWarningLimit: 1600,
   },
 });
