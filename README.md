@@ -10,9 +10,6 @@
 
 ---
 
-# DEMO-TEST
-- https://feat--glittery-cupcake-c081c7.netlify.app/#/
-
 ## Commit Convetions
 
 | Message  | Description                   |
