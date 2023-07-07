@@ -1,12 +1,12 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import jsconfigPaths from 'vite-jsconfig-paths';
 
 const PORT = 8000;
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), jsconfigPaths()],
+  plugins: [react(), jsconfigPaths(), splitVendorChunkPlugin()],
   server: {
     proxy: {
       '/api': {
