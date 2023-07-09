@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { userState } from 'recoil/atoms';
 
 import { Image, Stack, Center, Title, useMantineTheme, Text, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
