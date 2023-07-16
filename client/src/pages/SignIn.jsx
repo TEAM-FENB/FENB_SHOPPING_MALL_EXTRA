@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userState } from 'recoil/atoms';
 
 import { Image, Stack, Center, Title, useMantineTheme, Text, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -32,7 +31,8 @@ const SignIn = () => {
         autoClose: 2000,
         title: '알림',
         message: `${user.username}님 환영합니다.`,
-        sx: { div: { fontSize: '1.5rem' } },
+        sx: { div: { fontSize: '1.6rem' } },
+        withCloseButton: false,
       });
 
       setUser(user);
@@ -43,7 +43,8 @@ const SignIn = () => {
         autoClose: 2000,
         title: '알림',
         message: '등록되지 않은 사용자입니다.',
-        sx: { div: { fontSize: '1.5rem' } },
+        sx: { div: { fontSize: '1.6rem' } },
+        withCloseButton: false,
       });
     }
   };

@@ -52,7 +52,7 @@ const Products = () => {
       ) : (
         <Stack fz="1.6rem" m="4.8rem 0.8rem 0 0" miw="45rem" p="0 5rem" spacing={0}>
           <Title>{`[${brand.kr}] ${name}`}</Title>
-          <Image alt={name} src={imgURL} />
+          <Image alt={name} my="2rem" src={imgURL} />
           <Info
             currentProduct={currentProduct}
             currentSelectedSize={currentSelectedSize}

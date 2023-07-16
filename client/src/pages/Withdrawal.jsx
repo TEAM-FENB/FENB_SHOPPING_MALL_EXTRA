@@ -108,7 +108,10 @@ const Withdrawal = () => {
           checked={checked}
           label={<Title fz={matches ? '2.1rem' : '1.9rem'}>회원탈퇴 안내를 모두 확인하였으며 탈퇴에 동의합니다.</Title>}
           size={matches ? '2.8rem' : '2.4rem'}
-          sx={{ cursor: 'pointer' }}
+          styles={() => ({
+            label: { cursor: 'pointer' },
+            input: { cursor: 'pointer' },
+          })}
           onChange={e => setChecked(e.currentTarget.checked)}
         />
         <Group mt="2rem" position="center" spacing="3rem">
