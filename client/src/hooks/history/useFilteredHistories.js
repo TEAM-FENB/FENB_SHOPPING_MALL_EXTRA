@@ -12,7 +12,7 @@ const useFilteredHistories = () => {
   const today = new Date();
   const before = new Date(today.getFullYear(), today.getMonth() - selectedMonth, today.getDate());
 
-  const filteredHistories = histories.filter(history => new Date(history.orderDate) > before);
+  const filteredHistories = histories.filter(history => new Date(history.createdAt) > before);
 
   return { filteredHistories, setMonth: setSelectedMonth };
 };

@@ -7,13 +7,13 @@ import { ProductItem } from 'components/History';
 import { useMediaQuery } from 'hooks';
 import { PATH, MEDIAQUERY_WIDTH } from 'constants';
 
-const Product = ({ history: { id, orderDate, discountedTotalPrice, products } }) => {
+const Product = ({ history: { _id: id, createdAt, discountedTotalPrice, purchased } }) => {
   const { colors, colorScheme } = useMantineTheme();
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
 
   const navigate = useNavigate();
 
-  const customOrderDate = new Date(orderDate).toLocaleString('ko-KR');
+  const customOrderDate = new Date(createdAt).toLocaleString('ko-KR');
 
   const handleMoveToDetailHistory = () => {
     navigate(`${PATH.HISTORY}/${id}`);
@@ -40,8 +40,8 @@ const Product = ({ history: { id, orderDate, discountedTotalPrice, products } })
           <Text>{discountedTotalPrice} 원</Text>
         </Stack>
       )}
-      {products.map(product => (
-        <Group key={`${product.id}-${product.selectedSize}`} align="flex-start" pb="2rem" position="apart" pr="2rem">
+      {purchased.map(product => (
+        <Group key={`${product._id}-${product.size}`} align="flex-start" pb="2rem" position="apart" pr="2rem">
           <ProductItem product={product} />
           <Button
             color={colorScheme === 'dark' ? 'gray.2' : 'dark'}

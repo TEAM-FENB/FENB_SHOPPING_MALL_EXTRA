@@ -23,7 +23,7 @@ const History = () => {
       </Title>
       <Filter handleMonthClick={handleMonthClick} />
       {filteredHistories.map(history => (
-        <Product key={history.id} history={history} />
+        <Product key={history._id} history={history} />
       ))}
     </Stack>
   );

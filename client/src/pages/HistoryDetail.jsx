@@ -13,17 +13,17 @@ const HistoryDetail = () => {
   const currentHistory = useCurrentItem(historyQuery);
 
   const {
-    id,
-    orderDate,
+    _id: id,
+    createdAt,
     discountedTotalPrice,
-    products,
-    deliveryAddress: { recipient, recipientPhone, postcode, mainAddress, detailAddress },
+    purchased,
+    address: { recipient, recipientPhone, postcode, mainAddress, detailAddress },
     paymentMethod,
     totalPrice,
     discountAmount,
   } = currentHistory;
 
-  const customOrderDate = new Date(orderDate).toLocaleString('ko-KR');
+  const customOrderDate = new Date(createdAt).toLocaleString('ko-KR');
   const { value, label, labelStyle } = PAYMENT_METHODS.find(({ value }) => value === paymentMethod);
 
   return (
@@ -57,8 +57,8 @@ const HistoryDetail = () => {
           py="3.2rem"
           spacing="3.2rem"
           sx={{ borderTop: `1px solid ${colors.gray[4]}`, borderBottom: `1px solid ${colors.gray[4]}` }}>
-          {products.map(product => (
-            <ProductItem key={`${product.id}-${product.selectedSize}`} product={product} />
+          {purchased.map(product => (
+            <ProductItem key={product._id} product={product} />
           ))}
         </Stack>
 

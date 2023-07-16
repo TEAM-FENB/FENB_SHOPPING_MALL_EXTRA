@@ -1,20 +1,6 @@
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 
 import {
-  slidesLoader,
-  cartsLoader,
-  couponsLoader,
-  favoritesLoader,
-  filteredProductsLoader,
-  historyLoader,
-  pageProductsLoader,
-  productsLoader,
-  addressesLoader,
-  userLoader,
-} from './api/loader';
-import PrivateRoute from './components/PrivateRoute';
-import { PATH } from './constants';
-import {
   Root,
   Cart,
   Category,
@@ -32,7 +18,21 @@ import {
   Address,
   Withdrawal,
   HistoryDetail,
-} from './pages';
+} from 'pages';
+import PrivateRoute from 'components/PrivateRoute';
+import {
+  slidesLoader,
+  cartsLoader,
+  couponsLoader,
+  favoritesLoader,
+  filteredProductsLoader,
+  historyLoader,
+  pageProductsLoader,
+  productsLoader,
+  addressesLoader,
+  userLoader,
+} from 'api/loader';
+import { PATH } from 'constants';
 
 const router = createHashRouter([
   {

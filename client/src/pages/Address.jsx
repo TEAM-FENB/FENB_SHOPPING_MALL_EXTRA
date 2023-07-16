@@ -78,7 +78,7 @@ const Address = () => {
         </Title>
 
         <Stack maw="70rem" px="2rem" w="100%">
-          {addresses.map(({ id, recipient, mainAddress, detailAddress, postcode, recipientPhone, isDefault }) => (
+          {addresses.map(({ _id: id, recipient, mainAddress, detailAddress, postcode, recipientPhone, isDefault }) => (
             <Group
               key={id}
               align="flex-start"

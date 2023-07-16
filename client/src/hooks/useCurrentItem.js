@@ -6,7 +6,7 @@ const useCurrentItem = queryFn => {
 
   const { data: items } = useQuery(queryFn());
 
-  const currentItem = items?.find(item => `${item._id}` === pathname.split('/').at(-1));
+  const currentItem = items?.find(item => item._id === pathname.split('/').at(-1));
 
   return currentItem;
 };
