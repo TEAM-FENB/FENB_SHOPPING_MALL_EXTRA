@@ -62,9 +62,9 @@ router.patch('/me', authCheck, async (req, res) => {
     if (!isCorrespond) return res.status(400).send({ message: '현재 비밀번호와 일치하지 않습니다.' });
   }
 
-  await updateUserInfo(email, newUserInfo);
+  const { password, name, phone } = await updateUserInfo(email, newUserInfo);
 
-  res.send({ message: '계정 정보가 변경되었습니다.' });
+  res.send({ password: password.length, name, phone });
 });
 
 // 기본 배송지 변경

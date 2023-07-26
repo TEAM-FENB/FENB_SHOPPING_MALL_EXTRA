@@ -15,7 +15,7 @@ const PasswordInput = ({ handleCloseModeClick }) => {
     resolver: zodResolver(passwordSchema),
   });
 
-  const { mutateAsync: updateUserInfo } = useUpdateUserInfoMutation();
+  const { mutate: updateUserInfo } = useUpdateUserInfoMutation();
 
   const handleCorrespondBlur = async e => {
     try {
@@ -30,9 +30,9 @@ const PasswordInput = ({ handleCloseModeClick }) => {
     }
   };
 
-  const handleNameSubmit = async ({ newPassword, currentPassword }) => {
+  const handleNameSubmit = ({ newPassword, currentPassword }) => {
     try {
-      await updateUserInfo({ password: newPassword, currentPassword });
+      updateUserInfo({ password: newPassword, currentPassword });
 
       handleCloseModeClick('password');
     } catch (e) {

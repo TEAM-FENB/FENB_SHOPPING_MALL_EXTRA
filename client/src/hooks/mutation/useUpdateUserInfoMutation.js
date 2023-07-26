@@ -1,13 +1,13 @@
 import { updateUserInfo } from 'api/fetch';
-import { useGenericMutation } from 'hooks/mutation';
+import { usePessimisticMutation } from 'hooks/mutation';
 import { QUERY_KEY } from 'constants';
 
 const useUpdateUserInfoMutation = () =>
-  useGenericMutation({
+  usePessimisticMutation({
     queryKey: QUERY_KEY.USER,
     mutationFn: updateUserInfo,
-    onMutate(newUserInfo) {
-      return user => ({ ...user, ...newUserInfo });
+    onSuccess(_, updatedUserInfo) {
+      return user => ({ ...user, ...updatedUserInfo });
     },
   });
 
