@@ -1,4 +1,4 @@
-export { default as useGenericMutation } from './useGenericMutation';
+export { default as useOptimisticMutation } from './useOptimisticMutation';
 export { default as useChangeDefaultAddressMutation } from './useChangeDefaultAddressMutation';
 export { default as useRemoveAddressMutation } from './useRemoveAddressMutation';
 export { default as useAddCartMutation } from './useAddCartMutation';
