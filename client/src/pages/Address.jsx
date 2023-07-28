@@ -24,7 +24,7 @@ import {
   useAddAddressMutation,
   useChangeDefaultAddressMutation,
   useRemoveAddressMutation,
-  useUpdateAddress,
+  useUpdateAddressMutation,
 } from 'hooks/mutation';
 import { addressSchema } from 'schema';
 import { MEDIAQUERY_WIDTH } from 'constants';
@@ -185,7 +185,7 @@ const InputAddress = ({ close, addressId, resetAddressId }) => {
   const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
 
   const currentAddress =
-    useAddresses({ select: addresses => addresses.find(({ id }) => id === addressId.current) }) ?? {};
+    useAddresses({ select: addresses => addresses.find(({ _id }) => _id === addressId.current) }) ?? {};
 
   const { handleSubmit, register, formState, trigger, setValue, reset } = useForm({
     resolver: zodResolver(addressSchema),
@@ -199,7 +199,7 @@ const InputAddress = ({ close, addressId, resetAddressId }) => {
   });
 
   const { mutate: addAddress } = useAddAddressMutation();
-  const { mutate: updateAddress } = useUpdateAddress();
+  const { mutate: updateAddress } = useUpdateAddressMutation();
 
   const handleAddressSubmit = data => {
     if (addressId.current === null) addAddress(data);
