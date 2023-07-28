@@ -14,24 +14,29 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
 
   const { mutate: changeCartQuantity } = useChangeCartQuantityMutation();
   const { mutate: removeCart } = useRemoveCartMutation();
-  const maxQuantity = useQuantityOfStocks(id, size);
+  const { stock: maxQuantity, refetch } = useQuantityOfStocks(productId, size);
 
   // ❗ 수량 변경했을 때, 재고보다 더 담을 경우, 더 담을 수 없다고 UI 적으로 표현하기 toast?
   const [isStockEmpty, setIsStockEmpty] = useState(false);
   const handlers = useRef(null);
 
   const handleUpdateCartQuantityChange = quantity => {
-    changeCartQuantity({ id, size, quantity });
-    setIsStockEmpty(false);
+    try {
+      changeCartQuantity({ id, size, quantity });
+      setIsStockEmpty(false);
+    } catch {
+      setIsStockEmpty(true);
+      refetch(); // 잘 작동하는지 확인 필요
+    }
   };
   const handleRemoveCartClick = () => removeCart(id);
   const handleIncreaseCartQuantityClick = () => {
     handlers.current.increment();
-    if (quantity === maxQuantity) setIsStockEmpty(true);
+    if (quantity >= maxQuantity) setIsStockEmpty(true);
   };
   const handleDecreaseCartQuantityClick = () => {
     handlers.current.decrement();
-    if (quantity === 1) setIsStockEmpty(true);
+    if (quantity <= 1) setIsStockEmpty(true);
   };
 
   return (
