@@ -24,11 +24,15 @@ const Products = () => {
                 flexBasis: '50%',
                 maxWidth: '50%',
               },
+              '@media (max-width: 480px)': {
+                flexBasis: '100%',
+                maxWidth: '100%',
+              },
             }}>
             <Link to={`${PATH.PRODUCTS}/${id}`}>
               <Card fz="1.6rem" padding="lg" withBorder>
                 <Card.Section pos="relative">
-                  <Image alt={name} src={imgURL} />
+                  <Image alt={name} src={imgURL} widthPlaceholder />
                 </Card.Section>
 
                 <Group mb="xs" mt="md" position="apart" noWrap>

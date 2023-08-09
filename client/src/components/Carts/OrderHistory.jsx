@@ -9,7 +9,7 @@ import { useCountCarts, useTotalPrice } from '../../hooks/carts';
 // Link 사용? navigate() 사용?
 
 const OrderHistory = () => {
-  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH}px)`);
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH.TABLET}px)`);
   const { colors, colorScheme } = useMantineTheme();
 
   const navigate = useNavigate();

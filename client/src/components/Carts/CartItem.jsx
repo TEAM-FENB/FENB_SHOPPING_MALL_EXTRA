@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import { Stack, Group, Image, Title, Text, ActionIcon, NumberInput, useMantineTheme } from '@mantine/core';
 import { BiTrash } from 'react-icons/bi';
 
+import { useMediaQuery } from 'hooks';
 import { useQuantityOfStocks } from 'hooks/carts';
 import { useChangeCartQuantityMutation, useRemoveCartMutation } from 'hooks/mutation';
-import { PATH } from 'constants';
+import { PATH, MEDIAQUERY_WIDTH } from 'constants';
 
 const CartItem = ({ cart: { _id: id, productId, category, color, name, price, imgURL, size, quantity } }) => {
+  const matches = useMediaQuery(`(min-width: ${MEDIAQUERY_WIDTH.TABLET}px)`);
   const { colors, colorScheme } = useMantineTheme();
 
   const { mutate: changeCartQuantity } = useChangeCartQuantityMutation();
@@ -42,14 +44,15 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
   return (
     <Stack
       c="gray.6"
+      mb="0.8rem"
       py="2.4rem"
       sx={{ borderBottom: `1px solid ${colorScheme === 'dark' ? colors.gray[8] : colors.gray[3]}` }}>
       <Group spacing="1.6rem" sx={{ flexWrap: 'nowrap' }}>
         <Link to={`${PATH.PRODUCTS}/${productId}`}>
-          <Image alt={name} height="18rem" src={imgURL} width="18rem" withPlaceholder />
+          <Image alt={name} height="18rem" src={imgURL} width={matches ? '18rem' : '15rem'} withPlaceholder />
         </Link>
 
-        <Stack gap="1.6rem" justify="space-between" spacing="1.6rem" sx={{ flexGrow: 1 }}>
+        <Stack justify="space-between" spacing="1.6rem" sx={{ flexGrow: 1 }}>
           <Group align="flex-start" position="apart">
             <Stack spacing="0.2rem">
               <Title
