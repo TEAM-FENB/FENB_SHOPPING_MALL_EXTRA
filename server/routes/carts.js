@@ -7,6 +7,7 @@ const {
   createUserCart,
   countSelectedUserCarts,
   deleteQuantityZero,
+  getUserCarts,
 } = require('../controllers/carts');
 const { getProductStockBySize } = require('../controllers/stocks');
 const { cartStockCheck } = require('../middleware/stock');
@@ -58,6 +59,23 @@ router.patch('/me/:id', authCheck, cartStockCheck, async (req, res) => {
   await deleteQuantityZero(email);
 
   res.send({ message: '장바구니 상품이 변경되었습니다.' });
+});
+
+router.patch('/me/quantity', authCheck, cartStockCheck, async (req, res) => {
+  // OK!
+  const { email } = req.locals;
+
+  // carts 불러오기
+  const carts = await getUserCarts(email);
+
+  carts.forEach(async cart => {
+    const stock = await getProductStockBySize(cart.productId, size);
+
+    if (stock.quantity < cart.quantity)
+      return res.status(406).send({ message: '상품의 재고가 없습니다. 수량을 다시 선택해주세요' });
+  });
+
+  res.send({ message: '장바구니 상품들의 수량을 모두 확인했습니다.' });
 });
 
 // 삭제

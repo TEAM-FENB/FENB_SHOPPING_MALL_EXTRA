@@ -134,6 +134,10 @@ export const changeCartQuantity = async ({ id, size, quantity }) => {
   await axios.patch(`/api/carts/me/${id}`, { size, quantity });
 };
 
+export const checkCartQuantity = async () => {
+  await axios.patch(`/api/carts/me/quantity`);
+};
+
 export const changeDefaultAddress = async id => {
   await axios.patch(`/api/users/me/address/default/${id}`);
 };
