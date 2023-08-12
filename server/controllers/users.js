@@ -1,4 +1,5 @@
 const { User } = require('../models/shop');
+const { ObjectId } = require('mongodb');
 
 // signup api
 const createUser = async ({ email, name, phone, password, ...address }) => {
@@ -97,12 +98,12 @@ const updateUserAddress = async (email, _id, address) => {
   );
 
   try {
-    const updatedUserAddress = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { email, 'address._id': _id },
       { $set: newAddress },
       { new: true, arrayFilters: [{ 'address._id': _id }] }
     );
-    return updatedUserAddress;
+    return updatedUser?.address.find(address => `${address._id}` === `${new ObjectId(_id)}`);
   } catch (err) {
     console.error('유저 주소를 변경하는데 실패했습니다.', err);
   }

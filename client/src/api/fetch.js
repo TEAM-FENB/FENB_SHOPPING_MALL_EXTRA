@@ -138,8 +138,14 @@ export const changeDefaultAddress = async id => {
   await axios.patch(`/api/users/me/address/default/${id}`);
 };
 
-export const updateAddress = async ({ id, newAddress }) => {
-  await axios.patch(`/api/users/me/address/${id}`, newAddress);
+export const updateAddress = async ({ id, name, phone, mainAddress, detailAddress, postcode }) => {
+  await axios.patch(`/api/users/me/address/${id}`, {
+    recipient: name,
+    recipientPhone: phone,
+    mainAddress,
+    detailAddress,
+    postcode,
+  });
 };
 
 export const updateUserInfo = async newUserInfo => {

@@ -140,16 +140,8 @@ const InputAddress = ({ close, addressId, resetAddressId }) => {
   const { mutate: updateAddress } = useUpdateAddressMutation();
 
   const handleAddressSubmit = data => {
-    const newAddress = {
-      recipient: data.name,
-      recipientPhone: data.phone,
-      postcode: data.postcode,
-      mainAddress: data.mainAddress,
-      detailAddress: data.detailAddress,
-    };
-
-    if (addressId.current === null) addAddress(newAddress);
-    else updateAddress({ id: addressId.current, newAddress });
+    if (addressId.current === null) addAddress(data);
+    else updateAddress({ id: addressId.current, ...data });
 
     reset();
     resetAddressId();

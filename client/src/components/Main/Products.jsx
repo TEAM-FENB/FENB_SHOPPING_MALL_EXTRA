@@ -32,7 +32,7 @@ const Products = () => {
             <Link to={`${PATH.PRODUCTS}/${id}`}>
               <Card fz="1.6rem" padding="lg" withBorder>
                 <Card.Section pos="relative">
-                  <Image alt={name} src={imgURL} widthPlaceholder />
+                  <Image alt={name} src={imgURL} />
                 </Card.Section>
 
                 <Group mb="xs" mt="md" position="apart" noWrap>

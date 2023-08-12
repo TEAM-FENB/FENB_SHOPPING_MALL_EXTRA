@@ -78,14 +78,21 @@ router.patch('/me/address/default/:id', authCheck, async (req, res) => {
   res.send({ message: '기본 배송지가 변경되었습니다.' });
 });
 
-router.patch('/me/address/:id', authCheck, (req, res) => {
+router.patch('/me/address/:id', authCheck, async (req, res) => {
   // OK!
   const { email } = req.locals;
   const id = req.params.id;
-  const newAddress = req.body;
+  const { recipient, recipientPhone, mainAddress, detailAddress, postcode } = req.body;
 
-  updateUserAddress(email, id, newAddress);
-  res.send({ message: '배송지가 수정되었습니다.' });
+  const address = await updateUserAddress(email, id, {
+    recipient,
+    recipientPhone,
+    mainAddress,
+    detailAddress,
+    postcode,
+  });
+
+  res.send(address);
 });
 
 router.delete('/me/address/:id', authCheck, async (req, res) => {
