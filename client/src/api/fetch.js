@@ -152,13 +152,18 @@ export const updateAddress = async ({ id, name, phone, mainAddress, detailAddres
   });
 };
 
-export const updateUserInfo = async newUserInfo => {
-  await axios.patch('/api/users/me', newUserInfo);
+export const updatePassword = async newPassword => {
+  await axios.patch('/api/users/me/password', newPassword);
 };
 
-// export const removeCart = async ({ id, selectedSize }) => {
-//   await axios.delete(`/api/carts/me/${id}?selectedSize=${selectedSize}`);
-// };
+export const updateName = async newName => {
+  await axios.patch('/api/users/me/name', newName);
+};
+
+export const updatePhone = async newPhone => {
+  await axios.patch('/api/users/me/phone', newPhone);
+};
+
 export const removeCart = async id => {
   await axios.delete(`/api/carts/me/${id}`);
 };
