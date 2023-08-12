@@ -75,6 +75,7 @@ const router = createHashRouter([
       },
       {
         path: `${PATH.PRODUCTS}/:id`,
+        loader: cartsLoader,
         element: <Products />,
       },
       {

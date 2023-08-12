@@ -130,8 +130,8 @@ export const checkCorrespondPassword = async currentPassword => {
   return data;
 };
 
-export const changeCartQuantity = async ({ id, selectedSize, quantity }) => {
-  await axios.patch(`/api/carts/me/${id}`, { selectedSize, quantity });
+export const changeCartQuantity = async ({ id, size, quantity }) => {
+  await axios.patch(`/api/carts/me/${id}`, { size, quantity });
 };
 
 export const changeDefaultAddress = async id => {
@@ -146,8 +146,11 @@ export const updateUserInfo = async newUserInfo => {
   await axios.patch('/api/users/me', newUserInfo);
 };
 
-export const removeCart = async ({ id, selectedSize }) => {
-  await axios.delete(`/api/carts/me/${id}?selectedSize=${selectedSize}`);
+// export const removeCart = async ({ id, selectedSize }) => {
+//   await axios.delete(`/api/carts/me/${id}?selectedSize=${selectedSize}`);
+// };
+export const removeCart = async id => {
+  await axios.delete(`/api/carts/me/${id}`);
 };
 
 export const removeAddress = async id => {
