@@ -17,8 +17,6 @@ const Account = () => {
 
   const { data: userInfo } = useQuery(userQuery());
 
-  console.log('userInfo : ', userInfo);
-
   const [changeMode, setChangeMode] = useState({ password: false, name: false, phone: false });
 
   const { email, password, name, phone } = makeCipher(userInfo);

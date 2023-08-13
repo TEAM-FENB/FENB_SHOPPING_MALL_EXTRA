@@ -24,7 +24,6 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
 
   const handleUpdateCartQuantityChange = quantity => {
     try {
-      console.log(quantity);
       changeCartQuantity({ id, size, quantity });
       setIsStockLack(false);
     } catch {
@@ -35,12 +34,10 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
   const handleRemoveCartClick = () => removeCart(id);
   const handleIncreaseCartQuantityClick = () => {
     handlers.current.increment();
-    console.log(quantity);
     if (quantity >= maxQuantity) setIsStockLack(true);
   };
   const handleDecreaseCartQuantityClick = () => {
     handlers.current.decrement();
-    console.log(quantity);
     if (quantity <= 1) setIsStockLack(true);
   };
 
