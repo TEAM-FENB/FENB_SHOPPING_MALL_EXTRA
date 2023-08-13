@@ -130,12 +130,12 @@ export const checkCorrespondPassword = async currentPassword => {
   return data;
 };
 
-export const changeCartQuantity = async ({ id, size, quantity }) => {
-  await axios.patch(`/api/carts/me/${id}`, { size, quantity });
+export const checkCartQuantity = async () => {
+  await axios.post(`/api/carts/quantity`);
 };
 
-export const checkCartQuantity = async () => {
-  await axios.patch(`/api/carts/me/quantity`);
+export const changeCartQuantity = async ({ id, size, quantity }) => {
+  await axios.patch(`/api/carts/me/${id}`, { size, quantity });
 };
 
 export const changeDefaultAddress = async id => {

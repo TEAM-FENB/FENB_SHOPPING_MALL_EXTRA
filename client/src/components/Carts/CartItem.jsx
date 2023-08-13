@@ -19,26 +19,29 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
   const { stock: maxQuantity, refetch } = useQuantityOfStocks(productId, size);
 
   // ❗ 수량 변경했을 때, 재고보다 더 담을 경우, 더 담을 수 없다고 UI 적으로 표현하기 toast?
-  const [isStockEmpty, setIsStockEmpty] = useState(false);
+  const [isStockLack, setIsStockLack] = useState(quantity > maxQuantity);
   const handlers = useRef(null);
 
   const handleUpdateCartQuantityChange = quantity => {
     try {
+      console.log(quantity);
       changeCartQuantity({ id, size, quantity });
-      setIsStockEmpty(false);
+      setIsStockLack(false);
     } catch {
-      setIsStockEmpty(true);
+      setIsStockLack(true);
       refetch(); // 잘 작동하는지 확인 필요
     }
   };
   const handleRemoveCartClick = () => removeCart(id);
   const handleIncreaseCartQuantityClick = () => {
     handlers.current.increment();
-    if (quantity >= maxQuantity) setIsStockEmpty(true);
+    console.log(quantity);
+    if (quantity >= maxQuantity) setIsStockLack(true);
   };
   const handleDecreaseCartQuantityClick = () => {
     handlers.current.decrement();
-    if (quantity <= 1) setIsStockEmpty(true);
+    console.log(quantity);
+    if (quantity <= 1) setIsStockLack(true);
   };
 
   return (
@@ -107,9 +110,9 @@ const CartItem = ({ cart: { _id: id, productId, category, color, name, price, im
                   +
                 </ActionIcon>
               </Group>
-              {isStockEmpty && (
+              {isStockLack && (
                 <Text c={colorScheme === 'dark' ? 'red.9' : 'red.5'} fz="1.4rem">
-                  재고가 부족합니다
+                  상품의 재고가 부족합니다
                 </Text>
               )}
             </Stack>
