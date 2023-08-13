@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: 'https://api.486-shoe.shop',
-  widthCredentials: true,
+  withCredentials: true,
 });
 
 export const fetchProducts = async () => {
@@ -139,10 +139,6 @@ export const checkCartQuantity = async () => {
   await instance.post(`/api/carts/quantity`);
 };
 
-export const changeCartQuantity = async ({ id, size, quantity }) => {
-  await instance.patch(`/api/carts/me/${id}`, { size, quantity });
-};
-
 export const changeDefaultAddress = async id => {
   await instance.patch(`/api/users/me/address/default/${id}`);
 };
@@ -170,7 +166,7 @@ export const updatePhone = async newPhone => {
 };
 
 export const removeCart = async id => {
-  await instance.delete(`/api/carts/me/${id}`);
+  await axios.delete(`/api/carts/me/${id}`);
 };
 
 export const removeAddress = async id => {
