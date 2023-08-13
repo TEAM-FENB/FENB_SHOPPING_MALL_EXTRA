@@ -139,6 +139,10 @@ export const checkCartQuantity = async () => {
   await instance.post(`/api/carts/quantity`);
 };
 
+export const changeCartQuantity = async ({ id, size, quantity }) => {
+  await instance.patch(`/api/carts/me/${id}`, { size, quantity });
+};
+
 export const changeDefaultAddress = async id => {
   await instance.patch(`/api/users/me/address/default/${id}`);
 };
