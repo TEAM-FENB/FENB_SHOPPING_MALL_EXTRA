@@ -83,45 +83,43 @@
 ---
 
 # 📌 주요 기능
-## 네비게이션 바
-  - 상품 검색, 다크모드, 로그인/로그아웃
-  <!--
-  - 검색창을 통해 상품 검색 가능 -> 카테고리 / 상품 페이지로 이동
-  - 다크모드 (메인, 카테고리, 상품, 장바구니 ...)
-  - 로그아웃 가능
-  -->
+## Navigation Bar
+<div>
+  <img width="100%" alt="네비게이션" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/07a49fd4-fe1d-44b2-bc7c-cb4204f70322" /> 
+</div>
+  - 상품 검색
+  - 다크모드
+  - 로그아웃
+  - 메인 / 로그인 / 회원가입 / 카테고리 / 장바구니 / 관심상품 / 마이페이지 이동
   
-## 메인 페이지
+## Main
   - 쿠폰 발급 캐러셀
     - 신규 유저 쿠폰(신규가입 후 30일 이내), 상시 제공 쿠폰 발급
   - 상품 조회(무한 스크롤)
   - Scroll To Top 버튼
 
-## 로그인 페이지
+## Sign in
   - form validation
 
   - 로그인한 유저만 접근가능한 페이지 : 장바구니, 관심상품, 결제 페이지
   - 로그인한 유저만 접근가능한 기능 : 쿠폰 발급, 장바구니 상품 추가, 관심상품 추가, 결제 진행
 
-## 회원가입 페이지
+## Sign up
   - form validation
   - 이메일 중복 확인
   - 휴대전화 입력시 자동 하이픈 추가
   - 다음 주소 API를 활용한 실제 주소 입력 가능
 
-## 카테고리 페이지
+## Category
   - 상품 필터 및 정렬
 
-## 상품페이지
+## Product
   - 재고를 확인하여 장바구니에 상품 추가 
   - 관심상품 추가 및 삭제(토글 형식)
 
-## 관심상품 페이지
-  - 관심 상품 제거
-
-## 장바구니 페이지
+## Cart
 <div>
-  <img width="100%" alt="장바구니 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/b1c84846-0d3f-4240-bac7-82b8ca8f11d7" /> 
+  <img width="100%" alt="장바구니 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/1cdce61e-5eac-4aae-b4c5-9eb6b092e2ef" /> 
 </div>
 
   - 장바구니 상품 수량 변경
@@ -129,22 +127,58 @@
   - 장바구니 상품 삭제
   - 장바구니에 있는 상품들의 가격 표시
 
-## 결제 페이지
+## Order
   - 배송지 선택, 추가, 삭제 및 기본 배송지 변경
   - 쿠폰 사용조건 또는 유효기간 표시 및 선택
   - 결제수단 선택
   - 상품들의 총 가격, 쿠폰 할인액, 최종 결제 가격 표시
 
-## 결제완료 페이지
+  #### 진행중
+  - 쿠폰이 선택되지 않는 이슈 수정 중
+  - 배송지 추가시, 추가한 배송지가 바로 선택되지 않는 이슈 수정 중
+
+## Order complete
   - 결제 완료 조회 가능
 
-## 마이 페이지
-  - 이름, 휴대전화, 비밀번호 변경
-    - form validation
-    - 비밀번호를 변경하기 전 현재 비밀번호를 체크
-  - 배송지 수정, 추가, 삭제 및 기본 배송지 변경
-  - 주문 히스토리 조회 (3, 6, 12 개월 단위로)
-  - 회원 탈퇴
+  #### 진행중
+  - 뒤로가기가 되는 이슈 수정 중
+
+## Wish list
+<div>
+  <img width="100%" alt="관심상품 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/05d198f8-5102-4d80-a886-27cfa72c0a9d" /> 
+</div>
+
+  - 관심 상품 제거
+
+## History / History detail
+<div>
+  <img width="100%" alt="구매내역 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/aa1dfe69-7a6f-442c-b12c-592572cff985" /> 
+</div>
+
+- 주문 히스토리 조회 (3, 6, 12 개월 단위로)
+
+## Adderess
+<div>
+  <img width="100%" alt="배송지 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/4ad9096a-5220-41f5-a996-b8c7062e0fd8" /> 
+</div>
+
+- 배송지 수정, 추가, 삭제 및 기본 배송지 변경
+
+## Account
+<div>
+  <img width="100%" alt="계정정보 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/0d6763a6-8ec1-40cb-b451-5a73b35de9d4" /> 
+</div>
+
+- 이름, 휴대전화, 비밀번호 변경
+  - form validation
+  - 비밀번호를 변경하기 전 현재 비밀번호를 체크
+
+## Withdrawal
+<div>
+  <img width="100%" alt="회원탈퇴 페이지" src="https://github.com/sumin9918/FENB_SHOPPING_MALL_EXTRA/assets/104312167/6320993f-9e8f-462c-8561-bae0a80e1327" /> 
+</div>
+
+- 회원 탈퇴
 
 <br>
 
